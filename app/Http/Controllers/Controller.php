@@ -14,4 +14,12 @@ class Controller extends BaseController
     public function paginate($request, $size = 20){
       return $request->pageSize ? $request->pageSize : $size;
     }
+
+    public function validatePagination($request){
+      $request->validate([
+        'search' => '',
+        'pageSize' => 'integer',
+        'orderBy' => ''
+      ]);
+    }
 }

@@ -14,13 +14,14 @@ class ServiceController extends Controller
      */
      public function index(Request $request)
      {
-       $service = Service::with('service_metas');
-       $search = $request->search;
-       if ($search) {
-         $service = $service->where('name', 'LIKE', '%'.$search.'%');//->orWhere('lastname', 'LIKE', '%'.$search.'%')
-         // ->orWhere('phone', 'LIKE', '%'.$search.'%')->orWhere('email', 'LIKE', '%'.$search.'%');
-       }
-       return $service->orderBy(($request->orderBy ? $request->orderBy : 'created_at'), 'Desc')->paginate($request->pageSize);
+       // $request->validate([]);
+       $this->validatePagination($request);
+       $service = new Service;
+       if ($search = $request->search;)
+         $service = $service->where('name', 'LIKE', '%'.$search.'%');
+
+       return $service->orderBy(($request->orderBy ?? 'created_at'), 'Desc')
+              ->paginate($request->pageSize);
      }
 
     /**
