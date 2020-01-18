@@ -10,4 +10,8 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public function paginate($request, $size = 20){
+      return $request->pageSize ? $request->pageSize : $size;
+    }
 }
