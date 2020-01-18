@@ -7,7 +7,9 @@ use App\CustomerServiceServiceProperty;
 
 class ServiceProperty extends Model
 {
-  protected $fillable = [ 'service_id', 'name', 'rule'];
+  protected $fillable = [ 'service_id', 'name', 'rules'];
+  protected $casts = ['rules' => 'array'];
+
   //
   public function service(){
     return $this->belongsTo(Service::class);

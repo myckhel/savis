@@ -12,8 +12,8 @@ use App\CustomerServiceMeta;
 
 class CustomerController extends Controller
 {
-  public function payments(Request $request, $customer){
-    $customer = Customer::findOrFail($customer);
+  public function payments(Request $request, Customer $customer){
+    // $customer = Customer::findOrFail($customer);
     $histories = $customer->payments()->get();
 
     return ['status' => true, 'message' => null, 'histories' => $histories];

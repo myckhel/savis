@@ -9,27 +9,6 @@
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
-    "dependencies": {
-        "@babel/runtime": "^7.3.1",
-        "classnames": "2.2.6",
-        "country-state-city": "^1.0.0",
-        "react-circular-progressbar": "^2.0.0",
-        "react-contextmenu": "^2.11.0",
-        "react-intl": "2.4.0",
-        "react-mousetrap": "^0.2.0",
-        "react-perfect-scrollbar": "^1.1.1",
-        "react-redux": "7.1.1",
-        "react-router-dom": "^5.1.2",
-        "react-select": "^3.0.8",
-        "react-select-search": "^0.10.1",
-        "react-table": "^6.10.0",
-        "react-toastify": "^5.3.2",
-        "react-transition-group": "1.2.0",
-        "reactstrap": "^8.0.1",
-        "redux": "4.0.4",
-        "redux-saga": "^1.1.1",
-        "ree-validate": "^3.0.2"
-    },
     "devDependencies": {
         "@babel/core": "^7.2.2",
         "@babel/plugin-proposal-class-properties": "^7.3.0",
@@ -58,5 +37,26 @@
         "sass": "^1.15.2",
         "sass-loader": "^8.0.2",
         "uglifyjs-webpack-plugin": "^2.1.1"
+    },
+    "dependencies": {
+        "@babel/runtime": "^7.3.1",
+        "classnames": "2.2.6",
+        "country-state-city": "^1.0.0",
+        "react-circular-progressbar": "^2.0.0",
+        "react-contextmenu": "^2.11.0",
+        "react-intl": "2.4.0",
+        "react-mousetrap": "^0.2.0",
+        "react-perfect-scrollbar": "^1.1.1",
+        "react-redux": "7.1.1",
+        "react-router-dom": "^5.1.2",
+        "react-select": "^3.0.8",
+        "react-select-search": "^0.10.1",
+        "react-table": "^6.10.0",
+        "react-toastify": "^5.3.2",
+        "react-transition-group": "1.2.0",
+        "reactstrap": "^8.0.1",
+        "redux": "4.0.4",
+        "redux-saga": "^1.1.1",
+        "ree-validate": "^3.3.0"
     }
 }

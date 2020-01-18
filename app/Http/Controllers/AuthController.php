@@ -12,49 +12,49 @@ use GuzzleHttp\Client;
 
 class AuthController extends Controller
 {
-    /**
-     * Create user
-     *
-     * @param  [string] name
-     * @param  [string] email
-     * @param  [string] password
-     * @param  [string] password_confirmation
-     * @return [string] message
-     */
-    public function signup(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|unique:users',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|confirmed',
-        ], [
-            'password.confirmed' => 'The password does not match.'
-        ]);
+  /**
+   * Create user
+   *
+   * @param  [string] name
+   * @param  [string] email
+   * @param  [string] password
+   * @param  [string] password_confirmation
+   * @return [string] message
+   */
+  public function signup(Request $request)
+  {
+    $request->validate([
+        'name' => 'required|unique:users',
+        'email' => 'required|email|unique:users',
+        'password' => 'required|min:6|confirmed',
+    ], [
+        'password.confirmed' => 'The password does not match.'
+    ]);
 
-          $user = $this->create($request->all());
-          try {
-            $user->notify(new SignupActivate($user));
-          } catch (\Exception $e) {
-            // $user->active = 1;
-            // $user->save();
-          }
-
-          $tokenResult = $user->createToken('Personal Access Token');
-          $token = $tokenResult->token;
-          if ($request->remember_me)
-              $token->expires_at = Carbon::now()->addWeeks(1);
-          $token->save();
-
-          return response()->json([
-              'message' => 'Successfully created user!',
-              'user' => $user,
-              'access_token' => $tokenResult->accessToken,
-              'token_type' => 'Bearer',
-              'expires_at' => Carbon::parse(
-                  $tokenResult->token->expires_at
-              )->toDateTimeString()
-          ], 201);
+    $user = $this->create($request->all());
+    try {
+      $user->notify(new SignupActivate($user));
+    } catch (\Exception $e) {
+      // $user->active = 1;
+      // $user->save();
     }
+
+    $tokenResult = $user->createToken('PAT');
+    $token = $tokenResult->token;
+    if ($request->remember_me)
+        $token->expires_at = Carbon::now()->addWeeks(1);
+    $token->save();
+
+    return response()->json([
+        'message' => 'Successfully created user!',
+        'user' => $user,
+        'access_token' => $tokenResult->accessToken,
+        'token_type' => 'Bearer',
+        'expires_at' => Carbon::parse(
+            $tokenResult->token->expires_at
+        )->toDateTimeString()
+    ], 201);
+  }
 
     /**
      * Create a new user instance after a valid registration.
@@ -91,7 +91,7 @@ class AuthController extends Controller
         ]);
         $credentials = request(['email', 'password']);
         $credentials['active'] = 0;
-        $credentials['deleted_at'] = null;
+        // $credentials['deleted_at'] = null;
 
         if(!Auth::attempt($credentials))
             return response()->json([
@@ -100,7 +100,7 @@ class AuthController extends Controller
             ], 401);
 
         $user = $request->user();
-        $tokenResult = $user->createToken('Personal Access Token');
+        $tokenResult = $user->createToken('PAT');
         $token = $tokenResult->token;
         if ($request->remember_me)
             $token->expires_at = Carbon::now()->addWeeks(1);

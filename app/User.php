@@ -11,6 +11,22 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class User extends Authenticatable
 {
     use Notifiable, HasApiTokens, SoftDeletes;
+
+    public function createService($request){
+      $create = [
+        'name' => $request->name,
+        'price' => $request->price,
+        'charge' => $request->charge,
+      ];
+
+      if ($service_id = $request->service_id) {
+        $service = Service::findOrFail($service_id);
+        $create['service_id'] = $service->id;
+        return $this->services()->create($create);
+      }
+      return $this->services()->create($create);
+    }
+
     /**
      * The attributes that are mass assignable.
      *
