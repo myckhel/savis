@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Service extends Model
 {
+  // use SoftDeletes;
   public function getProfile(){
     $this->loadCount([
       // 'services',
@@ -21,7 +23,7 @@ class Service extends Model
       'jobs as jobs_failed' => function($q){
         $q->where('status', 'failed');
       }
-    ])->load(['services', 'service_metas']);
+    ])->load(['services', 'service', 'properties']);
     // $this->completed_jobs_count = Job::countCompletedCustomerService($this);
     // $this->completed_payments_count = Payment::countCompletedCustomerService($this);
     // $this->credentialServices = $this->credentialsWithServices();

@@ -20,6 +20,7 @@ class CreateServicesTable extends Migration
         $table->string('name');
         $table->float('price', 10, 2)->nullable();
         $table->string('charge')->nullable();
+        $table->softDeletes();
         $table->timestamps();
       });//
 

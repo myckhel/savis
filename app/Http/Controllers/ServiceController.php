@@ -65,9 +65,8 @@ class ServiceController extends Controller
      * @param  \App\Service  $service
      * @return \Illuminate\Http\Response
      */
-     public function show($id)
+     public function show(Service $service)
      {
-       $service = Service::find($id);
        return $service->getProfile();
      }
 
@@ -110,15 +109,11 @@ class ServiceController extends Controller
      * @param  \App\Service  $service
      * @return \Illuminate\Http\Response
      */
-     public function destroy($id)
+     public function destroy(Request $request, Service $service)
      {
-       //
-       $service = Service::find($id);
-       if ($service) {
-         $service->delete();
-         return ['status' => true];
-       }
-       return ['status' => false];
+       $this->authorize('delete', $service);
+       $service->delete();
+       return ['status' => true];
      }
 
      public function delete(Request $request)

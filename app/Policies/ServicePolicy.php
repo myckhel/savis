@@ -65,7 +65,7 @@ class ServicePolicy
      */
     public function delete(User $user, Service $service)
     {
-        //
+      return $service->user_id == $user->id;
     }
 
     /**
