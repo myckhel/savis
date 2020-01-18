@@ -17,7 +17,7 @@ class ServiceController extends Controller
        // $request->validate([]);
        $this->validatePagination($request);
        $service = new Service;
-       if ($search = $request->search;)
+       if ($search = $request->search)
          $service = $service->where('name', 'LIKE', '%'.$search.'%');
 
        return $service->orderBy(($request->orderBy ?? 'created_at'), 'Desc')
@@ -46,7 +46,7 @@ class ServiceController extends Controller
         'name'        => 'required|min:3|max:45',
         'service_id'  => 'numeric|nullable',
         'charge'      => '',
-        'price'       => 'numeric',
+        'price'       => 'numeric|nullable',
         'logo'        => '',
       ]);
       $user = $request->user();
@@ -89,10 +89,19 @@ class ServiceController extends Controller
      * @param  \App\Service  $service
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Service $service)
     {
-      $service = Service::findOrFail($id);
-      return $service->update($request->all());
+      $request->validate([
+        'name'        => 'min:3|max:45',
+        'service_id'  => 'numeric|nullable',
+        'charge'      => '',
+        'price'       => 'numeric',
+        'logo'        => '',
+      ]);
+      $this->authorize('update', $service);
+      $user = $request->user();
+      $update = $service->update($request->all());
+      return ["status" => $update, 'service' => $service];
     }
 
     /**
