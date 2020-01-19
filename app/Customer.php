@@ -2,19 +2,24 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+// use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Work;
 use App\Payment;
 use App\Service;
 use App\ServiceMeta;
 use App\UserCustomer;
 use App\CustomerServiceMeta;
+use Laravel\Passport\HasApiTokens;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Customer extends Model
+class Customer extends Authenticatable
 {
-    //
-    protected $fillable = ['firstname', 'lastname', 'email', 'phone', 'state', 'city','address','country', 'lat', 'lng'];
-    protected $hidden = ['pivot'];
+  use Notifiable, HasApiTokens, SoftDeletes;
+  protected $fillable = ['firstname', 'lastname', 'email', 'phone', 'state', 'city','address','country', 'lat', 'lng'];
+  protected $hidden = ['pivot'];
 
   public static function addNew($request){
     return self::create([
