@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use Carbon\Carbon;
 use App\User;
 use App\Notifications\SignupActivate;
@@ -220,5 +222,59 @@ class AuthController extends Controller
     $data['activation_token'] = Str::random(60);
 
       return Customer::create($data);
+  }
+
+  /**
+   * Login customer and create token
+   *
+   * @param  [string] email
+   * @param  [string] password
+   * @param  [boolean] remember_me
+   * @return [string] access_token
+   * @return [string] token_type
+   * @return [string] expires_at
+   */
+  public function signin(Request $request)
+  {
+    $request->validate([
+        'email'       => 'required|email',
+        'password'    => 'required|string',
+        'remember_me' => 'boolean'
+    ]);
+    $email        = $request->email;
+    $password     = $request->password;
+
+    $user = Customer::where('email', $email)->first();
+
+    if ($user) {
+      if (Hash::check($password, $user->password)) {
+        $token = $user->grantMeToken();
+        return [
+          'access_token'    => $token['access_token'],
+          'token_type'      => $token['token_type'],
+          'user'            => $user,
+          'expires_at'      => $token['expires_at']
+        ];
+      } else {
+        throw ValidationException::withMessages([
+          'password'      => trans('validation.password')
+        ]);
+      }
+    } else {
+      return ['status' => false, 'message' => trans('msg.user.not_exists')];
+    }
+  }
+
+  /**
+   * Logout customer (Revoke the token)
+   *
+   * @return [string] message
+   */
+  public function signout(Request $request)
+  {
+      $request->user()->token()->revoke();
+      return response()->json([
+          'message' => 'Successfully logged out'
+      ]);
   }
 }

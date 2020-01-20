@@ -14,6 +14,7 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 
 class Customer extends Authenticatable
 {
@@ -24,6 +25,20 @@ class Customer extends Authenticatable
   protected $hidden = ['pivot',
     'password', 'remember_token', 'activation_token'
   ];
+
+  public function grantMeToken($request = null){
+    $token = $this->createToken('PAT');
+    if ($request && $request->remember_me)
+        $token->expires_at = Carbon::now()->addWeeks(1);
+
+    return [
+      'access_token' => $token->accessToken,
+      'token_type' => 'Bearer',
+      'expires_at' => Carbon::parse(
+          $token->token->expires_at
+      )->toDateTimeString()
+    ];
+  }
 
   public static function addNew($request){
     return self::create([
