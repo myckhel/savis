@@ -27,15 +27,15 @@ Route::group([ 'middleware' => 'localization' ], function () {
       Route::get('logout', 'AuthController@logout');
       Route::get('user', 'AuthController@user');
     });
-    Route::group([ 'middleware' => 'auth:api:customer' ], function() {
-      Route::get('signout', 'AuthController@logout');
+    Route::group([ 'middleware' => 'auth:customer' ], function() {
+      Route::get('signout', 'AuthController@signout');
     });
   });
 
   Route::middleware('auth:api')->get('/user', function (Request $request) {
       return $request->user();
   });
-  Route::group([ 'middleware' => 'auth:api:customer' ], function() {
+  Route::group([ 'middleware' => 'auth:customer' ], function() {
     // Route::post('users/customers/{customer}', 'UserController@addCustomer');
   });
 
