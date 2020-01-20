@@ -60,7 +60,7 @@ class User extends Authenticatable
     }
 
     public function metas(){
-      return $this->hasMany(UserMeta::class);
+      return $this->morphMany(Meta::class);
     }
 
     // public function customer_services(){

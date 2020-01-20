@@ -113,6 +113,6 @@ class Customer extends Authenticatable
   }
 
   public function metas(){
-    return $this->hasMany(CustomerMeta::class);
+    return $this->morphMany(Meta::class);
   }
 }

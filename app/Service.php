@@ -36,6 +36,10 @@ class Service extends Model
     return self::where($filed, $request->$filed)->first();
   }
   // relationship
+  public function metas(){
+    return $this->morphMany(Meta::class);
+  }
+  
   public function services(){
     return $this->hasMany(Service::class);
   }

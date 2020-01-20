@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\CustomerMeta;
+use App\Meta;
 use Illuminate\Http\Request;
 
-class CustomerMetaController extends Controller
+class MetaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class CustomerMetaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\CustomerMeta  $customerMeta
+     * @param  \App\Meta  $meta
      * @return \Illuminate\Http\Response
      */
-    public function show(CustomerMeta $customerMeta)
+    public function show(Meta $meta)
     {
         //
     }
@@ -52,10 +52,10 @@ class CustomerMetaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\CustomerMeta  $customerMeta
+     * @param  \App\Meta  $meta
      * @return \Illuminate\Http\Response
      */
-    public function edit(CustomerMeta $customerMeta)
+    public function edit(Meta $meta)
     {
         //
     }
@@ -64,10 +64,10 @@ class CustomerMetaController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\CustomerMeta  $customerMeta
+     * @param  \App\Meta  $meta
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, CustomerMeta $customerMeta)
+    public function update(Request $request, Meta $meta)
     {
         //
     }
@@ -75,10 +75,10 @@ class CustomerMetaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\CustomerMeta  $customerMeta
+     * @param  \App\Meta  $meta
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CustomerMeta $customerMeta)
+    public function destroy(Meta $meta)
     {
         //
     }

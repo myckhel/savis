@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCustomerMetasTable extends Migration
+class CreateMetasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,12 @@ class CreateCustomerMetasTable extends Migration
      */
     public function up()
     {
-        Schema::create('customer_metas', function (Blueprint $table) {
+        Schema::create('metas', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('customer_id')->unsigned();
-            $table->string('name');
+            $table->morphs('metable');
+            $table->string('name', 30);
             $table->string('value');
             $table->timestamps();
-        });
-
-        Schema::table('customer_metas', function (Blueprint $table) {
-          $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
         });
     }
 
@@ -33,6 +29,6 @@ class CreateCustomerMetasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('customer_metas');
+        Schema::dropIfExists('metas');
     }
 }
