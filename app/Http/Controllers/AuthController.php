@@ -8,19 +8,20 @@ use Illuminate\Support\Str;
 use Carbon\Carbon;
 use App\User;
 use App\Notifications\SignupActivate;
+use App\Customer;
 use GuzzleHttp\Client;
 
 class AuthController extends Controller
 {
-  /**
-   * Create user
-   *
-   * @param  [string] name
-   * @param  [string] email
-   * @param  [string] password
-   * @param  [string] password_confirmation
-   * @return [string] message
-   */
+/**
+ * Create user
+ *
+ * @param  [string] name
+ * @param  [string] email
+ * @param  [string] password
+ * @param  [string] password_confirmation
+ * @return [string] message
+ */
   public function signup(Request $request)
   {
     $request->validate([
@@ -151,4 +152,73 @@ class AuthController extends Controller
         $user->save();
         return $user;
     }
+
+  /**
+   * Register customer
+   *
+   * @param  [string] name
+   * @param  [string] email
+   * @param  [string] password
+   * @param  [string] password_confirmation
+   * @return [string] message
+   */
+  public function register(Request $request)
+  {
+    $request->validate([
+        // 'name' => 'required|unique:customers',
+        'email'       => 'required|email',
+        'password'    => 'required|min:6|confirmed',
+        'firstname'   => 'required|min:3|max:30',
+        'lastname'    => 'required|min:3|max:30',
+    ], [
+        'password.confirmed' => 'The password does not match.'
+    ]);
+    $email = $request->email;
+
+    // check email exists
+    $customer = Customer::where('email', $email)->first();
+    if($customer){
+      // check password is set
+      if ($customer->password) {
+        // respond email exists and option to reset password
+        return ['status' => false, 'message' => 'email exists please try the reset password option to reset your password'];
+      } else {
+        // send email Confirmation with required to input password
+      }
+      // register the customer
+    } else {
+      $customer = $this->createCustomer($request->all());
+      try {
+        // $customer->notify(new SignupActivate($customer));
+      } catch (\Exception $e) {
+        // $user->active = 1;
+        // $user->save();
+      }
+
+      $tokenResult = $customer->createToken('PAT');
+      $token = $tokenResult->token;
+      if ($request->remember_me)
+          $token->expires_at = Carbon::now()->addWeeks(1);
+      $token->save();
+
+      return response()->json([
+          'status' => true,
+          'message' => 'Successfully created user!',
+          'user' => $customer,
+          'access_token' => $tokenResult->accessToken,
+          'token_type' => 'Bearer',
+          'expires_at' => Carbon::parse(
+              $tokenResult->token->expires_at
+          )->toDateTimeString()
+      ], 201);
+    }
+  }
+
+  protected function createCustomer(array $data)
+  {
+    $data['password'] = bcrypt($data['password']);
+    $data['activation_token'] = Str::random(60);
+
+      return Customer::create($data);
+  }
 }

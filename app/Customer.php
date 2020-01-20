@@ -18,8 +18,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Customer extends Authenticatable
 {
   use Notifiable, HasApiTokens, SoftDeletes;
-  protected $fillable = ['firstname', 'lastname', 'email', 'phone', 'state', 'city','address','country', 'lat', 'lng'];
-  protected $hidden = ['pivot'];
+  protected $fillable = ['firstname', 'lastname', 'email', 'phone', 'state', 'city','address','country', 'lat', 'lng',
+    'password', 'activation_token'
+  ];
+  protected $hidden = ['pivot',
+    'password', 'remember_token', 'activation_token'
+  ];
 
   public static function addNew($request){
     return self::create([

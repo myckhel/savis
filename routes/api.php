@@ -13,9 +13,14 @@ use Illuminate\Http\Request;
 |
 */
 Route::group([ 'prefix' => 'auth' ], function () {
+  // user auth
   Route::post('login', 'AuthController@login');
   Route::post('signup', 'AuthController@signup');
   Route::get('signup/activate/{token}', 'AuthController@signupActivate');
+  // customer auth
+  Route::post('signin', 'AuthController@signin');
+  Route::post('register', 'AuthController@register');
+  Route::get('register/activate/{token}', 'AuthController@registrActivate');
 
   Route::group([ 'middleware' => 'auth:api' ], function() {
     Route::get('logout', 'AuthController@logout');
@@ -25,6 +30,9 @@ Route::group([ 'prefix' => 'auth' ], function () {
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+Route::group([ 'middleware' => 'auth:api:customer' ], function() {
+  // Route::post('users/customers/{customer}', 'UserController@addCustomer');
 });
 
 Route::group([ 'middleware' => 'auth:api' ], function() {
