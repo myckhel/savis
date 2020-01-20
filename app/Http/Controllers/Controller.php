@@ -17,9 +17,9 @@ class Controller extends BaseController
 
     public function validatePagination($request){
       $request->validate([
-        'search' => '',
-        'pageSize' => 'integer',
-        'orderBy' => ''
+        'search'   => 'nullable',
+        'pageSize' => 'nullable|integer',
+        'orderBy'  => 'nullable'
       ]);
     }
 }

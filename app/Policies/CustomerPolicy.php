@@ -18,7 +18,18 @@ class CustomerPolicy
      */
     public function viewAny(User $user)
     {
-        //
+      return false;
+    }
+
+    /**
+     * Determine whether the user can view any customers.
+     *
+     * @param  \App\User  $user
+     * @return mixed
+     */
+    public function viewAnyCustomer(Customer $user)
+    {
+      return false;
     }
 
     /**

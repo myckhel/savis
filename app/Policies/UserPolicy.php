@@ -20,6 +20,11 @@ class UserPolicy
         //
     }
 
+    public function viewAnyCustomer(User $user)
+    {
+      return true;
+    }
+
     /**
      * Determine whether the user can view the model.
      *

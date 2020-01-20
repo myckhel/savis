@@ -32,8 +32,10 @@ class CustomerController extends Controller
    */
    public function index(Request $request)
    {
+     $this->validatePagination($request);
      $user = $request->user();
-     $customer = $user->customers();
+     $this->authorize('viewAnyCustomer', $user);
+     $customer = new Customer;//$user->customers();
      $search = $request->search;
      if ($search) {
        $customer = $customer->where('firstname', 'LIKE', '%'.$search.'%')->orWhere('lastname', 'LIKE', '%'.$search.'%')
