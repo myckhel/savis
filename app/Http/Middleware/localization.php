@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class localization
+class Localization
 {
     /**
      * Handle an incoming request.
@@ -15,6 +15,8 @@ class localization
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
+      $local = ($request->hasHeader('X-localization') ? $request->header('X-localization') : 'en');
+      app()->setlocale($local);
+      return $next($request);
     }
 }
