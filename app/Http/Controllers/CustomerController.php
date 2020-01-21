@@ -9,9 +9,20 @@ use App\Payment;
 use App\Service;
 use App\Customer;
 use App\CustomerServiceMeta;
+use App\Http\Controllers\MetaController;
 
 class CustomerController extends Controller
 {
+  public function getMeta(Request $request){
+    $control = new MetaController;
+    return $control->index($request);
+  }
+
+  public function addMeta(Request $request){
+    $control = new MetaController;
+    return $control->store($request);
+  }
+
   public function payments(Request $request, Customer $customer){
     // $customer = Customer::findOrFail($customer);
     $histories = $customer->payments()->get();
