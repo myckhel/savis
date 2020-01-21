@@ -15,10 +15,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
+use App\Traits\HasMeta;
 
 class Customer extends Authenticatable
 {
-  use Notifiable, HasApiTokens, SoftDeletes;
+  use Notifiable, HasApiTokens, SoftDeletes, HasMeta;
   protected $fillable = ['firstname', 'lastname', 'email', 'phone', 'state', 'city','address','country', 'lat', 'lng',
     'password', 'activation_token'
   ];
@@ -128,6 +129,6 @@ class Customer extends Authenticatable
   }
 
   public function metas(){
-    return $this->morphMany(Meta::class);
+    return $this->morphMany(Meta::class, 'metable');
   }
 }

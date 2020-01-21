@@ -12,9 +12,16 @@ class MetaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+      $this->validatePagination($request);
+      $user = $request->user();
+      $metas = $user->metas();
+      $search = $request->search;
+      if ($search) {
+        $metas = $metas->where('name', 'LIKE', '%'.$search.'%');
+      }
+      return $metas->orderBy(($request->orderBy ?? 'created_at'), 'DESC')->paginate($request->pageSize);
     }
 
     /**
@@ -35,7 +42,16 @@ class MetaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $request->validate([
+        'name' => 'required',
+        'value' => 'required'
+      ]);
+
+      $user = $request->user();
+      $name = $request->name;
+      $value = $request->value;
+      $metas = $user->addMeta(['name' => $name], ['name' => $name, 'value' => $value]);
+      return ['status' => true, 'metas' => $metas];
     }
 
     /**

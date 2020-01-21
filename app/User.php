@@ -7,10 +7,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\HasMeta;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasApiTokens, SoftDeletes;
+    use Notifiable, HasApiTokens, SoftDeletes, HasMeta;
 
     public function createService($request){
       $create = [
@@ -60,7 +61,7 @@ class User extends Authenticatable
     }
 
     public function metas(){
-      return $this->morphMany(Meta::class);
+      return $this->morphMany(Meta::class, 'metable');
     }
 
     // public function customer_services(){

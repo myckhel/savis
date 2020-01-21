@@ -62,6 +62,7 @@ Route::group([ 'middleware' => 'localization' ], function () {
     Route::resource('users', 'UserController')->except(['index']);
     Route::resource('services', 'ServiceController');
     Route::resource('payments', 'PaymentController');
+    Route::resource('metas', 'MetaController');
 
   });
 });
