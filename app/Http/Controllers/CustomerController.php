@@ -116,7 +116,6 @@ class CustomerController extends Controller
    public function update(Request $request, Customer $customer)
    {
      // $this->authorize('update', $customer);
-       // $customer = Customer::findOrFail($id);
        $request->validate(['updates' => 'required|array']);
        $updates = $request->updates;
        $customer->update($updates);
