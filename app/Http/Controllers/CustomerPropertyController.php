@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ServiceProperty;
 use App\CustomerProperty;
 use Illuminate\Http\Request;
 
@@ -35,7 +36,21 @@ class CustomerPropertyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $request->validate([
+        'service_property_id' => 'required|int',
+        'value'               => 'required',
+      ]);
+      $customer = $request->user();
+      $value = $request->value;
+      $service_property_id = $request->service_property_id;
+      $prop = ServiceProperty::findOrFail($service_property_id);
+      $toCreate = [
+        'service_property_id' => $prop->id,
+        'value'               => $value
+      ];
+      return $customer->properties()->updateOrCreate(
+        $toCreate, $toCreate
+      );
     }
 
     /**

@@ -38,6 +38,7 @@ Route::group([ 'middleware' => 'localization' ], function () {
   Route::group([ 'middleware' => 'auth:customer' ], function() {
     Route::resource('users', 'UserController')->only(['update', 'index']);
     Route::resource('customers', 'CustomerController')->only(['update']);
+    Route::resource('customer_properties', 'CustomerPropertyController');
     Route::post('customers/metas/add', 'CustomerController@addMeta');
     Route::get('customers/metas/get', 'CustomerController@getMeta');
     // Route::post('users/customers/{customer}', 'UserController@addCustomer');

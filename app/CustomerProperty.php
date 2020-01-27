@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class CustomerProperty extends Model
 {
+  protected $fillable = ['service_property_id', 'customer_id', 'value'];
+
   public function customer(){
     return $this->belongsTo(Customer::class);
   }
