@@ -8,6 +8,18 @@ class CustomerProperty extends Model
 {
   protected $fillable = ['service_property_id', 'customer_id', 'value'];
 
+  public static function getProps($request, $user){
+    $order  = $request->order;
+    $search = $request->search;
+    $props  = $user->properties();
+    if ($search) $props->where('value', 'LIKE', '%'.$search.'%')
+    ->orWhereHas('service_property', function($q) use($search){
+      $q->where('name', 'LIKE', '%'.$search.'%');
+    });
+    $props->with(['service_property:id,name']);
+    return $props->orderBy(($request->orderBy ?? 'created_at'), $order ?? 'DESC')->paginate($request->pageSize);
+  }
+
   public function customer(){
     return $this->belongsTo(Customer::class);
   }

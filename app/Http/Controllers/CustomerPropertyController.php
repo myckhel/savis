@@ -13,9 +13,11 @@ class CustomerPropertyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+      $this->validatePagination($request);
+      $user   = $request->user();
+      return CustomerProperty::getProps($request, $user);
     }
 
     /**

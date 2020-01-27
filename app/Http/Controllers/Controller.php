@@ -19,7 +19,8 @@ class Controller extends BaseController
       $request->validate([
         'search'   => 'nullable',
         'pageSize' => 'nullable|integer',
-        'orderBy'  => 'nullable'
+        'orderBy'  => 'nullable',
+        'order'    => ['regex:(asc|desc)'],
       ]);
     }
 }
