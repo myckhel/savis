@@ -104,6 +104,7 @@ class CustomerPropertyController extends Controller
      */
     public function destroy(CustomerProperty $customerProperty)
     {
-        //
+      $this->authorize('delete', $customerProperty);
+      return ['status' => $customerProperty->delete()];
     }
 }

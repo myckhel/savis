@@ -65,7 +65,7 @@ class CustomerPropertyPolicy
      */
     public function delete(Customer $user, CustomerProperty $customerProperty)
     {
-        //
+      return $user->id == $customerProperty->customer_id;
     }
 
     /**

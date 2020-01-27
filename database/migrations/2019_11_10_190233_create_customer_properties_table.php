@@ -18,6 +18,7 @@ class CreateCustomerPropertiesTable extends Migration
             $table->bigInteger('customer_id')->unsigned()->nullable();
             $table->bigInteger('service_property_id')->unsigned()->nullable();
             $table->string('value');
+            $table->softDeletes();
             $table->timestamps();
         });
         Schema::table('customer_properties', function (Blueprint $table) {
