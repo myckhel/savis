@@ -59,9 +59,9 @@ class CustomerPropertyController extends Controller
      * @param  \App\CustomerProperty  $customerProperty
      * @return \Illuminate\Http\Response
      */
-    public function show(CustomerProperty $customerProperty)
+    public function show(Request $request, CustomerProperty $customerProperty)
     {
-        //
+      return $customerProperty;
     }
 
     /**
@@ -84,7 +84,16 @@ class CustomerPropertyController extends Controller
      */
     public function update(Request $request, CustomerProperty $customerProperty)
     {
-        //
+      $this->authorize('update', $customerProperty);
+      $request->validate([
+        'value'               => 'required',
+      ]);
+
+      $customer = $request->user();
+      $value = $request->value;
+      $customerProperty->update(['value' => $request->value]);
+
+      return ['status' => true, 'customer_property' => $customerProperty];
     }
 
     /**
