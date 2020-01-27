@@ -45,12 +45,6 @@ class ServicePropertyController extends Controller
        return ['status' => true, 'serviceProperties' => $serviceProperties];
      }
 
-     private function encodeArray(&$array, $field){
-       foreach ($array as &$value) {
-         $value[$field] = json_encode($value[$field]);
-       }
-     }
-
     /**
      * Display the specified resource.
      *
@@ -82,7 +76,8 @@ class ServicePropertyController extends Controller
      */
     public function update(Request $request, ServiceProperty $serviceProperty)
     {
-        //
+      $serviceProperty->update($request->all());
+      return $serviceProperty;
     }
 
     /**
@@ -93,6 +88,6 @@ class ServicePropertyController extends Controller
      */
     public function destroy(ServiceProperty $serviceProperty)
     {
-        //
+      return ['status' => $serviceProperty->delete()];
     }
 }
