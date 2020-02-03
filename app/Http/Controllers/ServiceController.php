@@ -14,13 +14,16 @@ class ServiceController extends Controller
      */
      public function index(Request $request)
      {
-       // $request->validate([]);
-       $this->validatePagination($request);
-       $service = new Service;
-       if ($search = $request->search)
-         $service = $service->where('name', 'LIKE', '%'.$search.'%');
+       $this->validatePagination($request, [
+         'orderBy' => ['regex:(id|created_at|name)'],
+       ]);
 
-       return $service->orderBy(($request->orderBy ?? 'created_at'), 'Desc')
+       $service = Service::allLeaves();
+
+       if ($search = $request->search)
+         $service->where('name', 'LIKE', '%'.$search.'%');
+
+       return $service->orderBy($request->orderBy, $request->order)
               ->paginate($request->pageSize);
      }
 

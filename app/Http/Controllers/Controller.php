@@ -15,12 +15,14 @@ class Controller extends BaseController
       return $request->pageSize ? $request->pageSize : $size;
     }
 
-    public function validatePagination($request){
-      $request->validate([
+    public function validatePagination($request, $custom = []){
+      if (!$request->orderBy) $request->orderBy = 'created_at';
+      if (!$request->order) $request->order = 'asc';
+      return $request->validate(array_merge_recursive([
         'search'   => 'nullable',
         'pageSize' => 'nullable|integer',
         'orderBy'  => 'nullable',
         'order'    => ['regex:(asc|desc)'],
-      ]);
+      ], $custom));
     }
 }

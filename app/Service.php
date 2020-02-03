@@ -4,10 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Baum\NestedSet\Node as WorksAsNestedSet;
 
 class Service extends Model
 {
-  // use SoftDeletes;
+  use WorksAsNestedSet;// SoftDeletes;
+  protected $parentColumnName = 'service_id';
+  // protected $depthColumnName = 'depth';
+
   public function getProfile(){
     $this->loadCount([
       // 'services',
@@ -39,7 +43,7 @@ class Service extends Model
   public function metas(){
     return $this->morphMany(Meta::class);
   }
-  
+
   public function services(){
     return $this->hasMany(Service::class);
   }

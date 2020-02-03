@@ -71,7 +71,6 @@ class User extends Authenticatable
 
     public function payments(){
       return $this->customers->services;
-      // (Service::class);
     }
 
     public function services(){

@@ -48,9 +48,12 @@ Route::get('/db/migrate/fresh', function() {
 
 // Api::routes();
 
-Route::any('{query}',
-  function() { return view('welcome'); })
-  ->where('query', '^(?!api).*$');
+// Route::any(
+//   '{query}',
+//   function() {
+//     return view('welcome');
+//   }
+// )->where('query', '^(?!api).*$');
 // Route::view('/login','welcome');
 // Route::view('/register','welcome');
 // Route::view('/', 'welcome');

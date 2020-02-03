@@ -35,7 +35,12 @@ class CustomerServiceController extends Controller
       */
      public function store(Request $request)
      {
-         //
+       $request->validate([
+         'service_id' => 'required|int'
+       ]);
+       $customer = $request->user();
+
+       return CustomerService::makeService($customer, $request)->load(['service.nested']);
      }
      /**
       * Display the specified resource.
