@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
+    "name": "myckhel/savis",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "Savis Project.",
     "keywords": [
         "framework",
         "laravel"
@@ -9,9 +9,14 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
+        "baum/baum": "2.0.0-alpha1",
+        "beyondcode/laravel-websockets": "^1.3",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.2",
-        "laravel/tinker": "^2.0"
+        "laravel/passport": "^8.2",
+        "laravel/tinker": "^2.0",
+        "pusher/pusher-php-server": "~3.0",
+        "spatie/laravel-medialibrary": "7.14.2"
     },
     "require-dev": {
         "facade/ignition": "^1.4",
