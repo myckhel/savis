@@ -14,7 +14,11 @@ class AddNestedSetToService extends Migration
     public function up()
     {
         Schema::table('services', function (Blueprint $table) {
-          $table->nestedSet();
+          // $table->nestedSet();
+          // $table->integer('service_id')->unsigned()->nullable()->index();
+          $table->integer('left')->unsigned()->nullable()->index();
+          $table->integer('right')->unsgined()->nullable()->index();
+          $table->integer('depth')->unsigned()->nullable()->index();
         });
     }
 

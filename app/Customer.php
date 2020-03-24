@@ -112,6 +112,10 @@ class Customer extends Authenticatable
     return $this->hasMany(CustomerService::class);
   }
 
+  public function service_properties(){
+    return $this->hasManyThrough(CustomerServiceProperty::class, CustomerService::class);
+  }
+
   public function clients(){
     return $this->belongsToMany(Customer::class, 'user_customers');
   }

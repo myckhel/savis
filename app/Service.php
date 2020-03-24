@@ -10,6 +10,7 @@ class Service extends Model
 {
   use WorksAsNestedSet;// SoftDeletes;
   protected $parentColumnName = 'service_id';
+  // protected $casts = ['properties' => 'array'];
   // protected $depthColumnName = 'depth';
 
   public function getProfile(){
