@@ -40,7 +40,8 @@ class CustomerServiceController extends Controller
        ]);
        $customer = $request->user();
 
-       return CustomerService::makeService($customer, $request)->load(['service']);
+       return CustomerService::makeService($customer, $request);
+       // ->load(['service', 'job']);
      }
      /**
       * Display the specified resource.
