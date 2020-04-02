@@ -9,6 +9,11 @@ use App\CustomerServiceProperty;
 class CustomerService extends Model
 {
   protected $fillable = ['service_id', 'customer_id'];
+
+  public function getAmount()
+  {
+    return 200;
+  }
   //
   public static function makeService($user, $request)
   {
