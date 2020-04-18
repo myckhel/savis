@@ -16,6 +16,6 @@ $factory->define(Payment::class, function (Faker $faker) {
       'access_code'         => $faker->unique()->sha256,
       'authorization_code'  => $faker->sha256,
       'currency_code'       => $faker->currencyCode,
-      'payed_at'            => $faker->dateTime,
+      'paid_at'            => $faker->dateTime,
     ];
 });
