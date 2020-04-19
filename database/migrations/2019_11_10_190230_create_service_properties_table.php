@@ -18,6 +18,7 @@ class CreateServicePropertiesTable extends Migration
             $table->bigInteger('service_id')->unsigned();
             $table->string('name');
             $table->json('rules');
+            $table->softDeletes();
             $table->timestamps();
         });
 

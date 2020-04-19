@@ -27,6 +27,7 @@ class CreateCustomersTable extends Migration
         $table->decimal('lat', 10, 7)->nullable();
         $table->decimal('lng', 10, 7)->nullable();
         $table->boolean('active')->default(false);
+        $table->string('activation_token');
         $table->string('password')->nullable();
         $table->timestamp('email_verified_at')->nullable();
         $table->softDeletes();
