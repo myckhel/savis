@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CustomerServiceProperty;
+use App\Customer;
 use Illuminate\Http\Request;
 
 class CustomerServicePropertyController extends Controller
@@ -12,9 +13,12 @@ class CustomerServicePropertyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+      $user           = $request->user();
+      $customer_id    = $request->customer_id;
+      $customer       = Customer::findOrFail($customer_id);
+      return $customer->service_properties()->paginate();
     }
 
     /**
@@ -35,7 +39,26 @@ class CustomerServicePropertyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $user_id                = $request->user_id;
+      $customer_service_id    = $request->customer_service_id;
+      $customer_property_ids  = $request->customer_property_ids;
+      $service_property_ids   = $request->service_property_ids;
+      $customer_id            = $request->customer_id;
+      $customer               = Customer::findOrFail($customer_id);
+      $customerService        = $customer->services()->findOrFail($customer_service_id);
+      $creates                = $this->toMany($customer_property_ids, $service_property_ids, $customer_id);
+      return $customerService->properties()->createMany($creates);
+    }
+
+    private function toMany($cpids, $spids, $customer_id){
+      // $creates = [];
+      foreach ($cpids as $key => $value) {
+        $prop['customer_property_id'] = $value;
+        $prop['service_property_id']  = $spids[$key];
+        $prop['customer_id']          = $customer_id;
+        $creates[]                    = $prop;
+      }
+      return $creates;
     }
 
     /**

@@ -9,13 +9,22 @@ use App\CustomerServiceProperty;
 class CustomerService extends Model
 {
   protected $fillable = ['service_id', 'customer_id'];
+
+  public function getAmount()
+  {
+    return 200;
+  }
   //
   public static function makeService($user, $request)
   {
     $service = Service::findOrFail($request->service_id);
-    return $user->services()->create([
+    $customerService = $user->services()->create([
       'service_id' => $service->id,
     ]);
+    $job = $customerService->job()->create();
+    $customerService->job       = $job;
+    $customerService->service  = $service;
+    return $customerService;
   }
   // relationship
   public function customer(){

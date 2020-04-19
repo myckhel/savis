@@ -36,12 +36,14 @@ Route::group([ 'middleware' => 'localization' ], function () {
       return $request->user();
   });
   Route::group([ 'middleware' => 'auth:customer' ], function() {
+    Route::post('customers/metas/add', 'CustomerController@addMeta');
+    Route::get('customers/metas/get', 'CustomerController@getMeta');
+    Route::post('customers/payments/verify',            'PaymentController@verify');
     Route::resource('users', 'UserController')->only(['update', 'index']);
+    Route::resource('customers/payments',             'PaymentController');
     Route::resource('customers', 'CustomerController')->only(['update']);
     Route::resource('customer_properties', 'CustomerPropertyController');
     Route::resource('customer_services', 'CustomerServiceController');
-    Route::post('customers/metas/add', 'CustomerController@addMeta');
-    Route::get('customers/metas/get', 'CustomerController@getMeta');
     // Route::post('users/customers/{customer}', 'UserController@addCustomer');
   });
 
@@ -62,9 +64,10 @@ Route::group([ 'middleware' => 'localization' ], function () {
     // });
     Route::resource('customers', 'CustomerController')->except(['update']);
     Route::resource('service_properties', 'ServicePropertyController');
+    Route::resource('customer_service_properties', 'CustomerServicePropertyController');
     Route::resource('users', 'UserController')->except(['index']);
     Route::resource('services', 'ServiceController');
-    Route::resource('payments', 'PaymentController');
+    // Route::resource('payments', 'PaymentController');
     Route::resource('metas', 'MetaController');
 
   });

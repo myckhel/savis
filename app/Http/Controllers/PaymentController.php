@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Payment;
+use App\CustomerService;
+use Paystack;
 
 class PaymentController extends Controller
 {
@@ -14,10 +16,24 @@ class PaymentController extends Controller
      */
     public function index(Request $request)
     {
-      $user = $request->user();
+      $request->validate([
+        'search'        => '',
+        'orderBy'       => ['regex:(amount|message|reference|currency_code|status)', 'nullable'],
+        'pageSize'      => 'nullable|int',
+      ]);
 
-      return $user->payments();
-      // ->paginate();
+      $user           = $request->user();
+      $search         = $request->search;
+      $orderBy        = $request->orderBy;
+      $pageSize       = $request->pageSize;
+
+      $payments = $user->payments();
+
+      if ($search) $payments->where('status', 'LIKE', '%'.$search.'%')
+      ->orWhere('amount', 'LIKE', '%'.$search.'%')->orWhere('reference', 'LIKE', '%'.$search.'%')
+      ->orWhere('message', 'LIKE', '%'.$search.'%')->orWhere('currency_code', 'LIKE', '%'.$search.'%');
+
+      return $payments->orderBy($orderBy ?? 'id')->paginate($pageSize ?? 15);
     }
 
     /**
@@ -38,7 +54,61 @@ class PaymentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $request->validate([
+        'customer_service_id'   => 'required|int',
+      ]);
+      \Request::instance()->query->set('trxref', $request->trxref);
+      $customerService  = CustomerService::findOrFail($request->customer_service_id);
+      $amount           = $customerService->getAmount();
+      $user             = $request->user();
+      $data             = ["amount" => $amount, "email" => 'myckhel123@gmail.com' ?? $user->email];
+      $response         = Paystack::getAuthorizationResponse($data);
+      // $authorization_url= $response['authorization_url'];
+
+      return $user->payments()->create([
+        'customer_service_id'   => $request->customer_service_id,
+        'amount'                => $amount,
+        'access_code'           => $response['access_code'],
+        'reference'             => $request->trxref, //$response['reference'],
+      ]);
+    }
+
+    public function verify(Request $request)
+    {
+      $request->validate([/*'reference' => 'required',*/ 'trxref' => 'required']);
+      $paymentDetails   = Paystack::getPaymentData();
+      // dd($paymentDetails);
+      $payment          = Payment::where('reference', $paymentDetails->reference)->first();
+
+      if ($payment && $payment->status == 'pending') {
+        $user           = $payment->user;
+        if ($paymentDetails->status != 'success') {
+          $payment->update([
+            'status' => $paymentDetails->status,
+          ]);
+        }
+
+        if ($paymentDetails->status == 'success') {
+          $payment->update([
+            'status'              => $paymentDetails->status,
+            'message'             => $paymentDetails->message,
+            'reference'           => $paymentDetails->reference,
+            'authorization_code'  => $paymentDetails->authorization['authorization_code'],
+            'currency_code'       => $paymentDetails->currency,
+            'paid'                => now(),//$paymentDetails['data']['paidAt'],
+          ]);
+          // $user->deposit($paymentDetails->amount);
+          // if ($paymentDetails->status = "success" && $paymentDetails->authorization['reusable']) {
+          //   $user->payment_options()->firstOrCreate(
+          //     ['signature' => $paymentDetails->authorization['signature']],
+          //     $paymentDetails->authorization
+          //   );
+          // }
+        }
+
+        return ['status' => true, 'payment' => $payment];
+      }
+      return ['status' => false, 'payment' => $payment];
     }
 
     /**
@@ -47,9 +117,9 @@ class PaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Payment $payment)
     {
-        //
+      return $payment;
     }
 
     /**
@@ -58,7 +128,7 @@ class PaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Payment $payment)
     {
         //
     }
@@ -70,7 +140,7 @@ class PaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Payment $payment)
     {
         //
     }
@@ -81,7 +151,7 @@ class PaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Payment $payment)
     {
         //
     }

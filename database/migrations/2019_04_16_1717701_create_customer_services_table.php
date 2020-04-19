@@ -17,6 +17,7 @@ class CreateCustomerServicesTable extends Migration
         $table->bigIncrements('id');
         $table->bigInteger('customer_id')->nullable()->unsigned();
         $table->bigInteger('service_id')->nullable()->unsigned();
+        $table->softDeletes();
         $table->timestamps();
       });
       Schema::table('customer_services', function (Blueprint $table) {
