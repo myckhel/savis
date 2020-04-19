@@ -8,10 +8,16 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\HasMeta;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\File;
+use Spatie\MediaLibrary\Models\Media;
+use Spatie\Image\Image;
+use App\Traits\HasImage;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-    use Notifiable, HasApiTokens, SoftDeletes, HasMeta;
+    use Notifiable, HasApiTokens, SoftDeletes, HasMeta, HasMediaTrait, HasImage;
 
     public function createService($request){
       $create = [
@@ -44,7 +50,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'activation_token'
+        'password', 'remember_token', 'activation_token', 'media'
     ];
 
     /**
@@ -89,5 +95,17 @@ class User extends Authenticatable
 
     public function services(){
       return $this->hasMany(Service::class);
+    }
+
+    public function registerMediaCollections(Media $media = null){
+      $this->addMediaCollection('avatar')
+      ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/gif'])
+      ->singleFile()->useDisk('user_images');
+    }
+
+    public function registerMediaConversions(Media $media = null){
+      $this->addMediaConversion('thumb')
+      ->width(368)->height(232)
+      ->performOnCollections('avatar');
     }
 }

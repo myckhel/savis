@@ -27,14 +27,18 @@ class AuthController extends Controller
   public function signup(Request $request)
   {
     $request->validate([
-        'name' => 'required|unique:users',
-        'email' => 'required|email|unique:users',
-        'password' => 'required|min:6|confirmed',
+        'name'                => 'required|unique:users',
+        'email'               => 'required|email|unique:users',
+        'password'            => 'required|min:6|confirmed',
+        'avatar'              => '',
     ], [
-        'password.confirmed' => 'The password does not match.'
+        'password.confirmed'  => 'The password does not match.'
     ]);
 
+    $avatar = $request->avatar;
+
     $user = $this->create($request->all());
+    ($user && $avatar) && $user->saveImage($avatar, 'avatar');
     try {
       $user->notify(new SignupActivate($user));
     } catch (\Exception $e) {
@@ -103,6 +107,7 @@ class AuthController extends Controller
             ], 401);
 
         $user = $request->user();
+        $user->withImageUrl(null, 'avatar');
         $tokenResult = $user->createToken('PAT');
         $token = $tokenResult->token;
         if ($request->remember_me)

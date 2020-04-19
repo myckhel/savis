@@ -65,6 +65,7 @@ return [
         ],
 
         'service_images'      => useFileConfig([], 'service_images'),
+        'user_images'         => useFileConfig([], 'user_images'),
     ],
 
 ];
