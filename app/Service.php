@@ -41,7 +41,17 @@ class Service extends Model implements HasMedia
     return $this;
   }
 
+  public static function scopeSearch($stmt, $search){
+    if ($search) {
+      return $stmt->where(function ($stmt) use($search) {
+        $stmt->where('name', 'LIKE', '%'.$search.'%');
+      });
+    }
+    return $stmt;
+  }
+
   protected $fillable = [ 'name', 'price', 'charge', 'service_id', 'user_id' ];
+  protected $hidden = [ 'media' ];
 
   public static function checkUnique($filed, $request){
     return self::where($filed, $request->$filed)->first();

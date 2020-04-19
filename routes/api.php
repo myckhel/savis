@@ -51,7 +51,7 @@ Route::group([ 'middleware' => 'localization' ], function () {
     Route::get('users/current', 'UserController@current');
     Route::delete('customers/delete/multiple', 'CustomerController@delete');
     // Route::get('customer_services', 'CustomerController@customer_services');
-    Route::delete('services/delete/multiple', 'ServiceController@delete');
+    Route::delete('services', 'ServiceController@delete');
 
     // Route::group(['middleware' => 'can:view,App\Customer'], function() {
     Route::get('customers/profile/{customer}', 'CustomerController@profile');
