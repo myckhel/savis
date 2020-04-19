@@ -53,9 +53,11 @@ class ServiceController extends Controller
         'logo'        => '',
       ]);
       $user = $request->user();
+      $logo = $request->logo;
 
       try {
         $service = $user->createService($request);
+        ($service && $logo) && $service->saveImage($logo, 'logo');
         return ['status' => true, 'service' => $service];
       } catch (\Exception $e) {
         return ['status' => false, 'text' => $e->getMessage()];
