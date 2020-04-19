@@ -56,6 +56,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function jobs() {
+      $id = $this->id;
+      return Work::whereHas('customer_service', function ($q) use($id) {
+        $q->whereHas('customer', function ($q) use($id) {
+          $q->whereHas('clients', function ($q) use($id) {
+            $q->where('user_id', $id);
+          });
+        })
+        ->whereHas('service', function ($q) use($id) {
+          $q->where('user_id', $id);
+        });
+      });
+    }
+
     public function customers(){
       return $this->belongsToMany(Customer::class, 'user_customers')->withTimestamps();
     }

@@ -63,12 +63,14 @@ Route::group([ 'middleware' => 'localization' ], function () {
     Route::get('users/stats', 'UserController@stats');
     // });
     Route::resource('customers', 'CustomerController')->except(['update']);
-    Route::resource('service_properties', 'ServicePropertyController');
-    Route::resource('customer_service_properties', 'CustomerServicePropertyController');
     Route::resource('users', 'UserController')->except(['index']);
-    Route::resource('services', 'ServiceController');
-    // Route::resource('payments', 'PaymentController');
-    Route::resource('metas', 'MetaController');
-
+    Route::apiResources([
+      'service_properties'          => 'ServicePropertyController',
+      'customer_service_properties' => 'CustomerServicePropertyController',
+      'services'                    => 'ServiceController',
+      'payments'                    => 'PaymentController',
+      'metas'                       => 'MetaController',
+      'jobs'                        => 'WorkController',
+    ]);
   });
 });
