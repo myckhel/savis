@@ -177,10 +177,12 @@ class AuthController extends Controller
         'password'    => 'required|min:6|confirmed',
         'firstname'   => 'required|min:3|max:30',
         'lastname'    => 'required|min:3|max:30',
+        'avatar'      => '',
     ], [
         'password.confirmed' => 'The password does not match.'
     ]);
     $email = $request->email;
+    $avatar = $request->avatar;
 
     // check email exists
     $customer = Customer::where('email', $email)->first();
@@ -195,13 +197,13 @@ class AuthController extends Controller
       // register the customer
     } else {
       $customer = $this->createCustomer($request->all());
+      ($customer && $avatar) && $customer->saveImage($avatar, 'avatar');
       try {
         // $customer->notify(new SignupActivate($customer));
       } catch (\Exception $e) {
         // $user->active = 1;
         // $user->save();
       }
-
       $tokenResult = $customer->createToken('PAT');
       $token = $tokenResult->token;
       if ($request->remember_me)
@@ -253,6 +255,7 @@ class AuthController extends Controller
 
     if ($user) {
       if (Hash::check($password, $user->password)) {
+        $user->withImageUrl(null, 'avatar');
         $token = $user->grantMeToken();
         return [
           'access_token'    => $token['access_token'],

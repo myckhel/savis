@@ -16,15 +16,21 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 use App\Traits\HasMeta;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\File;
+use Spatie\MediaLibrary\Models\Media;
+use Spatie\Image\Image;
+use App\Traits\HasImage;
 
-class Customer extends Authenticatable
+class Customer extends Authenticatable implements HasMedia
 {
-  use Notifiable, HasApiTokens, SoftDeletes, HasMeta;
+  use Notifiable, HasApiTokens, SoftDeletes, HasMeta, HasMediaTrait, HasImage;
   protected $fillable = ['firstname', 'lastname', 'email', 'phone', 'state', 'city','address','country', 'lat', 'lng',
     'password', 'activation_token'
   ];
   protected $hidden = ['pivot',
-    'password', 'remember_token', 'activation_token'
+    'password', 'remember_token', 'activation_token', 'media'
   ];
 
   public function grantMeToken($request = null){
@@ -83,6 +89,17 @@ class Customer extends Authenticatable
   //   return $this->credentialsWithServices();
   // }
 
+  public function scopeSearch($q, $search)
+  {
+    if ($search) {
+      return $q->where(function ($q) use($search) {
+        $q->where('firstname', 'LIKE', '%'.$search.'%')->orWhere('lastname', 'LIKE', '%'.$search.'%')
+        ->orWhere('phone', 'LIKE', '%'.$search.'%')->orWhere('email', 'LIKE', '%'.$search.'%');
+      });
+    }
+    return $q;
+  }
+
   public function credentialsWithServices(){
     $services = [];
     $credentials = CustomerServiceMeta::getCredantials($this);
@@ -134,5 +151,17 @@ class Customer extends Authenticatable
 
   public function metas(){
     return $this->morphMany(Meta::class, 'metable');
+  }
+
+  public function registerMediaCollections(Media $media = null){
+    $this->addMediaCollection('avatar')
+    ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/gif'])
+    ->singleFile()->useDisk('customer_images');
+  }
+
+  public function registerMediaConversions(Media $media = null){
+    $this->addMediaConversion('thumb')
+    ->width(368)->height(232)
+    ->performOnCollections('avatar');
   }
 }

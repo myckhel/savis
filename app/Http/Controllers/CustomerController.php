@@ -48,11 +48,13 @@ class CustomerController extends Controller
      $this->authorize('viewAnyCustomer', $user);
      $customer = new Customer;//$user->customers();
      $search = $request->search;
-     if ($search) {
-       $customer = $customer->where('firstname', 'LIKE', '%'.$search.'%')->orWhere('lastname', 'LIKE', '%'.$search.'%')
-       ->orWhere('phone', 'LIKE', '%'.$search.'%')->orWhere('email', 'LIKE', '%'.$search.'%');
-     }
-     return $customer->orderBy(($request->orderBy ? $request->orderBy : 'created_at'), 'DESC')->paginate($request->pageSize);
+
+     $customers = $customer->search($search)->orderBy(($request->orderBy ?? 'created_at'), 'DESC')
+     ->paginate($request->pageSize);
+     $customers->each(function ($customer) {
+       $customer->withImageUrl(null, 'avatar');
+     });
+     return $customers;
    }
    /**
     * Show the form for creating a new resource.
@@ -104,7 +106,7 @@ class CustomerController extends Controller
    public function show(Customer $customer)
    {
      $this->authorize('view', $customer);
-     return $customer;
+     return $customer->withImageUrl(null, 'avatar');
    }
    /**
     * Show the form for editing the specified resource.
@@ -129,7 +131,9 @@ class CustomerController extends Controller
      // $this->authorize('update', $customer);
        $request->validate(['updates' => 'required|array']);
        $updates = $request->updates;
+       $avatar  = $request->avatar;
        $customer->update($updates);
+       ($avatar) && $customer->saveImage($avatar, 'avatar');
        return $customer;
    }
    /**
