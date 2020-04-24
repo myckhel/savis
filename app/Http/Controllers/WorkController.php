@@ -80,10 +80,19 @@ class WorkController extends Controller
     {
       $this->authorize('update', $job);
       $request->validate([
-        'status' => ['required', 'regex:(pending|completed|canceled|on hold|processing|failed)'],
+        'status'        => ['required', 'regex:(pending|completed|canceled|on hold|processing|failed)'],
+        'attachments'   => 'array',
+        'attachments'   => 'array:file',
       ]);
 
+      $attachments = $request->file('attachments');
+
       $update = $job->update(['status' => $request->status]);
+      if ($update && $attachments) {
+        foreach ($attachments as $attachment) {
+          $job->addMedia($attachment)->usingName('attachments')->toMediaCollection('attachments');
+        }
+      }
       return ['status' => !!$update, 'job' => $job];
     }
 
