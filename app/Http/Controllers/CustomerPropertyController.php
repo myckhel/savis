@@ -53,6 +53,8 @@ class CustomerPropertyController extends Controller
       return $customer->properties()->updateOrCreate(
         $toCreate, $toCreate
       );
+
+      // ($update && $attachments) && $customerProperty->saveAttachments($attachments, 'attachments', true);
     }
 
     /**
@@ -89,13 +91,17 @@ class CustomerPropertyController extends Controller
       $this->authorize('update', $customerProperty);
       $request->validate([
         'value'               => 'required',
+        'attachments'         => 'array:file',
       ]);
 
       $customer = $request->user();
       $value = $request->value;
-      $customerProperty->update(['value' => $request->value]);
+      $attachments = $request->file('attachments');
+      $update = $customerProperty->update(['value' => $request->value]);
 
-      return ['status' => true, 'customer_property' => $customerProperty];
+      ($update && $attachments) && $customerProperty->saveAttachments($attachments, 'attachments', true);
+
+      return ['status' => true, 'customer_property' => $customerProperty->withAttachedUrl('attachments')];
     }
 
     /**

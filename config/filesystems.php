@@ -67,7 +67,7 @@ return [
         'service_images'      => useFileConfig([], 'service_images'),
         'user_images'         => useFileConfig([], 'user_images'),
         'customer_images'     => useFileConfig([], 'customer_images'),
-        'job_attachments'     => useFileConfig([], 'job_attachments'),
+        'attachments'         => useFileConfig([], 'attachments'),
     ],
 
 ];

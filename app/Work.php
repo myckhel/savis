@@ -29,6 +29,7 @@ class Work extends Model implements HasMedia
   }
 
   protected $fillable = ['status'];
+  protected $hidden = ['media'];
 
   public function customer_service(){
     return $this->belongsTo(CustomerService::class);
@@ -37,6 +38,6 @@ class Work extends Model implements HasMedia
   public function registerMediaCollections(Media $media = null){
     $this->addMediaCollection('attachments')
     // ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/gif'])
-    ->useDisk('job_attachments');
+    ->useDisk('attachments');
   }
 }

@@ -3,10 +3,18 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\CanAttach;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\File;
+use Spatie\MediaLibrary\Models\Media;
+use Spatie\Image\Image;
 
-class CustomerProperty extends Model
+class CustomerProperty extends Model implements HasMedia
 {
+  use HasMediaTrait, CanAttach;
   protected $fillable = ['service_property_id', 'customer_id', 'value'];
+  protected $hidden = ['media'];
 
   public static function getProps($request, $user){
     $order  = $request->order;
@@ -39,5 +47,10 @@ class CustomerProperty extends Model
 
   public function customer_service_properties(){
     return $this->hasMany(CustomerServiceProperty::class);
+  }
+
+  public function registerMediaCollections(Media $media = null){
+    $this->addMediaCollection('attachments')
+    ->useDisk('attachments');
   }
 }
