@@ -42,7 +42,9 @@ Route::group([ 'middleware' => 'localization' ], function () {
     Route::resource('users', 'UserController')->only(['update', 'index']);
     Route::resource('customers/payments',             'PaymentController');
     Route::resource('customers', 'CustomerController')->only(['update']);
-    Route::resource('customer_properties', 'CustomerPropertyController');
+    Route::group([ 'prefix' => 'customer'], function() {
+      Route::resource('customer_properties', 'CustomerPropertyController');
+    });
     Route::resource('customer_services', 'CustomerServiceController');
     // Route::post('users/customers/{customer}', 'UserController@addCustomer');
   });
@@ -71,6 +73,7 @@ Route::group([ 'middleware' => 'localization' ], function () {
       'payments'                    => 'PaymentController',
       'metas'                       => 'MetaController',
       'jobs'                        => 'WorkController',
+      'customer_properties'         => 'CustomerPropertyController',
     ]);
   });
 });

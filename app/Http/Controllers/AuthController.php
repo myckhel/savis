@@ -46,7 +46,7 @@ class AuthController extends Controller
       // $user->save();
     }
 
-    $tokenResult = $user->createToken('PAT');
+    $tokenResult = $user->createToken('UAT');
     $token = $tokenResult->token;
     if ($request->remember_me)
         $token->expires_at = Carbon::now()->addWeeks(1);
@@ -108,7 +108,7 @@ class AuthController extends Controller
 
         $user = $request->user();
         $user->withImageUrl(null, 'avatar');
-        $tokenResult = $user->createToken('PAT');
+        $tokenResult = $user->createToken('UAT');
         $token = $tokenResult->token;
         if ($request->remember_me)
             $token->expires_at = Carbon::now()->addWeeks(1);

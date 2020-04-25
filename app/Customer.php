@@ -124,6 +124,11 @@ class Customer extends Authenticatable implements HasMedia
     return $services;
   }
 
+  public function isCustomer()
+  {
+    return true;
+  }
+
   // relationship
   public function services(){
     return $this->hasMany(CustomerService::class);

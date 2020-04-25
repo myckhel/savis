@@ -62,6 +62,20 @@ class User extends Authenticatable implements HasMedia
         'email_verified_at' => 'datetime',
     ];
 
+    public function isCustomer()
+    {
+      return false;
+    }
+
+    public function properties() {
+      $id = $this->id;
+      return CustomerProperty::whereHas('customer', function ($q) use($id) {
+        $q->whereHas('clients', function ($q) use($id) {
+          $q->where('user_id', $id);
+        });
+      });
+    }
+
     public function jobs() {
       $id = $this->id;
       return Work::whereHas('customer_service', function ($q) use($id) {

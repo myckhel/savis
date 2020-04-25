@@ -24,9 +24,19 @@ class CustomerProperty extends Model
     return $this->belongsTo(Customer::class);
   }
 
+  public function service(){
+    $id = $this->id;
+    return Service::whereHas('properties', function ($q) use($id) {
+      $q->whereHas('customer_properties', function ($q) use($id) {
+        $q->where('id', $id);
+      });
+    })->first();
+  }
+
   public function service_property(){
     return $this->belongsTo(ServiceProperty::class);
   }
+
   public function customer_service_properties(){
     return $this->hasMany(CustomerServiceProperty::class);
   }
