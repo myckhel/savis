@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\CustomerServiceServiceProperty;
+use \Illuminate\Database\Eloquent\Collection;
 
 class ServiceProperty extends Model
 {
@@ -20,5 +21,26 @@ class ServiceProperty extends Model
   }
   public function customer_service_properties(){
     return $this->hasMany(CustomerServiceProperty::class);
+  }
+
+  public function newCollection(array $models = Array()){
+    return new CustomCollection($models);
+  }
+}
+
+/**
+*
+*/
+class CustomCollection extends Collection {
+  public function keyValue()
+  {
+    $metas = $this->items;
+    $meta = [];
+    foreach ($metas as $value) {
+      $name = $value->name;
+      $meta[$name] = $value;
+    }
+    $this->items = $meta;
+    return $meta;
   }
 }

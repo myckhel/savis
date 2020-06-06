@@ -35,6 +35,7 @@ Route::group([ 'middleware' => 'localization' ], function () {
   Route::middleware('auth:api')->get('/user', function (Request $request) {
       return $request->user();
   });
+
   Route::group([ 'middleware' => 'auth:customer' ], function() {
     Route::post('customers/metas/add', 'CustomerController@addMeta');
     Route::get('customers/metas/get', 'CustomerController@getMeta');
@@ -67,6 +68,8 @@ Route::group([ 'middleware' => 'localization' ], function () {
     Route::post('users/customers/{customer}', 'UserController@addCustomer');
     Route::get('users/stats', 'UserController@stats');
     // });
+    Route::get('services/{service}/fields', 'ServiceController@fields');
+
     Route::resource('customers', 'CustomerController')->except(['update']);
     Route::resource('users', 'UserController')->except(['index']);
     Route::apiResources([

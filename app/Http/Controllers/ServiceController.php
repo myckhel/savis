@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
+  public function fields(Request $request, Service $service)
+  {
+    return $service->fields();
+  }
     /**
      * Display a listing of the resource.
      *

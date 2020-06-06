@@ -51,7 +51,6 @@ class CustomerServicePropertyController extends Controller
     }
 
     private function toMany($cpids, $spids, $customer_id){
-      // $creates = [];
       foreach ($cpids as $key => $value) {
         $prop['customer_property_id'] = $value;
         $prop['service_property_id']  = $spids[$key];

@@ -18,10 +18,14 @@ class Service extends Model implements HasMedia
   protected $parentColumnName = 'service_id';
   // protected $casts = ['properties' => 'array'];
   // protected $depthColumnName = 'depth';
-  public function authorizeMedia(Media $media, String $method, Model $user){
-
+  public function fields()
+  {
+    $parent         = $this->service;
+    $parentProps    = $parent->properties->keyValue();
+    $props          = $this->properties->keyValue();
+    return array_merge($parentProps, $props);
   }
-  public function authorizedMedia(Media $media, String $method, Model $user){
+  public function authorizeMedia(Media $media, String $method, Model $user){
 
   }
   public function getProfile(){
