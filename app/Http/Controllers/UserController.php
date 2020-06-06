@@ -51,7 +51,7 @@ class UserController extends Controller
     public function show(User $user)
     {
       $this->authorize('view', $user);
-      return $user;
+      return $user->withImageUrl(null, 'avatar');
     }
 
     /**
@@ -77,7 +77,9 @@ class UserController extends Controller
       $this->authorize('update', $user);
       $request->validate(['updates' => 'required|array']);
       $updates = $request->updates;
+      $avatar = $request->avatar;
       $user->update($updates);
+      ($avatar) && $user->saveImage($avatar, 'avatar');
       return $user;
     }
 
@@ -126,7 +128,7 @@ class UserController extends Controller
     public function current(Request $request)
     {
       $user = $request->user('api');
-      if ($user) return [ 'status' => true, 'user' => $user];
+      if ($user) return [ 'status' => true, 'user' => $user->withImageUrl(null, 'avatar')];
 
       return [ 'status' => false, 'text' => 'No Authenticated User' ];
     }

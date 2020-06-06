@@ -41,18 +41,35 @@ class CustomerPropertyController extends Controller
       $request->validate([
         'service_property_id' => 'required|int',
         'value'               => 'required',
+        'attachments'         => 'array:file',
       ]);
-      $customer = $request->user();
+
+      $authUser = $request->user();
       $value = $request->value;
+      $attachments = $request->file('attachments');
       $service_property_id = $request->service_property_id;
       $prop = ServiceProperty::findOrFail($service_property_id);
+
+      if ($authUser->isCustomer()) {
+        $customer = $authUser;
+      } else {
+        $user = $authUser;
+        $request->validate(['customer_id' => 'required|int']);
+        $customer = $user->customers()->findOrFail($request->customer_id);
+        // auth user can attach properties for his customer service
+        $this->authorize('attach', $prop);
+      }
+
       $toCreate = [
         'service_property_id' => $prop->id,
         'value'               => $value
       ];
-      return $customer->properties()->updateOrCreate(
+      $customerProperty = $customer->properties()->updateOrCreate(
         $toCreate, $toCreate
       );
+
+      ($customerProperty && $attachments) && $customerProperty->saveAttachments($attachments, 'attachments', true);
+      return $customerProperty->withAttachedUrl('attachments');
     }
 
     /**
@@ -89,13 +106,17 @@ class CustomerPropertyController extends Controller
       $this->authorize('update', $customerProperty);
       $request->validate([
         'value'               => 'required',
+        'attachments'         => 'array:file',
       ]);
 
       $customer = $request->user();
       $value = $request->value;
-      $customerProperty->update(['value' => $request->value]);
+      $attachments = $request->file('attachments');
+      $update = $customerProperty->update(['value' => $request->value]);
 
-      return ['status' => true, 'customer_property' => $customerProperty];
+      ($update && $attachments) && $customerProperty->saveAttachments($attachments, 'attachments', true);
+
+      return ['status' => true, 'customer_property' => $customerProperty->withAttachedUrl('attachments')];
     }
 
     /**

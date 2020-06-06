@@ -42,8 +42,13 @@ Route::group([ 'middleware' => 'localization' ], function () {
     Route::resource('users', 'UserController')->only(['update', 'index']);
     Route::resource('customers/payments',             'PaymentController');
     Route::resource('customers', 'CustomerController')->only(['update']);
-    Route::resource('customer_properties', 'CustomerPropertyController');
-    Route::resource('customer_services', 'CustomerServiceController');
+    Route::group([ 'prefix' => 'customer'], function() {
+      Route::resource('customer_properties', 'CustomerPropertyController');
+    });
+    Route::apiResources([
+      'customers/customer_services'     => 'CustomerServiceController',
+      'customers/medias'                => 'MediaController',
+    ]);
     // Route::post('users/customers/{customer}', 'UserController@addCustomer');
   });
 
@@ -51,7 +56,7 @@ Route::group([ 'middleware' => 'localization' ], function () {
     Route::get('users/current', 'UserController@current');
     Route::delete('customers/delete/multiple', 'CustomerController@delete');
     // Route::get('customer_services', 'CustomerController@customer_services');
-    Route::delete('services/delete/multiple', 'ServiceController@delete');
+    Route::delete('services', 'ServiceController@delete');
 
     // Route::group(['middleware' => 'can:view,App\Customer'], function() {
     Route::get('customers/profile/{customer}', 'CustomerController@profile');
@@ -63,12 +68,17 @@ Route::group([ 'middleware' => 'localization' ], function () {
     Route::get('users/stats', 'UserController@stats');
     // });
     Route::resource('customers', 'CustomerController')->except(['update']);
-    Route::resource('service_properties', 'ServicePropertyController');
-    Route::resource('customer_service_properties', 'CustomerServicePropertyController');
     Route::resource('users', 'UserController')->except(['index']);
-    Route::resource('services', 'ServiceController');
-    // Route::resource('payments', 'PaymentController');
-    Route::resource('metas', 'MetaController');
-
+    Route::apiResources([
+      'customer_services'           => 'CustomerServiceController',
+      'service_properties'          => 'ServicePropertyController',
+      'customer_service_properties' => 'CustomerServicePropertyController',
+      'services'                    => 'ServiceController',
+      'payments'                    => 'PaymentController',
+      'metas'                       => 'MetaController',
+      'jobs'                        => 'WorkController',
+      'customer_properties'         => 'CustomerPropertyController',
+      'medias'                      => 'MediaController',
+    ]);
   });
 });

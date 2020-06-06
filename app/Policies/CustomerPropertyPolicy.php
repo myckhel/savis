@@ -51,9 +51,16 @@ class CustomerPropertyPolicy
      * @param  \App\CustomerProperty  $customerProperty
      * @return mixed
      */
-    public function update(Customer $user, CustomerProperty $customerProperty)
+    public function update($user, CustomerProperty $customerProperty)
     {
-      return $user->id == $customerProperty->customer_id;
+      if ($user->isCustomer()) {
+        return $user->id == $customerProperty->customer_id;
+      } else {
+        $service = $customerProperty->service();
+        if($service) return $user->id == $service->user_id;
+        else return false;
+      }
+
     }
 
     /**

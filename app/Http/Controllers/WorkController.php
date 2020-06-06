@@ -12,9 +12,17 @@ class WorkController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+      $request->validate([
+        'orderBy' => ['regex:(id|created_at)'],
+        'order' => ['regex:(desc|asc)'],
+      ]);
+
+      $user = $request->user();
+      return $user->jobs()->search($request->search)
+      ->orderBy($request->orderBy ?? 'id', $request->order ?? 'asc')
+      ->paginate();
     }
 
     /**
@@ -44,9 +52,10 @@ class WorkController extends Controller
      * @param  \App\Work  $work
      * @return \Illuminate\Http\Response
      */
-    public function show(Work $work)
+    public function show(Work $job)
     {
-        //
+      $this->authorize('view', $job);
+      return $job;
     }
 
     /**
@@ -67,9 +76,24 @@ class WorkController extends Controller
      * @param  \App\Work  $work
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Work $work)
+    public function update(Request $request, Work $job)
     {
-        //
+      $this->authorize('update', $job);
+      $request->validate([
+        'status'        => ['required', 'regex:(pending|completed|canceled|on hold|processing|failed)'],
+        'attachments'   => 'array',
+        'attachments'   => 'array:file',
+      ]);
+
+      $attachments = $request->file('attachments');
+
+      $update = $job->update(['status' => $request->status]);
+      if ($update && $attachments) {
+        foreach ($attachments as $attachment) {
+          $job->addMedia($attachment)->usingName('attachments')->toMediaCollection('attachments');
+        }
+      }
+      return ['status' => !!$update, 'job' => $job];
     }
 
     /**

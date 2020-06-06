@@ -18,13 +18,17 @@ class ServiceController extends Controller
          'orderBy' => ['regex:(id|created_at|name)'],
        ]);
 
-       $service = Service::allLeaves();
+       $user = $request->user();
 
-       if ($search = $request->search)
-         $service->where('name', 'LIKE', '%'.$search.'%');
+       $services = Service::allLeaves()->where('user_id', $user->id)->search($request->search);
 
-       return $service->orderBy($request->orderBy, $request->order)
-              ->paginate($request->pageSize);
+       $services = $services->orderBy($request->orderBy, $request->order)
+                  ->paginate($request->pageSize);
+
+        $services->map(function (Service $service) {
+          $service->withImageUrl(null, 'logo');
+        });
+        return $services;
      }
 
     /**
@@ -53,9 +57,11 @@ class ServiceController extends Controller
         'logo'        => '',
       ]);
       $user = $request->user();
+      $logo = $request->logo;
 
       try {
         $service = $user->createService($request);
+        ($service && $logo) && $service->saveImage($logo, 'logo');
         return ['status' => true, 'service' => $service];
       } catch (\Exception $e) {
         return ['status' => false, 'text' => $e->getMessage()];
@@ -70,7 +76,7 @@ class ServiceController extends Controller
      */
      public function show(Service $service)
      {
-       return $service->getProfile();
+       return $service->getProfile()->withImageUrl(null, 'logo');
      }
 
     /**
@@ -102,7 +108,11 @@ class ServiceController extends Controller
       ]);
       $this->authorize('update', $service);
       $user = $request->user();
+      $logo = $request->logo;
+
       $update = $service->update($request->all());
+      ($update && $logo) && $service->saveImage($logo, 'logo');
+
       return ["status" => $update, 'service' => $service];
     }
 
@@ -121,15 +131,13 @@ class ServiceController extends Controller
 
      public function delete(Request $request)
      {
-       //
+       $request->validate([
+         'ids' => 'required|array'
+       ]);
+
+       // $this->authorize('deleteMulti', $service);
        $text = [];  $ids = $request->ids;
-       foreach ($ids as $id) {
-         if ($service = Service::find($id) ) {
-           $service->delete();
-         } else {
-           $text[] = $id;
-         }
-       }
+       Service::whereIn('id', $ids)->delete();
 
        return ['status' => true, 'text' => $text];
      }

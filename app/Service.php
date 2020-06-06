@@ -5,14 +5,25 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Baum\NestedSet\Node as WorksAsNestedSet;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\File;
+use Spatie\MediaLibrary\Models\Media;
+use Spatie\Image\Image;
+use App\Traits\HasImage;
 
-class Service extends Model
+class Service extends Model implements HasMedia
 {
-  use WorksAsNestedSet;// SoftDeletes;
+  use WorksAsNestedSet, SoftDeletes, HasMediaTrait, HasImage;
   protected $parentColumnName = 'service_id';
   // protected $casts = ['properties' => 'array'];
   // protected $depthColumnName = 'depth';
+  public function authorizeMedia(Media $media, String $method, Model $user){
 
+  }
+  public function authorizedMedia(Media $media, String $method, Model $user){
+
+  }
   public function getProfile(){
     $this->loadCount([
       // 'services',
@@ -35,7 +46,17 @@ class Service extends Model
     return $this;
   }
 
+  public static function scopeSearch($stmt, $search){
+    if ($search) {
+      return $stmt->where(function ($stmt) use($search) {
+        $stmt->where('name', 'LIKE', '%'.$search.'%');
+      });
+    }
+    return $stmt;
+  }
+
   protected $fillable = [ 'name', 'price', 'charge', 'service_id', 'user_id' ];
+  protected $hidden = [ 'media' ];
 
   public static function checkUnique($filed, $request){
     return self::where($filed, $request->$filed)->first();
@@ -64,5 +85,17 @@ class Service extends Model
 
   public function payments(){
     return $this->hasManyThrough(Payment::class, CustomerService::class);
+  }
+
+  public function registerMediaCollections(Media $media = null){
+    $this->addMediaCollection('logo')
+    ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/gif'])
+    ->singleFile()->useDisk('service_images');
+  }
+
+  public function registerMediaConversions(Media $media = null){
+    $this->addMediaConversion('thumb')
+    ->width(368)->height(232)
+    ->performOnCollections('logo');
   }
 }

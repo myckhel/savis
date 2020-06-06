@@ -27,14 +27,18 @@ class AuthController extends Controller
   public function signup(Request $request)
   {
     $request->validate([
-        'name' => 'required|unique:users',
-        'email' => 'required|email|unique:users',
-        'password' => 'required|min:6|confirmed',
+        'name'                => 'required|unique:users',
+        'email'               => 'required|email|unique:users',
+        'password'            => 'required|min:6|confirmed',
+        'avatar'              => '',
     ], [
-        'password.confirmed' => 'The password does not match.'
+        'password.confirmed'  => 'The password does not match.'
     ]);
 
+    $avatar = $request->avatar;
+
     $user = $this->create($request->all());
+    ($user && $avatar) && $user->saveImage($avatar, 'avatar');
     try {
       $user->notify(new SignupActivate($user));
     } catch (\Exception $e) {
@@ -42,7 +46,7 @@ class AuthController extends Controller
       // $user->save();
     }
 
-    $tokenResult = $user->createToken('PAT');
+    $tokenResult = $user->createToken('UAT');
     $token = $tokenResult->token;
     if ($request->remember_me)
         $token->expires_at = Carbon::now()->addWeeks(1);
@@ -103,7 +107,8 @@ class AuthController extends Controller
             ], 401);
 
         $user = $request->user();
-        $tokenResult = $user->createToken('PAT');
+        $user->withImageUrl(null, 'avatar');
+        $tokenResult = $user->createToken('UAT');
         $token = $tokenResult->token;
         if ($request->remember_me)
             $token->expires_at = Carbon::now()->addWeeks(1);
@@ -172,10 +177,12 @@ class AuthController extends Controller
         'password'    => 'required|min:6|confirmed',
         'firstname'   => 'required|min:3|max:30',
         'lastname'    => 'required|min:3|max:30',
+        'avatar'      => '',
     ], [
         'password.confirmed' => 'The password does not match.'
     ]);
     $email = $request->email;
+    $avatar = $request->avatar;
 
     // check email exists
     $customer = Customer::where('email', $email)->first();
@@ -190,13 +197,13 @@ class AuthController extends Controller
       // register the customer
     } else {
       $customer = $this->createCustomer($request->all());
+      ($customer && $avatar) && $customer->saveImage($avatar, 'avatar');
       try {
         // $customer->notify(new SignupActivate($customer));
       } catch (\Exception $e) {
         // $user->active = 1;
         // $user->save();
       }
-
       $tokenResult = $customer->createToken('PAT');
       $token = $tokenResult->token;
       if ($request->remember_me)
@@ -248,6 +255,7 @@ class AuthController extends Controller
 
     if ($user) {
       if (Hash::check($password, $user->password)) {
+        $user->withImageUrl(null, 'avatar');
         $token = $user->grantMeToken();
         return [
           'access_token'    => $token['access_token'],

@@ -36,12 +36,19 @@ class CustomerServiceController extends Controller
      public function store(Request $request)
      {
        $request->validate([
-         'service_id' => 'required|int'
+         'service_id'     => 'required|int',
+         'customer_id'    => 'int',
+         'customer_email' => 'email',
        ]);
-       $customer = $request->user();
+       $customer = null;
+       $user = $request->user();
+       if ($user->isAdmin()) {
+         $customer = $user->addCustomer($request->customer_id, $request->email);
+       } else {
+         $customer = $user;
+       }
 
        return CustomerService::makeService($customer, $request);
-       // ->load(['service', 'job']);
      }
      /**
       * Display the specified resource.
@@ -51,8 +58,7 @@ class CustomerServiceController extends Controller
       */
      public function show(CustomerService $customerService)
      {
-         //
-         return CustomerService::find($customerService->id);
+       return CustomerService::find($customerService->id);
      }
      /**
       * Show the form for editing the specified resource.
