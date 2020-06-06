@@ -45,7 +45,10 @@ Route::group([ 'middleware' => 'localization' ], function () {
     Route::group([ 'prefix' => 'customer'], function() {
       Route::resource('customer_properties', 'CustomerPropertyController');
     });
-    Route::resource('customer_services', 'CustomerServiceController');
+    Route::apiResources([
+      'customer_services'            => 'CustomerServiceController',
+      'customers/medias'             => 'MediaController',
+    ]);
     // Route::post('users/customers/{customer}', 'UserController@addCustomer');
   });
 
@@ -74,6 +77,7 @@ Route::group([ 'middleware' => 'localization' ], function () {
       'metas'                       => 'MetaController',
       'jobs'                        => 'WorkController',
       'customer_properties'         => 'CustomerPropertyController',
+      'medias'                      => 'MediaController',
     ]);
   });
 });

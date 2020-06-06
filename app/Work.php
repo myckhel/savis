@@ -19,6 +19,10 @@ class Work extends Model implements HasMedia
     return self::where('status', 'completed')->whereIn('customer_service_id', $customer_services)->count();
   }
 
+  public function authorizeMedia(Media $media, String $method, Model $user){
+    
+  }
+
   public function scopeSearch ($q, $search) {
     if ($search) {
       return $q->where(function ($q) use($search) {

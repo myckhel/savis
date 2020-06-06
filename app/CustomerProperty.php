@@ -13,6 +13,21 @@ use Spatie\Image\Image;
 class CustomerProperty extends Model implements HasMedia
 {
   use HasMediaTrait, CanAttach;
+
+  public function authorizeMedia(Media $media, String $method, $user)
+  {
+    switch ($method) {
+      case 'delete':
+        if ($user->isCustomer()) {
+          return $this->customer_id == $user->id;
+        } else {
+          $service = $this->service();
+          return ($service) && $user->id == $service->user_id;
+        }
+        break;
+    }
+  }
+
   protected $fillable = ['service_property_id', 'customer_id', 'value'];
   protected $hidden = ['media'];
 
@@ -25,7 +40,9 @@ class CustomerProperty extends Model implements HasMedia
       $q->where('name', 'LIKE', '%'.$search.'%');
     });
     $props->with(['service_property:id,name']);
-    return $props->orderBy(($request->orderBy ?? 'created_at'), $order ?? 'DESC')->paginate($request->pageSize);
+    return $props->orderBy(($request->orderBy ?? 'created_at'), $order ?? 'DESC')->paginate($request->pageSize)->each(function ($data) {
+      $data->withAttachedUrl('attachments');
+    });
   }
 
   public function customer(){

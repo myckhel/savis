@@ -36,6 +36,7 @@ trait CanAttach
     $attachments = new \stdClass();
     $attachments->url = $media->getUrl();
     $attachments->metas = $media->custom_properties;
+    $attachments->metas['id'] = $media->id;
     return $attachments;
   }
 

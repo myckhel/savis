@@ -1,5 +1,6 @@
 <?php
 namespace App\Traits;
+use App\Media;
 
 /**
  *
@@ -42,11 +43,18 @@ trait HasImage
     $image->thumb = $media->getUrl('thumb');
     $image->url = $media->getUrl();
     $image->metas = $media->custom_properties;
+    $image->metas['id'] = $media->id;
     return $image;
   }
 
   public function uploadImage($image, $collection){
     return $this->addMediaFromBase64($image)
     ->usingName($collection)->toMediaCollection($collection);
+  }
+
+  public function destroyMedia(Media $media)
+  {
+    dd($media);
+    // $media->delete();
   }
 }

@@ -22,6 +22,7 @@ use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\Models\Media;
 use Spatie\Image\Image;
 use App\Traits\HasImage;
+use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Authenticatable implements HasMedia
 {
@@ -32,6 +33,10 @@ class Customer extends Authenticatable implements HasMedia
   protected $hidden = ['pivot',
     'password', 'remember_token', 'activation_token', 'media'
   ];
+
+  public function authorizeMedia(Media $media, String $method, Model $user){
+    return $media->model_id == $user->id && $media->model_type == get_class($user);
+  }
 
   public function grantMeToken($request = null){
     $token = $this->createToken('PAT');

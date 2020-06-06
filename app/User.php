@@ -14,6 +14,7 @@ use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\Models\Media;
 use Spatie\Image\Image;
 use App\Traits\HasImage;
+use Illuminate\Database\Eloquent\Model;
 
 class User extends Authenticatable implements HasMedia
 {
@@ -74,6 +75,11 @@ class User extends Authenticatable implements HasMedia
           $q->where('user_id', $id);
         });
       });
+    }
+
+    public function authorizeMedia(Media $media, String $method, Model $user){
+      return $media->model_id == $user->id && $media->model_type == get_class($user);
+      // $this->can('delete', $medis);
     }
 
     public function jobs() {

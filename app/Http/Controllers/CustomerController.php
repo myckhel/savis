@@ -132,7 +132,11 @@ class CustomerController extends Controller
        $request->validate(['updates' => 'required|array']);
        $updates = $request->updates;
        $avatar  = $request->avatar;
-       $customer->update($updates);
+       try {
+         $customer->update(array_filter($updates));
+       } catch (\Exception $e) {
+         return response()->json(['status' => false, 'message' => trans('msg.update.failed')], 400);
+       }
        ($avatar) && $customer->saveImage($avatar, 'avatar');
        return $customer;
    }
