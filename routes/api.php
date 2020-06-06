@@ -46,8 +46,8 @@ Route::group([ 'middleware' => 'localization' ], function () {
       Route::resource('customer_properties', 'CustomerPropertyController');
     });
     Route::apiResources([
-      'customer_services'            => 'CustomerServiceController',
-      'customers/medias'             => 'MediaController',
+      'customers/customer_services'     => 'CustomerServiceController',
+      'customers/medias'                => 'MediaController',
     ]);
     // Route::post('users/customers/{customer}', 'UserController@addCustomer');
   });
@@ -70,6 +70,7 @@ Route::group([ 'middleware' => 'localization' ], function () {
     Route::resource('customers', 'CustomerController')->except(['update']);
     Route::resource('users', 'UserController')->except(['index']);
     Route::apiResources([
+      'customer_services'           => 'CustomerServiceController',
       'service_properties'          => 'ServicePropertyController',
       'customer_service_properties' => 'CustomerServicePropertyController',
       'services'                    => 'ServiceController',

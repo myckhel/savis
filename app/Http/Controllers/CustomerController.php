@@ -73,28 +73,47 @@ class CustomerController extends Controller
     */
    public function store(Request $request)
    {
-     $request->validate([
-       'firstname'    => 'required|max:35|min:3',
-       'lastname'     => 'string|max:35|min:3',
-       'phone'        => 'unique:customers,phone|numeric|min:6',//|max:15',
-       'email'        => 'email|unique:customers,email',
-       'country_code' => 'required',
-       'city'         => 'max:45',
-       'lat'         => '',
-       'lng'         => '',
-       'state'        => 'max:45',
-       'address'      => 'nullable',
-       'country'      => 'nullable'
-     ]);
-
-    $user = $request->user();
-     try {
-       $customer = Customer::addNew($request);
-
+     $user = $request->user();
+     if ($c_id = $request->customer_id) {
+       $customer = Customer::findOrFail($c_id);
+       if ($attached = $user->customers()->find($customer->id)) {
+         return ['status' => false, 'message' => trans('msg.customer.is_attached')];
+       }
        $user->customers()->attach($customer->id);
-       return ['status' => true, 'message' => 'Customer Added Successfully', 'customer' => $customer];
-     } catch (\Exception $e) {
-       return ['status' => false, 'message' => $e->getMessage()];
+       return ['status' => true, 'message' => trans('msg.customer.added'), 'customer' => $customer];
+     } else {
+       $request->validate([
+         'firstname'    => 'required|max:35|min:3',
+         'lastname'     => 'string|max:35|min:3',
+         'phone'        => 'phone|numeric|min:6',//|max:15',
+         'email'        => 'email',
+         'country_code' => '',
+         'city'         => 'max:45',
+         'lat'          => '',
+         'lng'          => '',
+         'state'        => 'max:45',
+         'address'      => 'nullable',
+         'country'      => 'nullable'
+       ]);
+
+       try {
+         $email         = $request->email;
+         $customer      = Customer::where('email', $email)->first();
+         if ($customer) {
+           if ($attached = $user->customers()->find($customer->id)) {
+             return ['status' => false, 'message' => trans('msg.customer.is_attached')];
+           }
+           $request->validate(['email'        => 'required|email|unique:customers,email']);
+           $user->customers()->attach($customer->id);
+           return ['status' => true, 'message' => trans('user.created')];
+         } else {
+           $customer = Customer::addNew($request);
+           $user->customers()->attach($customer->id);
+           return ['status' => true, 'message' => trans('msg.customer.added'), 'customer' => $customer];
+         }
+       } catch (\Exception $e) {
+         return ['status' => false, 'message' => $e->getMessage()];
+       }
      }
    }
    /**
