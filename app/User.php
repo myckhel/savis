@@ -68,6 +68,11 @@ class User extends Authenticatable implements HasMedia
       return false;
     }
 
+    public function isAdmin()
+    {
+      return true;
+    }
+
     public function properties() {
       $id = $this->id;
       return CustomerProperty::whereHas('customer', function ($q) use($id) {

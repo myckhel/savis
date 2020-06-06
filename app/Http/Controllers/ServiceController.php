@@ -18,7 +18,9 @@ class ServiceController extends Controller
          'orderBy' => ['regex:(id|created_at|name)'],
        ]);
 
-       $services = Service::allLeaves()->search($request->search);
+       $user = $request->user();
+
+       $services = Service::allLeaves()->where('user_id', $user->id)->search($request->search);
 
        $services = $services->orderBy($request->orderBy, $request->order)
                   ->paginate($request->pageSize);
