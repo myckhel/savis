@@ -21,9 +21,9 @@ class CustomerService extends Model
     $customerService = $user->services()->create([
       'service_id' => $service->id,
     ]);
-    $job = $customerService->job()->create();
+    $job                        = $customerService->job()->create();
     $customerService->job       = $job;
-    $customerService->service  = $service;
+    $customerService->service   = $service;
     return $customerService;
   }
   // relationship

@@ -20,6 +20,18 @@ class User extends Authenticatable implements HasMedia
 {
     use Notifiable, HasApiTokens, SoftDeletes, HasMeta, HasMediaTrait, HasImage;
 
+    public function addCustomer($customer_id = null, $email = null)
+    {
+      $customer = $this->customers()
+      ->when($customer_id, fn ($q) => $q->where('customer_id', $customer_id))
+      ->when($email, fn ($q) => $q->orWhereHas('customer', fn ($q) => $q->where('email', $email) ))
+      ->first();
+      if (!$customer) {
+        $this->customers()->attach($customer->id);
+      }
+      return $customer;
+    }
+
     public function createService($request){
       $create = [
         'name' => $request->name,
