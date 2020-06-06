@@ -39,16 +39,37 @@ class CustomerPropertyController extends Controller
     public function store(Request $request)
     {
       $request->validate([
-        'service_property_id' => 'required|int',
-        'value'               => 'required',
-        'attachments'         => 'array:file',
+        'properties'          => 'required|array',
+        'properties.values'   => 'required|array',
+        'properties.service_property_ids'   => 'required|array',
+        'properties.service_property_ids.*' => 'int',
       ]);
 
-      $authUser = $request->user();
-      $value = $request->value;
-      $attachments = $request->file('attachments');
-      $service_property_id = $request->service_property_id;
-      $prop = ServiceProperty::findOrFail($service_property_id);
+      $authUser     = $request->user();
+      $properties        = $request->properties;
+      $customer_id       = $request->customer_id;
+      // $values       = $request->properties['values'];
+      // $attachments  = $request->file('attachments');
+      // $service_property_ids = $request->properties['service_property_id'];
+      $customer = $authUser->customers()->findOrFail($request->customer_id);
+
+      $creates = [];
+      $len = sizeof($properties);
+      for ($key=0; $key < $len; $key++) {
+        // $attachments  = $request->file('attachments');
+        $value        = $properties['values'][$key];
+        $service_property_id = $properties['service_property_ids'][$key];
+        // validate all fields
+
+        // serial
+        $creates[] = [
+          'value'               => $value,
+          'service_property_id' => $service_property_id,
+          'customer_id'         => $customer_id,
+        ];
+      }
+
+      // $prop         = ServiceProperty::findOrFail($service_property_id);
 
       if ($authUser->isCustomer()) {
         $customer = $authUser;
@@ -57,19 +78,14 @@ class CustomerPropertyController extends Controller
         $request->validate(['customer_id' => 'required|int']);
         $customer = $user->customers()->findOrFail($request->customer_id);
         // auth user can attach properties for his customer service
-        $this->authorize('attach', $prop);
+        // $this->authorize('attach', $prop);
       }
 
-      $toCreate = [
-        'service_property_id' => $prop->id,
-        'value'               => $value
-      ];
-      $customerProperty = $customer->properties()->updateOrCreate(
-        $toCreate, $toCreate
-      );
+      $customerProperties = $customer->properties()->createMany($creates);
 
-      ($customerProperty && $attachments) && $customerProperty->saveAttachments($attachments, 'attachments', true);
-      return $customerProperty->withAttachedUrl('attachments');
+      // ($customerProperties && $attachments) && $customerProperty->saveAttachments($attachments, 'attachments', true);
+      return $customerProperties;
+      // ->withAttachedUrl('attachments');
     }
 
     /**

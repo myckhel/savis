@@ -9,10 +9,11 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\Models\Media;
 use Spatie\Image\Image;
+use App\Traits\Helper;
 
 class CustomerProperty extends Model implements HasMedia
 {
-  use HasMediaTrait, CanAttach;
+  use HasMediaTrait, CanAttach, Helper;
 
   public function authorizeMedia(Media $media, String $method, $user)
   {
