@@ -64,9 +64,14 @@ class CustomerPolicy
      * @param  \App\Customer  $customer
      * @return mixed
      */
-    public function update(User $user, Customer $customer)
+    public function update($user, Customer $customer)
     {
-      // return $user->id;
+      if ($user->id == $customer->id) {
+        return true;
+      // } elseif($user->isAdmin() && $user->customers()) {
+      }
+
+      return false;
     }
 
     /**

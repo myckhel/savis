@@ -40,10 +40,12 @@ class CustomerServiceController extends Controller
          'customer_id'    => 'int',
          'customer_email' => 'email',
        ]);
+
        $customer = null;
        $user = $request->user();
+
        if ($user->isAdmin()) {
-         $customer = $user->addCustomer($request->customer_id, $request->email);
+         $customer = $user->addCustomer($request->customer_id, $request->customer_email);
        } else {
          $customer = $user;
        }

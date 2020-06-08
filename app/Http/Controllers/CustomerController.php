@@ -46,10 +46,10 @@ class CustomerController extends Controller
      $this->validatePagination($request);
      $user = $request->user();
      $this->authorize('viewAnyCustomer', $user);
-     $customer = new Customer;//$user->customers();
+     // $customer = new Customer;//$user->customers();
      $search = $request->search;
 
-     $customers = $customer->search($search)->orderBy(($request->orderBy ?? 'created_at'), 'DESC')
+     $customers = $user->customers()->search($search)->orderBy(($request->orderBy ?? 'created_at'), 'DESC')
      ->paginate($request->pageSize);
      $customers->each(function ($customer) {
        $customer->withImageUrl(null, 'avatar');
@@ -147,7 +147,7 @@ class CustomerController extends Controller
     */
    public function update(Request $request, Customer $customer)
    {
-     // $this->authorize('update', $customer);
+       $this->authorize('update', $customer);
        $request->validate(['updates' => 'required|array']);
        $updates = $request->updates;
        $avatar  = $request->avatar;

@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\CustomerProperty;
 use App\CustomerServiceProperty;
+use App\Http\Controllers\CustomerPropertyController;
 
 class CustomerService extends Model
 {
@@ -15,15 +16,32 @@ class CustomerService extends Model
     return 200;
   }
   //
-  public static function makeService($user, $request)
+  public static function makeService($customer, $request)
   {
     $service = Service::findOrFail($request->service_id);
-    $customerService = $user->services()->create([
+    $props   = null;
+    $customerServiceProperties = null;
+
+    if ($request->properties) {
+      $control = new CustomerPropertyController;
+      $props   = $control->store($request);
+    }
+
+    $customerService = $customer->services()->create([
       'service_id' => $service->id,
     ]);
+
+    if ($props) {
+      $props->each(fn ($p) => $p->customer_property_id = $p->id);
+
+      $customerServiceProperties = $customerService->properties()->createMany($props->toArray());
+    }
+
     $job                        = $customerService->job()->create();
     $customerService->job       = $job;
     $customerService->service   = $service;
+    $customerService->properties   = $customerServiceProperties;
+
     return $customerService;
   }
   // relationship

@@ -40,24 +40,25 @@ class CustomerPropertyController extends Controller
     {
       $request->validate([
         'properties'          => 'required|array',
+        'customer_id'         => 'int',
+        'customer_email'      => 'email',
         'properties.values'   => 'required|array',
         'properties.service_property_ids'   => 'required|array',
         'properties.service_property_ids.*' => 'int',
       ]);
+      // todo either fields required
 
-      $authUser     = $request->user();
+      $authUser          = $request->user();
       $properties        = $request->properties;
       $customer_id       = $request->customer_id;
-      // $values       = $request->properties['values'];
-      // $attachments  = $request->file('attachments');
-      // $service_property_ids = $request->properties['service_property_id'];
-      $customer = $authUser->customers()->findOrFail($request->customer_id);
+      $email             = $request->email;
+      $customer          = $authUser->findCustomer($customer_id, $email);
 
       $creates = [];
-      $len = sizeof($properties);
+      $len     = sizeof($properties);
       for ($key=0; $key < $len; $key++) {
         // $attachments  = $request->file('attachments');
-        $value        = $properties['values'][$key];
+        $value               = $properties['values'][$key];
         $service_property_id = $properties['service_property_ids'][$key];
         // validate all fields
 
@@ -69,14 +70,16 @@ class CustomerPropertyController extends Controller
         ];
       }
 
-      // $prop         = ServiceProperty::findOrFail($service_property_id);
-
       if ($authUser->isCustomer()) {
         $customer = $authUser;
       } else {
         $user = $authUser;
-        $request->validate(['customer_id' => 'required|int']);
-        $customer = $user->customers()->findOrFail($request->customer_id);
+        // todo require either fields
+        $request->validate([
+          'customer_id'     => 'int',
+          'customer_email'  => 'email',
+        ]);
+        $customer = $user->findCustomer($request->customer_id, $request->customer_email);
         // auth user can attach properties for his customer service
         // $this->authorize('attach', $prop);
       }

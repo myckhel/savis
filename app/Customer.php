@@ -27,6 +27,15 @@ use Illuminate\Database\Eloquent\Model;
 class Customer extends Authenticatable implements HasMedia
 {
   use Notifiable, HasApiTokens, SoftDeletes, HasMeta, HasMediaTrait, HasImage;
+
+  public static function lookOrFail($customer_id = null, $email = null){
+    if(!$customer_id && !$email) return null;
+
+    return self::when($customer_id, fn ($q) => $q->where('id', $customer_id))
+    ->when($email, fn ($q) => $q->where('email', $email) )
+    ->firstOrFail();
+  }
+
   protected $fillable = ['firstname', 'lastname', 'email', 'phone', 'state', 'city','address','country', 'lat', 'lng',
     'password', 'activation_token'
   ];

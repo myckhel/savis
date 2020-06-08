@@ -20,13 +20,21 @@ class User extends Authenticatable implements HasMedia
 {
     use Notifiable, HasApiTokens, SoftDeletes, HasMeta, HasMediaTrait, HasImage;
 
+    function findCustomer($customer_id = null, $email = null){
+      if(!$customer_id && !$email) return null;
+
+      return $this->customers()
+      ->when($customer_id, fn ($q) => $q->where('customer_id', $customer_id))
+      ->when($email, fn ($q) => $q->where('email', $email) )
+      ->firstOrFail();
+    }
+
     public function addCustomer($customer_id = null, $email = null)
     {
-      $customer = $this->customers()
-      ->when($customer_id, fn ($q) => $q->where('customer_id', $customer_id))
-      ->when($email, fn ($q) => $q->orWhereHas('customer', fn ($q) => $q->where('email', $email) ))
-      ->first();
+      $customer = $this->findCustomer($customer_id, $email);
+
       if (!$customer) {
+        $customer = Customer::lookOrFail($customer_id, $email);
         $this->customers()->attach($customer->id);
       }
       return $customer;
@@ -34,9 +42,9 @@ class User extends Authenticatable implements HasMedia
 
     public function createService($request){
       $create = [
-        'name' => $request->name,
-        'price' => $request->price,
-        'charge' => $request->charge,
+        'name'    => $request->name,
+        'price'   => $request->price,
+        'charge'  => $request->charge,
       ];
 
       if ($service_id = $request->service_id) {
