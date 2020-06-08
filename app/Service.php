@@ -15,6 +15,12 @@ use App\Traits\HasImage;
 class Service extends Model implements HasMedia
 {
   use WorksAsNestedSet, SoftDeletes, HasMediaTrait, HasImage;
+
+  function getCharge()
+  {
+    return (int)($this->charge ?? ($this->parent ? $this->parent->charge ?? 0 : 0));
+  }
+
   protected $parentColumnName = 'service_id';
   // protected $casts = ['properties' => 'array'];
   // protected $depthColumnName = 'depth';

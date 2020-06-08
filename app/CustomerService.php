@@ -14,13 +14,13 @@ class CustomerService extends Model
   public function getAmount()
   {
     // get charges
-    $charges = $this->getCharges();
-    return $charges + $this->amount;
+    $charges = $this->getCharge();
+    return $charges + $this->service->price;
   }
 
-  function getCharges()
+  function getCharge()
   {
-    return $this->charge ?? $this->parent ? $this->parent->charge ?? 0 : 0;
+    return $this->service->getCharge();
   }
 
   public static function makeService($customer, $request)

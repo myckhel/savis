@@ -56,21 +56,35 @@ class PaymentController extends Controller
     {
       $request->validate([
         'customer_service_id'   => 'required|int',
+        'type'                  => 'in:card,cash,pos',
+        'status'                => 'in:pending,completed,failed',
       ]);
       \Request::instance()->query->set('trxref', $request->trxref);
       $customerService  = CustomerService::findOrFail($request->customer_service_id);
       $amount           = $customerService->getAmount();
+      $type             = $request->type;
+      $status           = $request->status;
       $user             = $request->user();
-      $data             = ["amount" => $amount, "email" => 'myckhel123@gmail.com' ?? $user->email];
-      $response         = Paystack::getAuthorizationResponse($data);
-      // $authorization_url= $response['authorization_url'];
 
-      return $user->payments()->create([
-        'customer_service_id'   => $request->customer_service_id,
-        'amount'                => $amount,
-        'access_code'           => $response['access_code'],
-        'reference'             => $request->trxref, //$response['reference'],
-      ]);
+      if ($user->isAdmin()) {
+        $customer = $customerService->customer;
+        return $customer->payments()->create([
+          'customer_service_id'   => $customerService->id,
+          'amount'                => $amount,
+          'type'                  => $type,
+          'status'                => $status,
+        ]);
+      } else {
+        $data             = ["amount" => $amount, "email" => $user->email];
+        $response         = Paystack::getAuthorizationResponse($data);
+
+        return $user->payments()->create([
+          'customer_service_id'   => $request->customer_service_id,
+          'amount'                => $amount,
+          'access_code'           => $response['access_code'],
+          'reference'             => $request->trxref,
+        ]);
+      }
     }
 
     public function verify(Request $request)

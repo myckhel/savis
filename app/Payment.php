@@ -7,7 +7,7 @@ use App\Customer;
 
 class Payment extends Model
 {
-  protected $fillable = ['customer_service_id', 'access_code', 'reference', 'amount', 'status', 'message', 'authorization_code', 'currency_code', 'paid_at'];
+  protected $fillable = ['customer_service_id', 'access_code', 'type', 'reference', 'amount', 'status', 'message', 'authorization_code', 'currency_code', 'paid_at'];
   //
   public static function countCompletedCustomerService(Customer $customer){
     $customer_services = $customer->customer_services->pluck('id');
