@@ -48,7 +48,11 @@ Route::group([ 'middleware' => 'localization' ], function () {
         'customer_services'               => 'CustomerServiceController',
         'medias'                          => 'MediaController',
         'jobs'                            => 'WorkController',
-        'customer_properties'             => 'CustomerPropertyController',
+        'properties'                      => 'CustomerPropertyController',
+        'services'                        => 'CustomerServiceController',
+        'metas'                           => 'MetaController',
+        'service_properties'              => 'CustomerServicePropertyController',
+        'payments'                        => 'PaymentController',
       ]);
     });
     // Route::post('users/customers/{customer}', 'UserController@addCustomer');

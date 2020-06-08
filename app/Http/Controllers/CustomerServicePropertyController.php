@@ -44,7 +44,10 @@ class CustomerServicePropertyController extends Controller
       $customer_property_ids  = $request->customer_property_ids;
       $service_property_ids   = $request->service_property_ids;
       $customer_id            = $request->customer_id;
-      $customer               = Customer::findOrFail($customer_id);
+      $user                   = $request->user();
+
+      $customer               = $user->isCustomer() ? $user : Customer::findOrFail($customer_id);
+
       $customerService        = $customer->services()->findOrFail($customer_service_id);
       $creates                = $this->toMany($customer_property_ids, $service_property_ids, $customer_id);
       return $customerService->properties()->createMany($creates);

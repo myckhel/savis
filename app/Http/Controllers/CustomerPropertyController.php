@@ -52,7 +52,7 @@ class CustomerPropertyController extends Controller
       $properties        = $request->properties;
       $customer_id       = $request->customer_id;
       $email             = $request->email;
-      $customer          = $authUser->findCustomer($customer_id, $email);
+      $customer          = $authUser->isCustomer() ? $authUser : $authUser->findCustomer($customer_id, $email);
 
       $creates = [];
       $len     = sizeof($properties);
