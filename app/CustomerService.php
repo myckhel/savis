@@ -13,9 +13,16 @@ class CustomerService extends Model
 
   public function getAmount()
   {
-    return 200;
+    // get charges
+    $charges = $this->getCharges();
+    return $charges + $this->amount;
   }
-  //
+
+  function getCharges()
+  {
+    return $this->charge ?? $this->parent ? $this->parent->charge ?? 0 : 0;
+  }
+
   public static function makeService($customer, $request)
   {
     $service = Service::findOrFail($request->service_id);
