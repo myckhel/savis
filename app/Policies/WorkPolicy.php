@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\User;
+use App\Customer;
 use App\work;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -28,9 +29,10 @@ class WorkPolicy
      * @param  \App\work  $work
      * @return mixed
      */
-    public function view(User $user, work $work)
+    public function view($user, work $work)
     {
-      return $user->jobs()->find($work->id)->id == $work->id;
+      $job = $user->jobs()->find($work->id);
+      return $job->id ?? false == $work->id;
     }
 
     /**

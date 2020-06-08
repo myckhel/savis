@@ -111,13 +111,9 @@ class User extends Authenticatable implements HasMedia
       $id = $this->id;
       return Work::whereHas('customer_service', function ($q) use($id) {
         $q->whereHas('customer', function ($q) use($id) {
-          $q->whereHas('clients', function ($q) use($id) {
-            $q->where('user_id', $id);
-          });
+          $q->whereHas('clients', fn ($q) => $q->where('user_id', $id));
         })
-        ->whereHas('service', function ($q) use($id) {
-          $q->where('user_id', $id);
-        });
+        ->whereHas('service', fn ($q) => $q->where('user_id', $id));
       });
     }
 
