@@ -79,8 +79,17 @@ class Service extends Model implements HasMedia
   public function services(){
     return $this->hasMany(Service::class);
   }
+  public function variations(){
+    return $this->hasMany(ServiceVariation::class);
+  }
+  public function customerServiceVariations(){
+    return $this->hasMany(CustomerServiceVariation::class);
+  }
   public function service(){
     return $this->belongsTo(Service::class);
+  }
+  public function user(){
+    return $this->belongsTo(User::class);
   }
   public function customer_services(){
     return $this->hasMany(CustomerService::class);

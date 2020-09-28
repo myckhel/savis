@@ -46,6 +46,7 @@ Route::group([ 'middleware' => 'localization' ], function () {
     Route::resource('customers/payments',             'PaymentController');
     Route::resource('customers', 'CustomerController')->only(['update']);
     Route::group([ 'prefix' => 'customers'], function() {
+      Route::resource('service_variations', 'ServiceVariationController')->only(['index', 'show']);
       Route::apiResources([
         'customer_services'               => 'CustomerServiceController',
         'medias'                          => 'MediaController',
@@ -90,6 +91,8 @@ Route::group([ 'middleware' => 'localization' ], function () {
       'customer_properties'         => 'CustomerPropertyController',
       'medias'                      => 'MediaController',
       'variations'                  => 'VariationController',
+      'service_variations'          => 'ServiceVariationController',
+      'customer_service_variations' => 'CustomerServiceVariationController',
     ]);
   });
 });

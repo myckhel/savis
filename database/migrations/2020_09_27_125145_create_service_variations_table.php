@@ -17,7 +17,7 @@ class CreateServiceVariationsTable extends Migration
       $table->bigIncrements('id');
       $table->bigInteger('service_id')->unsigned();
       $table->bigInteger('variation_id')->unsigned()->nullable();
-      $table->string('value', 100);
+      $table->string('value', 100)->nullable();
       $table->decimal('amount', 10,2)->nullable();
       $table->timestamps();
       $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
