@@ -138,6 +138,10 @@ class User extends Authenticatable implements HasMedia
       return $this->hasMany(Service::class);
     }
 
+    public function variations(){
+      return $this->hasMany(Variation::class);
+    }
+
     public function registerMediaCollections(Media $media = null){
       $this->addMediaCollection('avatar')
       ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/gif'])

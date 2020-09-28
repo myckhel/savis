@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 */
 Route::group([ 'middleware' => 'localization' ], function () {
   Route::get('users/count', fn () => App\User::count());
-  
+
   Route::group([ 'prefix' => 'auth' ], function () {
     // user auth
     Route::post('login', 'AuthController@login');
@@ -89,6 +89,7 @@ Route::group([ 'middleware' => 'localization' ], function () {
       'jobs'                        => 'WorkController',
       'customer_properties'         => 'CustomerPropertyController',
       'medias'                      => 'MediaController',
+      'variations'                  => 'VariationController',
     ]);
   });
 });
