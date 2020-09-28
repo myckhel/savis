@@ -18,6 +18,8 @@ class CreateCustomerServiceVariationsTable extends Migration
         $table->bigInteger('customer_service_id')->unsigned();
         $table->bigInteger('service_variation_id')->unsigned();
         $table->timestamps();
+        $table->foreign('customer_service_id')->references('id')->on('customer_services')->onDelete('cascade');
+        $table->foreign('service_variation_id')->references('id')->on('service_variations')->onDelete('cascade');
       });
     }
 

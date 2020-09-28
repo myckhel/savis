@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\CustomerProperty;
 use App\CustomerServiceProperty;
 use App\Http\Controllers\CustomerPropertyController;
+use App\Http\Controllers\CustomerServiceVariationController;
 
 class CustomerService extends Model
 {
@@ -28,7 +29,11 @@ class CustomerService extends Model
     $service = Service::findOrFail($request->service_id);
     $props   = null;
     $customerServiceProperties = null;
+    $serviceVariations = null;
 
+    if ($request->service_variations) {
+      $serviceVariations = $service->variations()->whereIn('id', $request->service_variations)->get();
+    }
     if ($request->properties) {
       $control = new CustomerPropertyController;
       $props   = $control->store($request);
@@ -44,10 +49,24 @@ class CustomerService extends Model
       $customerServiceProperties = $customerService->properties()->createMany($props->toArray());
     }
 
-    $job                        = $customerService->job()->create();
-    $customerService->job       = $job;
-    $customerService->service   = $service;
-    $customerService->properties   = $customerServiceProperties;
+    if ($serviceVariations) {
+      $control = new CustomerServiceVariationController;
+      $request->merge(['customer_service_id' => $customerService->id]);
+      $customerServiceVariations   = $control->store($request);
+      // $serviceVariations->each(function ($p) use($customerService) {
+      //   $p->service_variation_id = $p->id;
+      //   $p->customer_service_id = $customerService->id;
+      // });
+      // $customerServiceVariations = $customerService->variations()->createMany($serviceVariations->toArray());
+    }
+
+    $client                       = $service->user;
+    $client->addCustomer($customer);
+    $job                          = $customerService->job()->create();
+    $customerService->job         = $job;
+    $customerService->service     = $service;
+    $customerService->properties  = $customerServiceProperties;
+    $customerService->variations  = $customerServiceVariations;
 
     return $customerService;
   }
@@ -60,6 +79,9 @@ class CustomerService extends Model
   }
   public function properties(){
     return $this->hasMany(CustomerServiceProperty::class);
+  }
+  public function variations(){
+    return $this->hasMany(CustomerServiceVariation::class);
   }
   public function job(){
     return $this->hasOne(Work::class);

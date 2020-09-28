@@ -14,24 +14,28 @@ use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\Models\Media;
 use Spatie\Image\Image;
 use App\Traits\HasImage;
+use App\Traits\User\Role;
 use Illuminate\Database\Eloquent\Model;
 
 class User extends Authenticatable implements HasMedia
 {
-    use Notifiable, HasApiTokens, SoftDeletes, HasMeta, HasMediaTrait, HasImage;
+    use Role, Notifiable, HasApiTokens, SoftDeletes, HasMeta, HasMediaTrait, HasImage;
 
-    function findCustomer($customer_id = null, $email = null){
-      if(!$customer_id && !$email) return null;
+    function findCustomer(Customer $customer = null, $email = null){
+      if(!$customer && !$email) return null;
 
       return $this->customers()
-      ->when($customer_id, fn ($q) => $q->where('customer_id', $customer_id))
-      ->when($email, fn ($q) => $q->where('email', $email) )
-      ->firstOrFail();
+      ->when($customer, fn ($q) => $q->where('customer_id', $customer->id ?? $customer))
+      ->when($email, fn ($q) => $q->orWhere('email', $email) )
+      ->first();
     }
 
-    public function addCustomer($customer_id = null, $email = null)
+    public function addCustomer($customer = null, $email = null)
     {
-      $customer = $this->findCustomer($customer_id, $email);
+      $customer_id = $customer->id ?? $customer;
+      if ($customer || $email) {
+        $customer = $this->findCustomer($customer, $email);
+      }
 
       if (!$customer) {
         $customer = Customer::lookOrFail($customer_id, $email);
@@ -118,7 +122,7 @@ class User extends Authenticatable implements HasMedia
     }
 
     public function customers(){
-      return $this->belongsToMany(Customer::class, 'user_customers')->withTimestamps();
+      return $this->belongsToMany(Customer::class, UserCustomer::class)->withTimestamps();
     }
 
     public function metas(){
@@ -138,8 +142,17 @@ class User extends Authenticatable implements HasMedia
       return $this->hasMany(Service::class);
     }
 
+    public function customerServices(){
+      return $this->hasManyThrough(CustomerService::class, Service::class);
+    }
     public function variations(){
       return $this->hasMany(Variation::class);
+    }
+    // public function customerServiceVariations(){
+    //   return $this->hasManyThrough(ServiceVariation::class, CustomerService::class, 'customer_id', 'service_id');
+    // }
+    public function serviceVariations(){
+      return $this->hasManyThrough(ServiceVariation::class, Service::class);
     }
 
     public function registerMediaCollections(Media $media = null){

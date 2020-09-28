@@ -21,19 +21,27 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\Models\Media;
 use Spatie\Image\Image;
+use App\Traits\User\Role;
 use App\Traits\HasImage;
 use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Authenticatable implements HasMedia
 {
-  use Notifiable, HasApiTokens, SoftDeletes, HasMeta, HasMediaTrait, HasImage;
+  use Role, Notifiable, HasApiTokens, SoftDeletes, HasMeta, HasMediaTrait, HasImage;
 
   public static function lookOrFail($customer_id = null, $email = null){
     if(!$customer_id && !$email) return null;
 
     return self::when($customer_id, fn ($q) => $q->where('id', $customer_id))
-    ->when($email, fn ($q) => $q->where('email', $email) )
+    ->when($email, fn ($q) => $q->orWhere('email', $email) )
     ->firstOrFail();
+  }
+  public static function lookOrCreate($customer_id = null, $email = null){
+    if(!$customer_id && !$email) return null;
+
+    return self::when($customer_id, fn ($q) => $q->where('id', $customer_id))
+    ->when($email, fn ($q) => $q->orWhere('email', $email) )
+    ->firstOrCreate(['email' => $email]);
   }
 
   protected $fillable = ['firstname', 'lastname', 'email', 'phone', 'state', 'city','address','country', 'lat', 'lng',

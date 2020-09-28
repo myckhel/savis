@@ -36,16 +36,18 @@ class CustomerServiceController extends Controller
      public function store(Request $request)
      {
        $request->validate([
-         'service_id'     => 'required|int',
-         'customer_id'    => 'int',
-         'customer_email' => 'email',
+         'service_id'           => 'required|int',
+         'customer_id'          => 'int',
+         'service_variations'   => 'array',
+         'service_variations.*' => 'int',
+         'customer_email'       => 'email',
        ]);
 
-       $customer = null;
        $user = $request->user();
 
-       if ($user->isAdmin()) {
-         $customer = $user->addCustomer($request->customer_id, $request->customer_email);
+       if ($user->getRole() == 'user') {
+         $customer =  Customer::lookOrCreate($request->customer_id, $request->customer_email);
+         // $customer = $user->addCustomer($request->customer_id, $request->customer_email);
        } else {
          $customer = $user;
        }
