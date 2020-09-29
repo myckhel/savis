@@ -4,16 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\CanAttach;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\File;
-use Spatie\MediaLibrary\Models\Media;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Image\Image;
 use App\Traits\Helper;
 
 class CustomerProperty extends Model implements HasMedia
 {
-  use HasMediaTrait, CanAttach, Helper;
+  use InteractsWithMedia, CanAttach, Helper;
 
   public function authorizeMedia(Media $media, String $method, $user)
   {
@@ -67,8 +67,9 @@ class CustomerProperty extends Model implements HasMedia
     return $this->hasMany(CustomerServiceProperty::class);
   }
 
-  public function registerMediaCollections(Media $media = null){
+  public function registerMediaCollections(Media $media = null) : void {
     $this->addMediaCollection('attachments')
-    ->useDisk('attachments');
+    ->useDisk('attachments')
+    ->registerMediaConversions($this->convertionCallback());
   }
 }

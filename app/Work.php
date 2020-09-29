@@ -4,23 +4,23 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Customer;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\File;
-use Spatie\MediaLibrary\Models\Media;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Image\Image;
 use App\Traits\HasImage;
 
 class Work extends Model implements HasMedia
 {
-  use HasMediaTrait, HasImage;
+  use InteractsWithMedia, HasImage;
   public static function countCompletedCustomerService(Customer $customer){
     $customer_services = $customer->customer_services->pluck('id');
     return self::where('status', 'completed')->whereIn('customer_service_id', $customer_services)->count();
   }
 
   public function authorizeMedia(Media $media, String $method, Model $user){
-    
+
   }
 
   public function scopeSearch ($q, $search) {
@@ -39,9 +39,9 @@ class Work extends Model implements HasMedia
     return $this->belongsTo(CustomerService::class);
   }
 
-  public function registerMediaCollections(Media $media = null){
+  public function registerMediaCollections(Media $media = null) : void {
     $this->addMediaCollection('attachments')
-    // ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/gif'])
-    ->useDisk('attachments');
+    ->useDisk('attachments')
+    ->registerMediaConversions($this->convertionCallback());
   }
 }

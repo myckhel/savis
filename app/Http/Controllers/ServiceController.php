@@ -24,7 +24,7 @@ class ServiceController extends Controller
 
        $user = $request->user();
 
-       $services = Service::allLeaves()->where('user_id', $user->id)->search($request->search);
+       $services = $user->services()->search($request->search);
 
        $services = $services->orderBy($request->orderBy, $request->order)
                   ->paginate($request->pageSize);

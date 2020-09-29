@@ -53,11 +53,6 @@ class CustomerService extends Model
       $control = new CustomerServiceVariationController;
       $request->merge(['customer_service_id' => $customerService->id]);
       $customerServiceVariations   = $control->store($request);
-      // $serviceVariations->each(function ($p) use($customerService) {
-      //   $p->service_variation_id = $p->id;
-      //   $p->customer_service_id = $customerService->id;
-      // });
-      // $customerServiceVariations = $customerService->variations()->createMany($serviceVariations->toArray());
     }
 
     $client                       = $service->user;

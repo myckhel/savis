@@ -16,7 +16,7 @@ class CustomerServiceController extends Controller
      public function index()
      {
          //
-         return Customer::with('customer_service.customer_service_metas')->get();
+         return Customer::with('services.properties')->get();
      }
      /**
       * Show the form for creating a new resource.

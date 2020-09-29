@@ -5,23 +5,26 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Passport\HasApiTokens;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\HasMeta;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\File;
-use Spatie\MediaLibrary\Models\Media;
 use Spatie\Image\Image;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use App\Traits\HasImage;
 use App\Traits\User\Role;
+use App\UserCustomer;
+use App\Payment;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable implements HasMedia
 {
-    use Role, Notifiable, HasApiTokens, SoftDeletes, HasMeta, HasMediaTrait, HasImage;
+    use HasFactory, HasApiTokens, Role, InteractsWithMedia, Notifiable, SoftDeletes, HasMeta, HasImage;
 
-    function findCustomer(Customer $customer = null, $email = null){
+    function findCustomer($customer = null, $email = null){
       if(!$customer && !$email) return null;
 
       return $this->customers()
@@ -135,7 +138,8 @@ class User extends Authenticatable implements HasMedia
     // }
 
     public function payments(){
-      return $this->customers->services;
+      return $this->hasManyThrough(Payment::class, CustomerService::class);
+      // return $this->customers->services;
     }
 
     public function services(){
@@ -155,15 +159,11 @@ class User extends Authenticatable implements HasMedia
       return $this->hasManyThrough(ServiceVariation::class, Service::class);
     }
 
-    public function registerMediaCollections(Media $media = null){
+    public function registerMediaCollections(Media $media = null) : void {
       $this->addMediaCollection('avatar')
+      ->useFallbackUrl('https://www.pngitem.com/middle/hhmRJo_profile-icon-png-image-free-download-searchpng-employee')
       ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/gif'])
-      ->singleFile()->useDisk('user_images');
-    }
-
-    public function registerMediaConversions(Media $media = null){
-      $this->addMediaConversion('thumb')
-      ->width(368)->height(232)
-      ->performOnCollections('avatar');
+      ->singleFile()->useDisk('user_images')
+      ->registerMediaConversions($this->convertionCallback());
     }
 }

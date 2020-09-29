@@ -10,24 +10,24 @@ use App\Service;
 use App\ServiceMeta;
 use App\UserCustomer;
 use App\CustomerServiceMeta;
-use Laravel\Passport\HasApiTokens;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 use App\Traits\HasMeta;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\File;
-use Spatie\MediaLibrary\Models\Media;
 use Spatie\Image\Image;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use App\Traits\User\Role;
 use App\Traits\HasImage;
 use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Authenticatable implements HasMedia
 {
-  use Role, Notifiable, HasApiTokens, SoftDeletes, HasMeta, HasMediaTrait, HasImage;
+  use Role, Notifiable, HasApiTokens, SoftDeletes, HasMeta, InteractsWithMedia, HasImage;
 
   public static function lookOrFail($customer_id = null, $email = null){
     if(!$customer_id && !$email) return null;
@@ -57,15 +57,12 @@ class Customer extends Authenticatable implements HasMedia
 
   public function grantMeToken($request = null){
     $token = $this->createToken('PAT');
-    if ($request && $request->remember_me)
-        $token->expires_at = Carbon::now()->addWeeks(1);
+    // if ($request && $request->remember_me)
+    //     $token->expires_at = Carbon::now()->addWeeks(1);
 
     return [
-      'access_token' => $token->accessToken,
+      'access_token' => $token->plainTextToken,
       'token_type' => 'Bearer',
-      'expires_at' => Carbon::parse(
-          $token->token->expires_at
-      )->toDateTimeString()
     ];
   }
 
@@ -185,15 +182,11 @@ class Customer extends Authenticatable implements HasMedia
     return $this->morphMany(Meta::class, 'metable');
   }
 
-  public function registerMediaCollections(Media $media = null){
+  public function registerMediaCollections(Media $media = null) : void {
     $this->addMediaCollection('avatar')
+    ->useFallbackUrl('https://www.pngitem.com/middle/hhmRJo_profile-icon-png-image-free-download-searchpng-employee')
     ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/gif'])
-    ->singleFile()->useDisk('customer_images');
-  }
-
-  public function registerMediaConversions(Media $media = null){
-    $this->addMediaConversion('thumb')
-    ->width(368)->height(232)
-    ->performOnCollections('avatar');
+    ->singleFile()->useDisk('customer_images')
+    ->registerMediaConversions($this->convertionCallback());
   }
 }

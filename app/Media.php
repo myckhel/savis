@@ -2,8 +2,8 @@
 
 namespace App;
 
+use Spatie\MediaLibrary\MediaCollections\Models\Media as SpatieMedia;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\MediaLibrary\Models\Media as SpatieMedia;
 use App\CustomerProperty;
 
 class Media extends SpatieMedia

@@ -47,19 +47,16 @@ class AuthController extends Controller
     }
 
     $tokenResult = $user->createToken('UAT');
-    $token = $tokenResult->token;
-    if ($request->remember_me)
-        $token->expires_at = Carbon::now()->addWeeks(1);
-    $token->save();
+    // $token = $tokenResult->plainTextToken;
+    // if ($request->remember_me)
+    //     $token->expires_at = Carbon::now()->addWeeks(1);
+    // $token->save();
 
     return response()->json([
         'message' => 'Successfully created user!',
         'user' => $user,
-        'access_token' => $tokenResult->accessToken,
+        'access_token' => $tokenResult->plainTextToken,
         'token_type' => 'Bearer',
-        'expires_at' => Carbon::parse(
-            $tokenResult->token->expires_at
-        )->toDateTimeString()
     ], 201);
   }
 
@@ -109,17 +106,14 @@ class AuthController extends Controller
         $user = $request->user();
         $user->withImageUrl(null, 'avatar');
         $tokenResult = $user->createToken('UAT');
-        $token = $tokenResult->token;
-        if ($request->remember_me)
-            $token->expires_at = Carbon::now()->addWeeks(1);
-        $token->save();
+        // $token = $tokenResult->token;
+        // if ($request->remember_me)
+        //     $token->expires_at = Carbon::now()->addWeeks(1);
+        // $token->save();
         return response()->json([
-            'access_token' => $tokenResult->accessToken,
+            'access_token' => $tokenResult->plainTextToken,
             'token_type' => 'Bearer',
             'user' => $user,
-            'expires_at' => Carbon::parse(
-                $tokenResult->token->expires_at
-            )->toDateTimeString()
         ]);
     }
 
@@ -130,7 +124,7 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $request->user()->token()->revoke();
+        $request->user()->currentAccessToken()->delete();
         return response()->json([
             'message' => 'Successfully logged out'
         ]);
@@ -205,20 +199,17 @@ class AuthController extends Controller
         // $user->save();
       }
       $tokenResult = $customer->createToken('PAT');
-      $token = $tokenResult->token;
-      if ($request->remember_me)
-          $token->expires_at = Carbon::now()->addWeeks(1);
-      $token->save();
+      // $token = $tokenResult->token;
+      // if ($request->remember_me)
+      //     $token->expires_at = Carbon::now()->addWeeks(1);
+      // $token->save();
 
       return response()->json([
           'status' => true,
           'message' => 'Successfully created user!',
           'user' => $customer,
-          'access_token' => $tokenResult->accessToken,
+          'access_token' => $tokenResult->plainTextToken,
           'token_type' => 'Bearer',
-          'expires_at' => Carbon::parse(
-              $tokenResult->token->expires_at
-          )->toDateTimeString()
       ], 201);
     }
   }
@@ -261,7 +252,6 @@ class AuthController extends Controller
           'access_token'    => $token['access_token'],
           'token_type'      => $token['token_type'],
           'user'            => $user,
-          'expires_at'      => $token['expires_at']
         ];
       } else {
         throw ValidationException::withMessages([
@@ -280,7 +270,7 @@ class AuthController extends Controller
    */
   public function signout(Request $request)
   {
-      $request->user()->token()->revoke();
+      $request->user()->currentAccessToken()->delete();
       return response()->json([
           'message' => 'Successfully logged out'
       ]);

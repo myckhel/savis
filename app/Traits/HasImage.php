@@ -1,6 +1,7 @@
 <?php
 namespace App\Traits;
 use App\Media;
+use Spatie\MediaLibrary\MediaCollections\Models\Media as PMedia;
 
 /**
  *
@@ -56,5 +57,15 @@ trait HasImage
   {
     dd($media);
     // $media->delete();
+  }
+
+  private function convertionCallback(){
+    return (function (PMedia $media = null) {
+      $this->addMediaConversion('thumb')->nonQueued()
+      ->width(368)->height(232);
+      //->sharpen(10)
+      $this->addMediaConversion('medium')->nonQueued()
+      ->width(400)->height(400);
+    });
   }
 }
