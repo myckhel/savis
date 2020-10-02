@@ -29,12 +29,24 @@ class {{ class }} implements Rule
     }
 
     /**
+     * Determine if the validation rule passes.
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @return bool
+     */
+    public function validate($attribute, $value, $parameters, $validator)
+    {
+        //
+    }
+
+    /**
      * Get the validation error message.
      *
      * @return string
      */
     public function message()
     {
-        return 'The validation error message.';
+      return trans('validation.');
     }
 }

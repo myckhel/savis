@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WorkController;
 use App\Http\Controllers\MetaController;
@@ -109,6 +110,7 @@ Route::group([ 'middleware' => 'localization' ], function () {
       'variations'                  => VariationController::class,
       'service_variations'          => ServiceVariationController::class,
       'customer_service_variations' => CustomerServiceVariationController::class,
+      'business'                    => BusinessController::class,
     ]);
   });
 });

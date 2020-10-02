@@ -65,7 +65,7 @@ class {{ class }}
      */
     public function delete({{ user }} $user, {{ model }} ${{ modelVariable }})
     {
-        //
+      // return $user->id === ${{modelVariable}}->user_id;
     }
 
     /**

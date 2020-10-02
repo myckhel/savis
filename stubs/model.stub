@@ -5,10 +5,11 @@ namespace {{ namespace }};
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Searchable;
+use App\Traits\HasMeta;
 
 class {{ class }} extends Model
 {
-    use HasFactory, Searchable;
+    use HasFactory, Searchable, HasMeta;
     protected $fillable = [];
     protected $casts    = [];
     protected $searches = [];
