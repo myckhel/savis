@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Spatie\MediaLibrary\MediaCollections\Models\Media as SpatieMedia;
 use Illuminate\Database\Eloquent\Model;
-use App\CustomerProperty;
+use CustomerProperty;
 
 class Media extends SpatieMedia
 {

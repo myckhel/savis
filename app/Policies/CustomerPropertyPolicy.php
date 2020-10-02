@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\CustomerProperty;
-use App\Customer;
+use App\Models\CustomerProperty;
+use App\Models\Customer;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CustomerPropertyPolicy
@@ -13,7 +13,7 @@ class CustomerPropertyPolicy
     /**
      * Determine whether the user can view any customer properties.
      *
-     * @param  \App\Customer  $user
+     * @param  \App\Models\Customer  $user
      * @return mixed
      */
     public function viewAny(Customer $user)
@@ -24,8 +24,8 @@ class CustomerPropertyPolicy
     /**
      * Determine whether the user can view the customer property.
      *
-     * @param  \App\Customer  $user
-     * @param  \App\CustomerProperty  $customerProperty
+     * @param  \App\Models\Customer  $user
+     * @param  \App\Models\CustomerProperty  $customerProperty
      * @return mixed
      */
     public function view(Customer $user, CustomerProperty $customerProperty)
@@ -36,7 +36,7 @@ class CustomerPropertyPolicy
     /**
      * Determine whether the user can create customer properties.
      *
-     * @param  \App\Customer  $user
+     * @param  \App\Models\Customer  $user
      * @return mixed
      */
     public function create(Customer $user)
@@ -47,8 +47,8 @@ class CustomerPropertyPolicy
     /**
      * Determine whether the user can update the customer property.
      *
-     * @param  \App\Customer  $user
-     * @param  \App\CustomerProperty  $customerProperty
+     * @param  \App\Models\Customer  $user
+     * @param  \App\Models\CustomerProperty  $customerProperty
      * @return mixed
      */
     public function update($user, CustomerProperty $customerProperty)
@@ -66,8 +66,8 @@ class CustomerPropertyPolicy
     /**
      * Determine whether the user can delete the customer property.
      *
-     * @param  \App\Customer  $user
-     * @param  \App\CustomerProperty  $customerProperty
+     * @param  \App\Models\Customer  $user
+     * @param  \App\Models\CustomerProperty  $customerProperty
      * @return mixed
      */
     public function delete(Customer $user, CustomerProperty $customerProperty)
@@ -78,8 +78,8 @@ class CustomerPropertyPolicy
     /**
      * Determine whether the user can restore the customer property.
      *
-     * @param  \App\Customer  $user
-     * @param  \App\CustomerProperty  $customerProperty
+     * @param  \App\Models\Customer  $user
+     * @param  \App\Models\CustomerProperty  $customerProperty
      * @return mixed
      */
     public function restore(Customer $user, CustomerProperty $customerProperty)
@@ -90,8 +90,8 @@ class CustomerPropertyPolicy
     /**
      * Determine whether the user can permanently delete the customer property.
      *
-     * @param  \App\Customer  $user
-     * @param  \App\CustomerProperty  $customerProperty
+     * @param  \App\Models\Customer  $user
+     * @param  \App\Models\CustomerProperty  $customerProperty
      * @return mixed
      */
     public function forceDelete(Customer $user, CustomerProperty $customerProperty)

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\ServiceProperty;
+use App\Models\ServiceProperty;
 use Illuminate\Http\Request;
-use App\Service;
+use App\Models\Service;
 
 class ServicePropertyController extends Controller
 {

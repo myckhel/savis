@@ -2,7 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\ServiceProperty;
+use App\Models\ServiceProperty;
 use Faker\Generator as Faker;
 
 $factory->define(ServiceProperty::class, function (Faker $faker) {

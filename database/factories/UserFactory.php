@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -37,7 +37,7 @@ class UserFactory extends Factory
     public function configure()
     {
         return $this->afterMaking(function (User $user) {
-            $user->services()->save(factory(App\Service::class)->make());
+            $user->services()->save(factory(App\Models\Service::class)->make());
         })->afterCreating(function (User $user) {
           try {
             makeService($user);
@@ -48,10 +48,10 @@ class UserFactory extends Factory
     }
 
     function makeService($user){
-      $services = $user->services()->createMany(factory(App\Service::class, 5)->make()->toArray());
+      $services = $user->services()->createMany(factory(App\Models\Service::class, 5)->make()->toArray());
       $services->map(function ($service) {
         try {
-          $service->properties()->createMany(factory(App\ServiceProperty::class, 3)->make()->toArray());
+          $service->properties()->createMany(factory(App\Models\ServiceProperty::class, 3)->make()->toArray());
           // $service->update(['service_id' => $service->service()->inRandomOrder()->first()->id]);
         } catch (\Exception $e) {
           print($e->getMessage());

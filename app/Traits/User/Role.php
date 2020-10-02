@@ -10,9 +10,9 @@ trait Role
 
   private function determineRole($class){
     switch ($class) {
-      case 'App\\User':
+      case 'App\\Models\\User':
         return 'user';
-      case 'App\\Customer':
+      case 'App\\Models\\Customer':
         return 'customer';
       default:
         return false;

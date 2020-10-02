@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Variation;
+use App\Models\Variation;
 use Illuminate\Http\Request;
 
 class VariationController extends Controller

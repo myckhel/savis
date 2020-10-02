@@ -1,7 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
-use App\Http\Controllers\HomeController;
+use App\Models\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +20,7 @@ Route::get('/clear-cache', function() {
 });
 
 Route::get('/test', function(){
-  return App\Service::all()->count();
+  return App\Models\Service::all()->count();
 });
 
 // migrate db

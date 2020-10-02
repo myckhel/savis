@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\User;
-use App\Variation;
+use App\Models\User;
+use App\Models\Variation;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class VariationPolicy
@@ -13,7 +13,7 @@ class VariationPolicy
     /**
      * Determine whether the user can view any variations.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
     public function viewAny(User $user)
@@ -24,8 +24,8 @@ class VariationPolicy
     /**
      * Determine whether the user can view the variation.
      *
-     * @param  \App\User  $user
-     * @param  \App\Variation  $variation
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Variation  $variation
      * @return mixed
      */
     public function view(User $user, Variation $variation)
@@ -36,7 +36,7 @@ class VariationPolicy
     /**
      * Determine whether the user can create variations.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
     public function create(User $user)
@@ -47,8 +47,8 @@ class VariationPolicy
     /**
      * Determine whether the user can update the variation.
      *
-     * @param  \App\User  $user
-     * @param  \App\Variation  $variation
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Variation  $variation
      * @return mixed
      */
     public function update(User $user, Variation $variation)
@@ -59,8 +59,8 @@ class VariationPolicy
     /**
      * Determine whether the user can delete the variation.
      *
-     * @param  \App\User  $user
-     * @param  \App\Variation  $variation
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Variation  $variation
      * @return mixed
      */
     public function delete(User $user, Variation $variation)
@@ -71,8 +71,8 @@ class VariationPolicy
     /**
      * Determine whether the user can restore the variation.
      *
-     * @param  \App\User  $user
-     * @param  \App\Variation  $variation
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Variation  $variation
      * @return mixed
      */
     public function restore(User $user, Variation $variation)
@@ -83,8 +83,8 @@ class VariationPolicy
     /**
      * Determine whether the user can permanently delete the variation.
      *
-     * @param  \App\User  $user
-     * @param  \App\Variation  $variation
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Variation  $variation
      * @return mixed
      */
     public function forceDelete(User $user, Variation $variation)

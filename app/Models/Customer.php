@@ -1,15 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 // use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Work;
-use App\Payment;
-use App\Service;
-use App\ServiceMeta;
-use App\UserCustomer;
-use App\CustomerServiceMeta;
+use Work;
+use Payment;
+use Service;
+use ServiceMeta;
+use UserCustomer;
+use CustomerServiceMeta;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\CustomerProperty;
+use App\Models\CustomerProperty;
 
 class CustomerPropertySeeder extends Seeder
 {

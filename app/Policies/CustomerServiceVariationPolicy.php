@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
-use App\CustomerService;
-use App\ServiceVariation;
-use App\CustomerServiceVariation;
-use App\User;
+use App\Models\CustomerService;
+use App\Models\ServiceVariation;
+use App\Models\CustomerServiceVariation;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CustomerServiceVariationPolicy
@@ -15,7 +15,7 @@ class CustomerServiceVariationPolicy
     /**
      * Determine whether the user can view any customer service variations.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
     public function viewAny(User $user)
@@ -26,8 +26,8 @@ class CustomerServiceVariationPolicy
     /**
      * Determine whether the user can view the customer service variation.
      *
-     * @param  \App\User  $user
-     * @param  \App\CustomerServiceVariation  $customerServiceVariation
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\CustomerServiceVariation  $customerServiceVariation
      * @return mixed
      */
     public function view(User $user, CustomerServiceVariation $customerServiceVariation)
@@ -38,7 +38,7 @@ class CustomerServiceVariationPolicy
     /**
      * Determine whether the user can create customer service variations.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
     public function create(User $user, CustomerService $customerService, ServiceVariation $serviceVariation)
@@ -48,8 +48,8 @@ class CustomerServiceVariationPolicy
     /**
      * Determine whether the user can update the customer service variation.
      *
-     * @param  \App\User  $user
-     * @param  \App\CustomerServiceVariation  $customerServiceVariation
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\CustomerServiceVariation  $customerServiceVariation
      * @return mixed
      */
     public function update(User $user, CustomerServiceVariation $customerServiceVariation)
@@ -60,8 +60,8 @@ class CustomerServiceVariationPolicy
     /**
      * Determine whether the user can delete the customer service variation.
      *
-     * @param  \App\User  $user
-     * @param  \App\CustomerServiceVariation  $customerServiceVariation
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\CustomerServiceVariation  $customerServiceVariation
      * @return mixed
      */
     public function delete(User $user, CustomerServiceVariation $customerServiceVariation)
@@ -72,8 +72,8 @@ class CustomerServiceVariationPolicy
     /**
      * Determine whether the user can restore the customer service variation.
      *
-     * @param  \App\User  $user
-     * @param  \App\CustomerServiceVariation  $customerServiceVariation
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\CustomerServiceVariation  $customerServiceVariation
      * @return mixed
      */
     public function restore(User $user, CustomerServiceVariation $customerServiceVariation)
@@ -84,8 +84,8 @@ class CustomerServiceVariationPolicy
     /**
      * Determine whether the user can permanently delete the customer service variation.
      *
-     * @param  \App\User  $user
-     * @param  \App\CustomerServiceVariation  $customerServiceVariation
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\CustomerServiceVariation  $customerServiceVariation
      * @return mixed
      */
     public function forceDelete(User $user, CustomerServiceVariation $customerServiceVariation)

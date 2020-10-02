@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Work;
-use App\User;
-use App\Payment;
-use App\Service;
-use App\Customer;
-use App\CustomerServiceMeta;
+use App\Models\Work;
+use App\Models\User;
+use App\Models\Payment;
+use App\Models\Service;
+use App\Models\Customer;
+use App\Models\CustomerServiceMeta;
 use App\Http\Controllers\MetaController;
 
 class CustomerController extends Controller

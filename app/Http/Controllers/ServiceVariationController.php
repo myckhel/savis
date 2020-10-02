@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Service;
-use App\ServiceVariation;
+use App\Models\Service;
+use App\Models\ServiceVariation;
 use Illuminate\Http\Request;
 
 class ServiceVariationController extends Controller

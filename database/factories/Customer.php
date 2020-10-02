@@ -2,10 +2,10 @@
 
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use App\Customer;
-use App\ServiceProperty;
+use App\Models\Customer;
+use App\Models\ServiceProperty;
 use Faker\Generator as Faker;
-use App\CustomerServiceProperty;
+use App\Models\CustomerServiceProperty;
 
 $factory->define(Customer::class, function (Faker $faker) {
   return [
@@ -24,7 +24,7 @@ $factory->define(Customer::class, function (Faker $faker) {
 });
 
 $factory->afterCreating(Customer::class, function($customer, $faker){
-  $customer_services = $customer->services()->createMany(factory(App\CustomerService::class, 7)->make()->toArray());
+  $customer_services = $customer->services()->createMany(factory(App\Models\CustomerService::class, 7)->make()->toArray());
   $customer_services->map(function($customer_service)use($customer, $faker){
     $service = $customer_service->service()->first();
     $service_properties = $service->properties()->get();
@@ -35,7 +35,7 @@ $factory->afterCreating(Customer::class, function($customer, $faker){
 
     if ($service_properties) {
       $customer_service->property()->createMany(factory(CustomerServiceProperty::class, $service_properties->count())->make([
-        'customer_property_id' => factory(App\CustomerProperty::class)->create([
+        'customer_property_id' => factory(App\Models\CustomerProperty::class)->create([
             'customer_id' => $customer->id,
             'service_property_id' => $service->first()->id,
             'value' => $faker->word(5, 10),

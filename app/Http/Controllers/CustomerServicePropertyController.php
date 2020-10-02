@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\CustomerServiceProperty;
-use App\Customer;
+use App\Models\CustomerServiceProperty;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class CustomerServicePropertyController extends Controller

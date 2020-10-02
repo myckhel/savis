@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -15,8 +15,8 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use App\Traits\HasImage;
 use App\Traits\User\Role;
-use App\UserCustomer;
-use App\Payment;
+use UserCustomer;
+use Payment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -144,6 +144,9 @@ class User extends Authenticatable implements HasMedia
 
     public function services(){
       return $this->hasMany(Service::class);
+    }
+    public function businesses(){
+      return $this->hasMany(Business::class);
     }
 
     public function customerServices(){

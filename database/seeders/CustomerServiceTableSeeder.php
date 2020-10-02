@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\CustomerService;
+use App\Models\CustomerService;
 
 class CustomerServiceTableSeeder extends Seeder
 {

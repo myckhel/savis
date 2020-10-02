@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\CustomerServiceVariation;
+use App\Models\CustomerServiceVariation;
 use Illuminate\Http\Request;
 
 class CustomerServiceVariationController extends Controller

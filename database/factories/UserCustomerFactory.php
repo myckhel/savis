@@ -2,11 +2,11 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\User;
-use App\Model;
-use App\Customer;
+use App\Models\User;
+use App\Models\Model;
+use App\Models\Customer;
 use Faker\Generator as Faker;
-use App\UserCustomer;
+use App\Models\UserCustomer;
 
 $factory->define(UserCustomer::class, function (Faker $faker) {
     return [

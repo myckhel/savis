@@ -2,8 +2,8 @@
 
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use App\Payment;
-use App\CustomerService;
+use App\Models\Payment;
+use App\Models\CustomerService;
 use Faker\Generator as Faker;
 
 $factory->define(Payment::class, function (Faker $faker) {

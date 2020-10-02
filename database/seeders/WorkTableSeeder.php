@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Work;
+use App\Models\Work;
 
 class WorkTableSeeder extends Seeder
 {

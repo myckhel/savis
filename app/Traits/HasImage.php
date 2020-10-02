@@ -1,6 +1,6 @@
 <?php
 namespace App\Traits;
-use App\Media;
+use App\Models\Media;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as PMedia;
 
 /**

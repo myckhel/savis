@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\User;
-use App\Customer;
+use App\Models\User;
+use App\Models\Customer;
 
 class UserSeeder extends Seeder
 {

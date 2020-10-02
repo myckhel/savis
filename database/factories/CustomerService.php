@@ -4,11 +4,11 @@
 
 // use App\Job;
 // use App\Payment;
-use App\Customer;
-use App\CustomerService;
-use App\CustomerServiceMeta;
-use App\CustomerServiceProperty;
-use App\Service;
+use App\Models\Customer;
+use App\Models\CustomerService;
+use App\Models\CustomerServiceMeta;
+use App\Models\CustomerServiceProperty;
+use App\Models\Service;
 use Faker\Generator as Faker;
 
 $factory->define(CustomerService::class, function (Faker $faker) {

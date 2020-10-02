@@ -2,9 +2,7 @@
 
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use App\Work;
-// use App\Service;
-// use App\Customer;
+use App\Models\Work;
 use App\CustomerService;
 use Faker\Generator as Faker;
 

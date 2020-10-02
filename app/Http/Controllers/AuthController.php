@@ -8,9 +8,9 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Carbon\Carbon;
-use App\User;
+use App\Models\User;
 use App\Notifications\SignupActivate;
-use App\Customer;
+use App\Models\Customer;
 use GuzzleHttp\Client;
 
 class AuthController extends Controller
