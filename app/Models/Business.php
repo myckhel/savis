@@ -13,8 +13,12 @@ class Business extends Model
     protected $casts    = ['category_id' => 'int'];
     protected $searches = ['name', 'email', 'category_id'];
 
-    public function user()
+    public function owner()
     {
-      return $this->belongsTo(User::class);
+      return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function users(){
+      return $this->hasMany(BusinessUser::class);
     }
 }

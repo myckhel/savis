@@ -145,9 +145,15 @@ class User extends Authenticatable implements HasMedia
     public function services(){
       return $this->hasMany(Service::class);
     }
-    public function businesses(){
+    public function ownedBusinesses(){
       return $this->hasMany(Business::class);
     }
+    public function businessUsing(){
+      return $this->hasMany(BusinessUser::class);
+    }
+    // public function businesses(){
+    //   return $this->hasMany(BusinessUser::class);
+    // }
 
     public function customerServices(){
       return $this->hasManyThrough(CustomerService::class, Service::class);

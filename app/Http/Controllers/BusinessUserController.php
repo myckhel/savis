@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Business;
+use App\Models\User;
+use App\Models\BusinessUser;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
-class BusinessController extends Controller
+class BusinessUserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -26,7 +28,7 @@ class BusinessController extends Controller
       $orderBy  = $request->orderBy;
       $search   = $request->search;
 
-      return Business::search($search)
+      return $user->businessUsing()->search($search)
       ->orderBy($orderBy ?? 'id', $order ?? 'asc')
       ->paginate($pageSize);
     }
@@ -50,43 +52,48 @@ class BusinessController extends Controller
     public function store(Request $request)
     {
       $request->validate([
-        // 'id' => 'required|exists:businesses'
-        'name'        => 'required',
-        'email'       => 'email',
-        // 'categor_id'  => 'exists:category',
+        'business_id' => 'required|int',
+        'user_id'     => [
+          'exists:users,id',
+          Rule::requiredIf(fn () => !$request->email)
+        ],
+        'email'   => 'email|exists:users,email',
       ]);
       $user     = $request->user();
+      $business = $user->ownedBusinesses()->findOrFail($request->business_id);
+      $email    = $request->email;
+      $user_id  = $request->user_id;
+      $businessUser = User::when(
+        $email,
+        fn ($q) => $q->whereEmail($email),
+        fn ($q) => $q->whereId($user_id)
+      )->first();
 
-      $business = $user->ownedBusinesses()->create($request->only([
-        'name', 'email'
-      ]));
-
-      $business->users()->create([
-        'user_id' => $user->id
-      ]);
-
-      return $business;
+      return $business->users()->firstOrCreate(
+        ['user_id' => $businessUser->id],
+        ['user_id' => $businessUser->id]
+      );
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Business  $business
+     * @param  \App\Models\BusinessUser  $businessUser
      * @return \Illuminate\Http\Response
      */
-    public function show(Business $business)
+    public function show(BusinessUser $businessUser)
     {
-      $this->authorize('view', $business);
-      return $business;
+      $this->authorize('view', $businessUser);
+      return $businessUser;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Business  $business
+     * @param  \App\Models\BusinessUser  $businessUser
      * @return \Illuminate\Http\Response
      */
-    public function edit(Business $business)
+    public function edit(BusinessUser $businessUser)
     {
         //
     }
@@ -95,28 +102,27 @@ class BusinessController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Business  $business
+     * @param  \App\Models\BusinessUser  $businessUser
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Business $business)
+    public function update(Request $request, BusinessUser $businessUser)
     {
-      $this->authorize('update', $business);
+      $this->authorize('update', $businessUser);
       $request->validate([]);
       $user     = $request->user();
-      $business->update(array_filter($request->only($business->getFillable())));
-      return $business;
+      $businessUser->update(array_filter($request->only($businessUser->getFillable())));
+      return $businessUser;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Business  $business
+     * @param  \App\Models\BusinessUser  $businessUser
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Business $business)
+    public function destroy(BusinessUser $businessUser)
     {
-      $this->authorize('delete', $business);
-      $business->delete();
-      return ['status' => true];
+      $this->authorize('delete', $businessUser);
+      return ['status' => $businessUser->delete()];
     }
 }
