@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Customer;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Payment extends Model
 {
+  use HasFactory;
   protected $fillable = ['customer_service_id', 'access_code', 'type', 'reference', 'amount', 'status', 'message', 'authorization_code', 'currency_code', 'paid_at'];
   //
   public static function countCompletedCustomerService(Customer $customer){

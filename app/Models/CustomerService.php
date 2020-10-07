@@ -7,9 +7,11 @@ use App\CustomerProperty;
 use App\CustomerServiceProperty;
 use App\Http\Controllers\CustomerPropertyController;
 use App\Http\Controllers\CustomerServiceVariationController;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CustomerService extends Model
 {
+  use HasFactory;
   protected $fillable = ['service_id', 'customer_id'];
 
   public function getAmount()

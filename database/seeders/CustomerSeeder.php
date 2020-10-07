@@ -1,9 +1,10 @@
 <?php
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Customer;
 
-class CustomerTableSeeder extends Seeder
+class CustomerSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,9 +13,6 @@ class CustomerTableSeeder extends Seeder
      */
     public function run()
     {
-      //
-      factory(Customer::class, 1000)->create()->each(function ($customer){
-        $customer->save();
-      });
+      Customer::factory()->times(3)->create();
     }
 }

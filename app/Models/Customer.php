@@ -14,10 +14,11 @@ use Carbon\Carbon;
 use App\Traits\HasMeta;
 use App\Traits\User\Role;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Customer extends Authenticatable
 {
-  use Role, HasMeta;
+  use Role, HasFactory, HasMeta;
 
   public static function lookOrFail($customer_id = null, $email = null){
     if(!$customer_id && !$email) return null;

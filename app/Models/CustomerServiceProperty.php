@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CustomerServiceProperty extends Model
 {
+  use HasFactory;
   protected $fillable = ['customer_service_id', 'customer_property_id', 'service_property_id'];
 
   public static function getCredantials(Customer $customer){

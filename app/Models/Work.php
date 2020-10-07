@@ -10,10 +10,11 @@ use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Image\Image;
 use App\Traits\HasImage;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Work extends Model implements HasMedia
 {
-  use InteractsWithMedia, HasImage;
+  use InteractsWithMedia, HasFactory, HasImage;
   public static function countCompletedCustomerService(Customer $customer){
     $customer_services = $customer->customer_services->pluck('id');
     return self::where('status', 'completed')->whereIn('customer_service_id', $customer_services)->count();
