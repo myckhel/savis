@@ -149,7 +149,7 @@ class User extends Authenticatable implements HasMedia
       return $this->hasMany(Business::class);
     }
     public function businessUsing(){
-      return $this->hasMany(BusinessUser::class);
+      return $this->hasMany(BusinessUser::class, 'user_id');
     }
     // public function businesses(){
     //   return $this->hasMany(BusinessUser::class);

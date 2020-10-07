@@ -10,6 +10,7 @@ use App\Models\Service;
 use App\Models\Customer;
 use App\Models\CustomerServiceMeta;
 use App\Http\Controllers\MetaController;
+use App\Http\Requests\BusinessModelRequest;
 
 class CustomerController extends Controller
 {
@@ -24,7 +25,6 @@ class CustomerController extends Controller
   }
 
   public function payments(Request $request, Customer $customer){
-    // $customer = Customer::findOrFail($customer);
     $histories = $customer->payments()->get();
 
     return ['status' => true, 'message' => null, 'histories' => $histories];
@@ -43,17 +43,21 @@ class CustomerController extends Controller
    */
    public function index(Request $request)
    {
-     $this->validatePagination($request);
+     $this->validatePagination($request, [
+       'business_id' => 'int|required'
+     ]);
      $user = $request->user();
+     $businessUser = $user->businessUsing()->whereUserId($user->id)
+     ->whereBusinessId($request->business_id)->firstOrFail();
+     $business = $businessUser->business;
      $this->authorize('viewAnyCustomer', $user);
-     // $customer = new Customer;//$user->customers();
      $search = $request->search;
 
-     $customers = $user->customers()->search($search)->orderBy(($request->orderBy ?? 'created_at'), 'DESC')
+     $customers = $business->customers()->search($search)->orderBy(($request->orderBy ?? 'created_at'), 'DESC')
      ->paginate($request->pageSize);
-     $customers->each(function ($customer) {
-       $customer->withImageUrl(null, 'avatar');
-     });
+     // $customers->each(function ($customer) {
+     //   $customer->withImageUrl(null, 'avatar');
+     // });
      return $customers;
    }
    /**
@@ -71,50 +75,25 @@ class CustomerController extends Controller
     * @param  \Illuminate\Http\Request  $request
     * @return \Illuminate\Http\Response
     */
-   public function store(Request $request)
+   public function store(BusinessModelRequest $request)
    {
-     $user = $request->user();
-     if ($c_id = $request->customer_id) {
-       $customer = Customer::findOrFail($c_id);
-       if ($attached = $user->customers()->find($customer->id)) {
-         return ['status' => false, 'message' => trans('msg.customer.is_attached')];
-       }
-       $user->customers()->attach($customer->id);
-       return ['status' => true, 'message' => trans('msg.customer.added'), 'customer' => $customer];
-     } else {
-       $request->validate([
-         'firstname'    => 'required|max:35|min:3',
-         'lastname'     => 'string|max:35|min:3',
-         'phone'        => 'phone|numeric|min:6',//|max:15',
-         'email'        => 'email',
-         'country_code' => '',
-         'city'         => 'max:45',
-         'lat'          => '',
-         'lng'          => '',
-         'state'        => 'max:45',
-         'address'      => 'nullable',
-         'country'      => 'nullable'
-       ]);
+     $user     = $request->user();
+     $business = $user->businessUsing()->whereBusinessId($request->business_id)->firstOrFail();
+     $business = $business->business;
+     $email    = $request->email;
+     $user_id  = $request->user_id;
+     $customer = User::when(
+       $email,
+       fn ($q) => $q->whereEmail($email),
+       fn ($q) => $q->whereId($user_id)
+     )->firstOrCreate([
+       'email' => $email,
+     ]);
 
-       try {
-         $email         = $request->email;
-         $customer      = Customer::where('email', $email)->first();
-         if ($customer) {
-           if ($attached = $user->customers()->find($customer->id)) {
-             return ['status' => false, 'message' => trans('msg.customer.is_attached')];
-           }
-           $request->validate(['email'        => 'required|email|unique:customers,email']);
-           $user->customers()->attach($customer->id);
-           return ['status' => true, 'message' => trans('user.created')];
-         } else {
-           $customer = Customer::addNew($request);
-           $user->customers()->attach($customer->id);
-           return ['status' => true, 'message' => trans('msg.customer.added'), 'customer' => $customer];
-         }
-       } catch (\Exception $e) {
-         return ['status' => false, 'message' => $e->getMessage()];
-       }
-     }
+     return $business->customers()->firstOrCreate(
+       ['user_id' => $customer->id],
+       ['user_id' => $customer->id]
+     );
    }
    /**
     * Display the specified resource.
@@ -125,7 +104,7 @@ class CustomerController extends Controller
    public function show(Customer $customer)
    {
      $this->authorize('view', $customer);
-     return $customer->withImageUrl(null, 'avatar');
+     return $customer;
    }
    /**
     * Show the form for editing the specified resource.
@@ -167,11 +146,8 @@ class CustomerController extends Controller
     */
    public function destroy(Customer $customer)
    {
-     $deleted;
-     if ($customer) {
-       $deleted = $customer->delete();
-     }
-     return ['status' => !!$deleted];
+     $this->authorize('delete',$customer);
+     return ['status' => $customer->delete()];
    }
 
    public function delete(Request $request)

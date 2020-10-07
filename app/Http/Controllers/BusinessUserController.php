@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\BusinessUser;
+use App\Http\Requests\BusinessModelRequest;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class BusinessUserController extends Controller
 {
@@ -49,16 +49,8 @@ class BusinessUserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BusinessModelRequest $request)
     {
-      $request->validate([
-        'business_id' => 'required|int',
-        'user_id'     => [
-          'exists:users,id',
-          Rule::requiredIf(fn () => !$request->email)
-        ],
-        'email'   => 'email|exists:users,email',
-      ]);
       $user     = $request->user();
       $business = $user->ownedBusinesses()->findOrFail($request->business_id);
       $email    = $request->email;
@@ -67,7 +59,9 @@ class BusinessUserController extends Controller
         $email,
         fn ($q) => $q->whereEmail($email),
         fn ($q) => $q->whereId($user_id)
-      )->first();
+      )->firstOrCreate([
+        'email' => $email,
+      ]);
 
       return $business->users()->firstOrCreate(
         ['user_id' => $businessUser->id],

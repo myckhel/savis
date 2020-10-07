@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Customer;
+use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -41,9 +41,8 @@ class CustomerPolicy
      */
     public function view(User $user, Customer $customer)
     {
-      return !!$user;
-      // return in_array($user->id, $customer->clients()->pluck('user_id')->toArray());
-      // return $customer->clients->contains($user->id);
+      return true;
+      // return $customer->business->users()->whereUserId($user->id)->first();
     }
 
     /**
@@ -83,7 +82,7 @@ class CustomerPolicy
      */
     public function delete(User $user, Customer $customer)
     {
-        //
+      return $user->id == $customer->user_id || $user->id == $customer->business->owner->id;
     }
 
     /**

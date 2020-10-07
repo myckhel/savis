@@ -10,46 +10,32 @@ use Service;
 use ServiceMeta;
 use UserCustomer;
 use CustomerServiceMeta;
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 use App\Traits\HasMeta;
-use Spatie\MediaLibrary\File;
-use Spatie\Image\Image;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use App\Traits\User\Role;
-use App\Traits\HasImage;
 use Illuminate\Database\Eloquent\Model;
 
-class Customer extends Authenticatable implements HasMedia
+class Customer extends Authenticatable
 {
-  use Role, Notifiable, HasApiTokens, SoftDeletes, HasMeta, InteractsWithMedia, HasImage;
+  use Role, HasMeta;
 
   public static function lookOrFail($customer_id = null, $email = null){
     if(!$customer_id && !$email) return null;
 
     return self::when($customer_id, fn ($q) => $q->where('id', $customer_id))
-    ->when($email, fn ($q) => $q->orWhere('email', $email) )
+    ->when($email, fn ($q) => $q->orWhereHas('user', fn ($q) => $q->where('email', $email) ))
     ->firstOrFail();
   }
   public static function lookOrCreate($customer_id = null, $email = null){
     if(!$customer_id && !$email) return null;
 
     return self::when($customer_id, fn ($q) => $q->where('id', $customer_id))
-    ->when($email, fn ($q) => $q->orWhere('email', $email) )
+    ->when($email, fn ($q) => $q->orWhereHas('user', fn ($q) => $q->where('email', $email) ))
     ->firstOrCreate(['email' => $email]);
   }
 
-  protected $fillable = ['firstname', 'lastname', 'email', 'phone', 'state', 'city','address','country', 'lat', 'lng',
-    'password', 'activation_token'
-  ];
-  protected $hidden = ['pivot',
-    'password', 'remember_token', 'activation_token', 'media'
-  ];
+  protected $fillable = ['user_id', 'business_id'];
+  protected $hidden = [];
 
   public function authorizeMedia(Media $media, String $method, Model $user){
     return $media->model_id == $user->id && $media->model_type == get_class($user);
@@ -57,28 +43,11 @@ class Customer extends Authenticatable implements HasMedia
 
   public function grantMeToken($request = null){
     $token = $this->createToken('PAT');
-    // if ($request && $request->remember_me)
-    //     $token->expires_at = Carbon::now()->addWeeks(1);
 
     return [
       'access_token' => $token->plainTextToken,
       'token_type' => 'Bearer',
     ];
-  }
-
-  public static function addNew($request){
-    return self::create([
-      'firstname'   => $request->firstname,
-      'lastname'    => $request->lastname,
-      'email'       => $request->email,
-      'phone'       => $request->phone,
-      'state'       => $request->state,
-      'city'        => $request->city,
-      'address'     => $request->address,
-      'country'     => $request->country,
-      'lat'         => $request->lat,
-      'lng'        => $request->lng,
-    ]);
   }
 
   public static function checkUnique($field, $request){
@@ -111,7 +80,7 @@ class Customer extends Authenticatable implements HasMedia
   public function scopeSearch($q, $search)
   {
     if ($search) {
-      return $q->where(function ($q) use($search) {
+      return $q->whereHas('user', function ($q) use($search) {
         $q->where('firstname', 'LIKE', '%'.$search.'%')->orWhere('lastname', 'LIKE', '%'.$search.'%')
         ->orWhere('phone', 'LIKE', '%'.$search.'%')->orWhere('email', 'LIKE', '%'.$search.'%');
       });
@@ -162,8 +131,18 @@ class Customer extends Authenticatable implements HasMedia
     return $this->hasManyThrough(CustomerServiceProperty::class, CustomerService::class);
   }
 
-  public function clients(){
-    return $this->belongsToMany(Customer::class, 'user_customers');
+  // public function clients(){
+  //   return $this->belongsToMany(Business::class);
+  // }
+  public function client(){
+    return $this->belongsTo(Business::class, 'business_id');
+  }
+  public function user(){
+    return $this->belongsTo(User::class, 'user_id');
+  }
+
+  public function business(){
+    return $this->belongsTo(Business::class, 'business_id');
   }
 
   public function payments(){

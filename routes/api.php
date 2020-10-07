@@ -57,12 +57,9 @@ Route::group([ 'middleware' => 'localization' ], function () {
   });
 
   Route::group([ 'middleware' => 'auth:customer' ], function() {
-    Route::post('customers/metas/add',                [CustomerController::class, 'addMeta']);
-    Route::get('customers/metas/get',                 [CustomerController::class, 'getMeta']);
     Route::post('customers/payments/verify',          [PaymentController::class, 'verify']);
     Route::resource('users', UserController::class)->only(['update', 'index']);
     Route::resource('customers/payments',             PaymentController::class);
-    Route::resource('customers',                      CustomerController::class)->only(['update']);
     Route::group([ 'prefix' => 'customers'], function() {
       Route::resource('service_variations', ServiceVariationController::class)->only(['index', 'show']);
       Route::apiResources([
