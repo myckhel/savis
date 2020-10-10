@@ -13,12 +13,43 @@ class Business extends Model
     protected $casts    = ['category_id' => 'int'];
     protected $searches = ['name', 'email', 'category_id'];
 
+    public function findWorker($id)
+    {
+      return $this->workers()->whereUserId($id)->first();
+    }
+    public function scopeFindWorker($q, $id)
+    {
+      $q->whereUserId($id)->first();
+    }
+
+    public function createService($request){
+      $create = [
+        'name'    => $request->name,
+        'price'   => $request->price,
+        'charge'  => $request->charge,
+      ];
+
+      if ($service_id = $request->service_id) {
+        $service = Service::findOrFail($service_id);
+        $create['service_id'] = $service->id;
+        return $this->services()->create($create);
+      }
+      return $this->services()->firstOrCreate($create, $create);
+    }
+
+    public function services(){
+      return $this->hasMany(Service::class);
+    }
+
     public function owner()
     {
       return $this->belongsTo(User::class, 'user_id');
     }
+    public function serviceVariations(){
+      return $this->hasManyThrough(ServiceVariation::class, Service::class);
+    }
 
-    public function users(){
+    public function workers(){
       return $this->hasMany(BusinessUser::class);
     }
     public function customers(){

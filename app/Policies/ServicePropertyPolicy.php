@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\ServiceProperty;
 use App\Models\User;
+use App\Models\Service;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ServicePropertyPolicy
@@ -50,9 +51,9 @@ class ServicePropertyPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user, Service $service)
     {
-        //
+      return !!$service->business()->findWorker($user->id);
     }
 
     /**

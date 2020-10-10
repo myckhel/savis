@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Service;
+use App\Models\Business;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -39,9 +40,9 @@ class ServicePolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user, Business $business)
     {
-        //
+      // return $user->id == $business->findWorker($user->id);
     }
 
     /**
@@ -53,7 +54,7 @@ class ServicePolicy
      */
     public function update(User $user, Service $service)
     {
-      return $service->user_id == $user->id;
+      return !!$service->business()->findWorker($user->id);
     }
 
     /**
@@ -65,7 +66,7 @@ class ServicePolicy
      */
     public function delete(User $user, Service $service)
     {
-      return $service->user_id == $user->id;
+      return !!$service->business()->findWorker($user->id);
     }
 
     /**

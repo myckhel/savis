@@ -16,15 +16,10 @@ class ServiceVariationController extends Controller
     public function index(Request $request)
     {
       $user = $request->user();
-      if ($user->getRole() == 'user') {
-        return $user->serviceVariations()
-        ->with(['variation:id,name', 'service:id,name'])->paginate();
-      } else {
-        $request->validate(['service_id' => 'required|int']);
-        $service = Service::findOrFail($request->service_id);
-        return $service->variations()
-        ->with(['variation:id,name', 'service:id,name'])->paginate();
-      }
+      $request->validate(['service_id' => 'required|int']);
+      $service = Service::findOrFail($request->service_id);
+      return $service->variations()
+      ->with(['variation:id,name', 'service:id,name'])->paginate();
     }
 
     /**

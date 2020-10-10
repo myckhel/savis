@@ -15,10 +15,11 @@ class CreateVariationsTable extends Migration
     {
         Schema::create('variations', function (Blueprint $table) {
           $table->bigIncrements('id');
-          $table->bigInteger('user_id')->unsigned();
+          $table->bigInteger('business_id')->unsigned();
           $table->string('name')->index();
+          $table->softDeletes();
           $table->timestamps();
-          $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+          $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
         });
     }
 

@@ -23,12 +23,12 @@ class Service extends Model implements HasMedia
   }
 
   protected $parentColumnName = 'service_id';
-  // protected $casts = ['properties' => 'array'];
+  protected $casts = ['price' => 'float', 'charge' => 'float', 'rules' => 'array'];
   // protected $depthColumnName = 'depth';
   public function fields()
   {
     $parent         = $this->service;
-    $parentProps    = $parent->properties->keyValue();
+    $parentProps    = $parent ? $parent->properties->keyValue() : [];
     $props          = $this->properties->keyValue();
     return array_merge($parentProps, $props);
   }
@@ -89,8 +89,8 @@ class Service extends Model implements HasMedia
   public function service(){
     return $this->belongsTo(Service::class);
   }
-  public function user(){
-    return $this->belongsTo(User::class);
+  public function business(){
+    return $this->belongsTo(Business::class);
   }
   public function customer_services(){
     return $this->hasMany(CustomerService::class);

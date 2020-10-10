@@ -61,7 +61,6 @@ Route::group([ 'middleware' => 'localization' ], function () {
     Route::resource('users', UserController::class)->only(['update', 'index']);
     Route::resource('customers/payments',             PaymentController::class);
     Route::group([ 'prefix' => 'customers'], function() {
-      Route::resource('service_variations', ServiceVariationController::class)->only(['index', 'show']);
       Route::apiResources([
         'customer_services'               => CustomerServiceController::class,
         'medias'                          => MediaController::class,
@@ -95,6 +94,7 @@ Route::group([ 'middleware' => 'localization' ], function () {
 
     Route::resource('customers',    CustomerController::class)->except(['update']);
     Route::resource('users',        UserController::class)->except(['index']);
+    // Route::resource('service_variations', ServiceVariationController::class)->only(['index', 'show']);
     Route::apiResources([
       'customer_services'           => CustomerServiceController::class,
       'service_properties'          => ServicePropertyController::class,

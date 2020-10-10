@@ -47,21 +47,6 @@ class User extends Authenticatable implements HasMedia
       return $customer;
     }
 
-    public function createService($request){
-      $create = [
-        'name'    => $request->name,
-        'price'   => $request->price,
-        'charge'  => $request->charge,
-      ];
-
-      if ($service_id = $request->service_id) {
-        $service = Service::findOrFail($service_id);
-        $create['service_id'] = $service->id;
-        return $this->services()->create($create);
-      }
-      return $this->services()->create($create);
-    }
-
     /**
      * The attributes that are mass assignable.
      *
@@ -100,13 +85,13 @@ class User extends Authenticatable implements HasMedia
       return true;
     }
 
-    public function properties() {
-      $id = $this->id;
-      return CustomerProperty::whereHas('customer', function ($q) use($id) {
-        $q->whereHas('clients', function ($q) use($id) {
-          $q->where('user_id', $id);
-        });
-      });
+    public function properties($business_id = null) {
+      return $this->hasManyThrough(CustomerProperty::class, Customer::class)
+      ->when($business_id, fn ($q) => $q->whereHas('customer', fn ($q) =>
+        $q->whereHas('business', fn ($q) =>
+          $q->whereId($business_id)
+        ))
+      );
     }
 
     public function authorizeMedia(Media $media, String $method, Model $user){
@@ -142,9 +127,6 @@ class User extends Authenticatable implements HasMedia
       // return $this->customers->services;
     }
 
-    public function services(){
-      return $this->hasMany(Service::class);
-    }
     public function ownedBusinesses(){
       return $this->hasMany(Business::class);
     }
@@ -164,9 +146,6 @@ class User extends Authenticatable implements HasMedia
     // public function customerServiceVariations(){
     //   return $this->hasManyThrough(ServiceVariation::class, CustomerService::class, 'customer_id', 'service_id');
     // }
-    public function serviceVariations(){
-      return $this->hasManyThrough(ServiceVariation::class, Service::class);
-    }
 
     public function registerMediaCollections(Media $media = null) : void {
       $this->addMediaCollection('avatar')

@@ -30,7 +30,7 @@ class BusinessUserPolicy
      */
     public function view(User $user, BusinessUser $businessUser)
     {
-      return $businessUser->business->users()->whereUserId($user->id)->first();
+      return $businessUser->business->findWorker($user->id);
     }
 
     /**

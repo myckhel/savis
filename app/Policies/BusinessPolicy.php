@@ -91,4 +91,9 @@ class BusinessPolicy
     {
         //
     }
+
+    public function canWork(User $user, Business $business)
+    {
+      return !!$business->findWorker($user->id);
+    }
 }

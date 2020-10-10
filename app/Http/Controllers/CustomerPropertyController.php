@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Business;
 use App\Models\ServiceProperty;
 use App\Models\CustomerProperty;
 use Illuminate\Http\Request;
@@ -15,8 +17,15 @@ class CustomerPropertyController extends Controller
      */
     public function index(Request $request)
     {
-      $this->validatePagination($request);
-      $user   = $request->user();
+      $this->validatePagination($request, [
+        'business_id' => 'int',
+        'user_id'     => 'int',
+      ]);
+      $business = $request->business_id ? Business::findOrFail($request->business_id) : null;
+      if ($request->user_id) {
+        $this->authorize('canWork', $business);
+      }
+      $user     = $request->user_id ? User::findOrFail($request->user_id) : $request->user();
       return CustomerProperty::getProps($request, $user);
     }
 
@@ -40,8 +49,9 @@ class CustomerPropertyController extends Controller
     {
       $request->validate([
         'properties'          => 'required|array',
-        'customer_id'         => 'int',
+        'business_id'         => 'required|int',
         'customer_email'      => 'email',
+        'customer_id'         => 'email',
         'properties.values'   => 'required|array',
         'properties.service_property_ids'   => 'required|array',
         'properties.service_property_ids.*' => 'int',
@@ -51,8 +61,28 @@ class CustomerPropertyController extends Controller
       $authUser          = $request->user();
       $properties        = $request->properties;
       $customer_id       = $request->customer_id;
+      $user_id           = $request->user_id;
       $email             = $request->email;
-      $customer          = $authUser->isCustomer() ? $authUser : $authUser->findCustomer($customer_id, $email);
+      $business          = Business::findOrFail($request->business_id);
+      $customer;
+      if ($customer_id) {
+        $customer = $business->customers()->findOrFail($customer_id);
+      } else {
+        $user;
+        if ($email) {
+          $user = User::firstOrCreate([
+            'email' => $email,
+          ], [
+            'email' => $email,
+          ]);
+        } elseif ($user_id) {
+          $user = User::findOrFail($user_id);
+        }
+        $customer = $business->customers()->firstOrCreate(
+          ['user_id' => $user->id ?? $authUser->id],
+          ['user_id' => $user->id ?? $authUser->id]
+        );
+      }
 
       $creates = [];
       $len     = sizeof($properties);
@@ -66,27 +96,12 @@ class CustomerPropertyController extends Controller
         $creates[] = [
           'value'               => $value,
           'service_property_id' => $service_property_id,
-          'customer_id'         => $customer_id,
+          'customer_id'         => $customer->id,
         ];
-      }
-
-      if ($authUser->isCustomer()) {
-        $customer = $authUser;
-      } else {
-        $user = $authUser;
-        // todo require either fields
-        $request->validate([
-          'customer_id'     => 'int',
-          'customer_email'  => 'email',
-        ]);
-        $customer = $user->findCustomer($request->customer_id, $request->customer_email);
-        // auth user can attach properties for his customer service
-        // $this->authorize('attach', $prop);
       }
 
       $customerProperties = $customer->properties()->createMany($creates);
 
-      // ($customerProperties && $attachments) && $customerProperty->saveAttachments($attachments, 'attachments', true);
       return $customerProperties;
       // ->withAttachedUrl('attachments');
     }
