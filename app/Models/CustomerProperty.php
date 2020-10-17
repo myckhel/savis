@@ -29,8 +29,9 @@ class CustomerProperty extends Model implements HasMedia
     }
   }
 
-  protected $fillable = ['service_property_id', 'customer_id', 'value'];
-  protected $hidden = ['media'];
+  protected $fillable = ['service_property_id', 'customer_service_id', 'customer_id', 'value'];
+  protected $hidden   = ['media'];
+  protected $casts    = ['service_property_id' => 'int', 'customer_service_id' => 'int'];
 
   public static function getProps($request, $user){
     $order  = $request->order;

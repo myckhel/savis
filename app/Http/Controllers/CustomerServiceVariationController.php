@@ -11,27 +11,6 @@ use Illuminate\Http\Request;
 class CustomerServiceVariationController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
-    {
-      // $user = $request->user();
-      // return $user->customerServiceVariations()->paginate();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -48,7 +27,7 @@ class CustomerServiceVariationController extends Controller
 
       $business           = $vars['business'] ?? null;
       $service            = $vars['service'] ?? null;
-      $customerService    = $vars['customerService'] ?? null; 
+      $customerService    = $vars['customerService'] ?? null;
       $serviceVariations  = $vars['serviceVariations'] ?? null;
 
       if (!$business && $request->business_id) {

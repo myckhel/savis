@@ -30,7 +30,7 @@ class VariationPolicy
      */
     public function view(User $user, Variation $variation)
     {
-      return $user->id == $variation->user_id;
+      return !!$user->hasVariation($variation->id);
     }
 
     /**
@@ -53,7 +53,7 @@ class VariationPolicy
      */
     public function update(User $user, Variation $variation)
     {
-      return $user->id == $variation->user_id;
+      return !!$user->hasVariation($variation->id);
     }
 
     /**
@@ -65,7 +65,7 @@ class VariationPolicy
      */
     public function delete(User $user, Variation $variation)
     {
-      return $user->id == $variation->user_id;
+      return !!$user->hasVariation($variation->id);
     }
 
     /**

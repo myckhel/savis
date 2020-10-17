@@ -54,6 +54,9 @@ class Business extends Model
     public function serviceVariations(){
       return $this->hasManyThrough(ServiceVariation::class, Service::class);
     }
+    public function variations(){
+      return $this->hasMany(Variation::class);
+    }
 
     public function workers(){
       return $this->hasMany(BusinessUser::class);

@@ -24,6 +24,42 @@ class User extends Authenticatable implements HasMedia
 {
     use HasFactory, HasApiTokens, Role, InteractsWithMedia, Notifiable, SoftDeletes, HasMeta, HasImage;
 
+    public function findOrFailBusiness($business_id, $call = null){
+      return $this->businessUsing($business_id)->with('business')->when($call, $call)->firstOrFail()->business;
+    }
+    public function findOrFailBusinessWhereHas($business_id, $vars = []){
+      $variation_id         = $vars['variation_id'] ?? null;
+      $service_id           = $vars['service_id'] ?? null;
+      $service_variation_id = $vars['service_variation_id'] ?? null;
+
+      return $this->findOrFailBusiness($business_id,
+        fn ($q)     => $q->whereHas('business',
+          fn ($q)   => $q->when($variation_id, fn ($q) => $q->whereHas('variations',
+            fn ($q) => $q->whereId($variation_id)
+          ))
+          ->when($service_id || $service_variation_id,
+            fn ($q)     => $q->whereHas('services',
+              fn ($q)   => $q->when($service_id,
+                fn ($q) => $q->whereId($service_id),
+                fn ($q) => $q->whereHas('variations', fn ($q) => $q->whereId($service_variation_id)),
+              )
+            )
+          )
+        )
+      );
+    }
+    public function findBusiness($business_id){
+      $bUser = $this->businessUsing($business_id)->first();
+      return $bUser ? $bUser->business : null;
+    }
+
+    public function hasVariation($variation_id){
+      return $this->businessUsing()
+      ->whereHas('business', fn ($q) =>
+        $q->whereHas('variations', fn ($q) => $q->whereId($variation_id))
+      )->first();
+    }
+
     function findCustomer($customer = null, $email = null){
       if(!$customer && !$email) return null;
 
@@ -75,16 +111,6 @@ class User extends Authenticatable implements HasMedia
         'email_verified_at' => 'datetime',
     ];
 
-    public function isCustomer()
-    {
-      return false;
-    }
-
-    public function isAdmin()
-    {
-      return true;
-    }
-
     public function properties($business_id = null) {
       return $this->hasManyThrough(CustomerProperty::class, Customer::class)
       ->when($business_id, fn ($q) => $q->whereHas('customer', fn ($q) =>
@@ -130,8 +156,9 @@ class User extends Authenticatable implements HasMedia
     public function ownedBusinesses(){
       return $this->hasMany(Business::class);
     }
-    public function businessUsing(){
-      return $this->hasMany(BusinessUser::class, 'user_id');
+    public function businessUsing($business_id = null){
+      return $this->hasMany(BusinessUser::class, 'user_id')
+      ->when($business_id, fn ($q) => $q->whereBusinessId($business_id));
     }
     // public function businesses(){
     //   return $this->hasMany(BusinessUser::class);

@@ -98,4 +98,9 @@ class BusinessPolicy
       return !!$business->findWorker($user->id)
         && $service ? $service->business_id === $business->id : true;
     }
+    public function work(User $user, Business $business, Service $service = null)
+    {
+      return !!$business->findWorker($user->id)
+        && $service ? $service->business_id === $business->id : true;
+    }
 }

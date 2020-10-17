@@ -15,8 +15,8 @@ class ServiceVariationController extends Controller
      */
     public function index(Request $request)
     {
-      $user = $request->user();
       $request->validate(['service_id' => 'required|int']);
+      $user = $request->user();
       $service = Service::findOrFail($request->service_id);
       return $service->variations()
       ->with(['variation:id,name', 'service:id,name'])->paginate();
@@ -43,17 +43,21 @@ class ServiceVariationController extends Controller
       $request->validate([
         'variation_id' => 'required|int',
         'service_id'   => 'required|int',
+        'business_id'  => 'required|int',
       ]);
 
       $user       = $request->user();
-      $variation  = $user->variations()->findOrFail($request->variation_id);
-      $service    = $user->services()->findOrFail($request->service_id);
-      return $user->serviceVariations()->create([
-        'variation_id' => $variation->id,
-        'service_id'   => $service->id,
+      $business   = $user->findOrFailBusinessWhereHas($request->business_id, [
+        'variation_id'  => $request->variation_id,
+        'service_id'    => $request->service_id,
+      ]);
+      $create = [
+        'variation_id' => $request->variation_id,
+        'service_id'   => $request->service_id,
         'amount'       => $request->amount,
         'value'        => $request->value,
-      ]);
+      ];
+      return $business->serviceVariations()->create($create);
     }
 
     /**
@@ -64,13 +68,7 @@ class ServiceVariationController extends Controller
      */
     public function show(Request $request, ServiceVariation $serviceVariation)
     {
-      $user = $request->user();
-      if($user->getRole() === 'user'){
-        $this->authorize('view', $serviceVariation);
-        return $serviceVariation->load(['variation:id,name', 'service:id,name,price,charge']);
-      } else {
-        return $serviceVariation->load(['variation:id,name', 'service:id,name,price,charge']);
-      }
+      return $serviceVariation->load(['variation:id,name', 'service:id,name,price,charge']);
     }
 
     /**
@@ -93,10 +91,18 @@ class ServiceVariationController extends Controller
      */
     public function update(Request $request, ServiceVariation $serviceVariation)
     {
-      $request->validate(['amount' => 'required']);
-      $this->authorize('update', $serviceVariation);
-      $serviceVariation->update($request->only(['amount']));
-      return $serviceVariation->unsetRelations();
+      $request->validate([
+        'amount'       => 'required',
+        'variation_id' => 'int',
+        'service_id'   => 'int',
+      ]);
+      $user       = $request->user();
+      $business   = $user->findOrFailBusinessWhereHas($request->business_id, [
+        'variation_id'  => $request->variation_id,
+        'service_id'    => $request->service_id,
+      ]);
+      $serviceVariation->update($request->all());
+      return $serviceVariation;
     }
 
     /**
@@ -105,12 +111,14 @@ class ServiceVariationController extends Controller
      * @param  \App\ServiceVariation  $serviceVariation
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ServiceVariation $serviceVariation)
+    public function destroy(Request $request, ServiceVariation $serviceVariation)
     {
-      $this->authorize('delete', $serviceVariation);
+      $user     = $request->user();
+      $user->findOrFailBusinessWhereHas($request->business_id, [
+        'service_variation_id' => $serviceVariation->id,
+      ]);
       if ($serviceVariation->customerServiceVariations()->count()) {
-        return ['status' => false];
-        // return ['status' => $serviceVariation->delete()];
+        return ['status' => $serviceVariation->delete()];
       } else {
         return ['status' => $serviceVariation->forceDelete()];
       }

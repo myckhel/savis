@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\CustomerServiceProperty;
 use App\Models\Customer;
+use App\Models\User;
+use App\Models\Service;
+use App\Models\Business;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CustomerServicePropertyController extends Controller
 {
@@ -15,10 +19,24 @@ class CustomerServicePropertyController extends Controller
      */
     public function index(Request $request)
     {
-      $user           = $request->user();
-      $customer_id    = $request->customer_id;
-      $customer       = Customer::findOrFail($customer_id);
-      return $customer->service_properties()->paginate();
+      $request->validate([
+        'business_id' => 'int',
+        'service_id'  => 'int',
+        'customer_id' => ['int', Rule::requiredIf(fn () => $request->business_id && !$request->user_id)],
+        'user_id'     => ['int', Rule::requiredIf(fn () => $request->business_id && !$request->customer_id)],
+      ]);
+      $customer_id  = $request->customer_id;
+      $business     = $request->business_id ? Business::findOrFail($request->business_id) : null;
+      $service      = $request->service_id  ? Service::findOrFail($request->service_id) : null;
+      $user         = $request->user_id     ? User::findOrFail($request->user_id) : null;
+      $customer     = $business->customers()
+      ->when($user, fn ($q) => $q->whereHas('user', fn ($q) => $q->where('id', $user->id)))
+      ->when($customer_id, fn ($q) => $q->whereId($customer_id))
+      ->firstOrFail();
+      $this->authorize('canWork', [$business, $service]);
+
+      // $user           = $request->user();
+      return $customer->serviceProperties($request->service_id)->paginate();
     }
 
     /**
@@ -39,17 +57,23 @@ class CustomerServicePropertyController extends Controller
      */
     public function store(Request $request)
     {
-      $user_id                = $request->user_id;
+      $request->validate([
+        'business_id'             => 'int',
+        'customer_service_id'     => 'int',
+        'service_property_ids'    => 'array',
+        'service_property_ids.*'  => 'int',
+        'customer_property_ids'   => 'array',
+        'customer_property_ids.*' => 'int',
+      ]);
       $customer_service_id    = $request->customer_service_id;
       $customer_property_ids  = $request->customer_property_ids;
       $service_property_ids   = $request->service_property_ids;
-      $customer_id            = $request->customer_id;
+      $business_id            = $request->business_id;
       $user                   = $request->user();
+      $business               = $business_id ? $user->findOrFailBusiness($business_id) : null;
 
-      $customer               = $user->isCustomer() ? $user : Customer::findOrFail($customer_id);
-
-      $customerService        = $customer->services()->findOrFail($customer_service_id);
-      $creates                = $this->toMany($customer_property_ids, $service_property_ids, $customer_id);
+      $customerService        = $business->customerServices()->findOrFail($customer_service_id);
+      $creates                = $this->toMany($customer_property_ids, $service_property_ids, $customerService->customer_id);
       return $customerService->properties()->createMany($creates);
     }
 

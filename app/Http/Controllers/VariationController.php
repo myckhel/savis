@@ -14,17 +14,11 @@ class VariationController extends Controller
      */
     public function index(Request $request)
     {
-      $user = $request->user();
-      return $user->variations()->paginate();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
-    {
+      $request->validate(['business_id' => 'int']);
+      $user         = $request->user();
+      $business_id  = $request->business_id;
+      $business     = $business_id ? $user->findOrFailBusiness($business_id) : null;
+      return $business->variations()->paginate();
     }
 
     /**
@@ -36,11 +30,13 @@ class VariationController extends Controller
     public function store(Request $request)
     {
       $request->validate([
-        'name' => 'required',
+        'name'        => 'required',
+        'business_id' => 'required|int',
       ]);
+      $user     = $request->user();
+      $business = $user->findOrFailBusiness($request->business_id);
 
-      $user = $request->user();
-      return $user->variations()->create([
+      return $business->variations()->create([
         'name' => $request->name,
       ]);
     }
@@ -92,9 +88,11 @@ class VariationController extends Controller
     {
       $this->authorize('delete', $variation);
       if ($variation->serviceVariations()->count()) {
+        // SoftDeletes
+        $variation->delete();
         return ['status' => false];
       } else {
-        $variation->delete();
+        $variation->forceDelete();
         return ['status' => true];
       }
     }

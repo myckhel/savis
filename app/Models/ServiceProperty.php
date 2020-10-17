@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\CustomerServiceServiceProperty;
+use App\Models\CustomerService;
 use \Illuminate\Database\Eloquent\Collection;
 
 class ServiceProperty extends Model

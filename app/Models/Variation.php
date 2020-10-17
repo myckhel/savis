@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Variation extends Model
 {
-  protected $fillable = [/*'user_id',*/'name'];
+  protected $fillable = ['business_id','name'];
+  protected $casts    = ['business_id' => 'int'];
 
   public function business()
   {
