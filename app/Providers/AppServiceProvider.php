@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use App\Observers\CustomerServiceObserver;
+use App\Models\CustomerService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+      CustomerService::observe(CustomerServiceObserver::class);
       // Validator::extend('exists', ModelExist::class);
     }
 }

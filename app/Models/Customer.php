@@ -13,6 +13,7 @@ use CustomerServiceMeta;
 use Carbon\Carbon;
 use App\Traits\HasMeta;
 use App\Traits\User\Role;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -27,13 +28,14 @@ class Customer extends Authenticatable
     ->when($email, fn ($q) => $q->orWhereHas('user', fn ($q) => $q->where('email', $email) ))
     ->firstOrFail();
   }
-  public static function lookOrCreate($customer_id = null, $email = null){
-    if(!$customer_id && !$email) return null;
-
-    return self::when($customer_id, fn ($q) => $q->where('id', $customer_id))
-    ->when($email, fn ($q) => $q->orWhereHas('user', fn ($q) => $q->where('email', $email) ))
-    ->firstOrCreate(['email' => $email]);
-  }
+  // public static function lookOrCreate($customer_id = null, $email = null){
+  //   if(!$customer_id && !$email) return null;
+  //
+  //   $customer = self::when($customer_id, fn ($q) => $q->where('id', $customer_id))
+  //   ->when($email, fn ($q) => $q->orWhereHas('user', fn ($q) => $q->where('email', $email) ))
+  //   ->first();
+  //   return $customer ? $customer : User::create(['email' => $email])->;
+  // }
 
   protected $fillable = ['user_id', 'business_id'];
   protected $hidden = [];
@@ -113,23 +115,16 @@ class Customer extends Authenticatable
     return $services;
   }
 
-  public function isCustomer()
-  {
-    return true;
-  }
-
-  public function isAdmin()
-  {
-    return false;
-  }
-
   // relationship
   public function services(){
     return $this->hasMany(CustomerService::class);
   }
 
-  public function service_properties(){
-    return $this->hasManyThrough(CustomerServiceProperty::class, CustomerService::class);
+  public function serviceProperties($service_id = null){
+    return $this->hasManyThrough(CustomerServiceProperty::class, CustomerService::class)
+    ->when($service_id, fn ($q) => $q->whereHas('customerService',
+      fn ($q) => $q->whereHas('service', fn ($q) => $q->where('id', $service_id))
+    ));
   }
 
   // public function clients(){

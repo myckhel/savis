@@ -37,6 +37,12 @@ class Business extends Model
       return $this->services()->firstOrCreate($create, $create);
     }
 
+    public function customerServices($customer_id = null, $user_id = null){
+      return $this->hasManyThrough(CustomerService::class, Service::class)
+      ->when($customer_id, fn ($q) => $q->whereCustomerId($customer_id))
+      ->when($user_id, fn ($q) => $q->whereHas('customer', fn ($q) => $q->whereUserId($user_id)));
+    }
+
     public function services(){
       return $this->hasMany(Service::class);
     }
@@ -52,7 +58,8 @@ class Business extends Model
     public function workers(){
       return $this->hasMany(BusinessUser::class);
     }
-    public function customers(){
-      return $this->hasMany(Customer::class);
+    public function customers($customer_id = null){
+      return $this->hasMany(Customer::class)
+      ->when($customer_id, fn ($q) => $q->whereId($customer_id));
     }
 }

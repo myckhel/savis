@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Service;
+use App\Models\Business;
+use App\Models\CustomerService;
 use App\Models\CustomerServiceVariation;
 use Illuminate\Http\Request;
 
@@ -34,27 +37,35 @@ class CustomerServiceVariationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $vars = [])
     {
       $request->validate([
+        'business_id'           => 'int',
         'customer_service_id'   => 'required|int',
         'service_variations'    => 'required|array',
         'service_variations.*'  => 'int',
       ]);
+
+      $business           = $vars['business'] ?? null;
+      $service            = $vars['service'] ?? null;
+      $customerService    = $vars['customerService'] ?? null; 
+      $serviceVariations  = $vars['serviceVariations'] ?? null;
+
+      if (!$business && $request->business_id) {
+        $business = Business::findOrFail($request->business_id);
+        $this->authorize('canWork', [$business, $service]);
+      }
 
       $user = $request->user();
       $customer_service_id  = $request->customer_service_id;
       $service_variations   = $request->service_variations;
       $customerServiceVariations = [];
 
-      if ($user->getRole() == 'user') {
-        $customerService = $user->customerServices()->findOrFail($customer_service_id);
-        $serviceVariations = $customerService->service->variations()->whereIn('id', $service_variations)->get();
-        // $this->validate('create', [CustomerServiceVariation::class, $customerService, $serviceVariations]);
-      } else {
-        $customerService = $user->services()->findOrFail($customer_service_id);
-        $serviceVariations = $customerService->service->variations()->whereIn('id', $service_variations)->get();
+      if (!$customerService) {
+        $customerService = $business->customerServices()->findOrFail($customer_service_id);
       }
+      $serviceVariations = $serviceVariations ? $serviceVariations : $customerService->service->variations()->whereIn('id', $service_variations)->get();
+
       if ($serviceVariations) {
         $serviceVariations->each(function ($p) use($customerService) {
           $p->service_variation_id = $p->id;

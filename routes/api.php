@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::group([ 'middleware' => 'localization' ], function () {
-  Route::get('users/count', fn () => App\User::count());
+  Route::get('users/count', fn () => App\Models\User::count());
 
   Route::group([ 'prefix' => 'auth' ], function () {
     // user auth
@@ -56,7 +56,7 @@ Route::group([ 'middleware' => 'localization' ], function () {
       return $request->user();
   });
 
-  Route::group([ 'middleware' => 'auth:customer' ], function() {
+  /*Route::group([ 'middleware' => 'auth:customer' ], function() {
     Route::post('customers/payments/verify',          [PaymentController::class, 'verify']);
     Route::resource('users', UserController::class)->only(['update', 'index']);
     Route::resource('customers/payments',             PaymentController::class);
@@ -73,7 +73,7 @@ Route::group([ 'middleware' => 'localization' ], function () {
       ]);
     });
     // Route::post('users/customers/{customer}', 'UserController@addCustomer');
-  });
+});*/
 
   Route::group([ 'middleware' => 'auth:api' ], function() {
     Route::get('users/current',                [UserController::class, 'current']);
