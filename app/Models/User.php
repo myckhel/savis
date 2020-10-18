@@ -146,6 +146,18 @@ class User extends Authenticatable implements HasMedia
       return $this->hasMany(Worker::class, 'user_id')
       ->when($business_id, fn ($q) => $q->whereBusinessId($business_id));
     }
+    public function workers($business_id = null, $vars = []){
+      $user_id = $vars['user_id'] ?? null;
+      return $this->hasMany(Worker::class, 'user_id')
+      ->when($business_id, fn ($q) => $q->whereBusinessId($business_id))
+      ->when($user_id,
+        fn ($q) => $q->whereHas('business',
+          fn ($q) => $q->whereHas('workers',
+            fn ($q) => $q->whereUserId($user_id)
+          )
+        )
+      );
+    }
     // public function businesses(){
     //   return $this->hasMany(Worker::class);
     // }

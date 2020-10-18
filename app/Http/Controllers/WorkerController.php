@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Worker;
+use App\Models\Business;
 use App\Http\Requests\BusinessModelRequest;
 use Illuminate\Http\Request;
 
@@ -21,14 +22,17 @@ class WorkerController extends Controller
         'search'      => 'min:3',
         'order'       => 'in:asc,desc',
         'pageSize'    => 'int',
+        'business_id' => 'int',
       ]);
       $user     = $request->user();
       $pageSize = $request->pageSize;
       $order    = $request->order;
       $orderBy  = $request->orderBy;
       $search   = $request->search;
+      $business_id   = $request->business_id;
 
-      return $user->businessUsing()->search($search)
+      return Worker::workers($business_id, ['user_id' => $user->id])
+      ->search($search)
       ->orderBy($orderBy ?? 'id', $order ?? 'asc')
       ->paginate($pageSize);
     }
@@ -55,7 +59,7 @@ class WorkerController extends Controller
       $business = $user->ownedBusinesses()->findOrFail($request->business_id);
       $email    = $request->email;
       $user_id  = $request->user_id;
-      $businessUser = User::when(
+      $worker = User::when(
         $email,
         fn ($q) => $q->whereEmail($email),
         fn ($q) => $q->whereId($user_id)
@@ -63,31 +67,31 @@ class WorkerController extends Controller
         'email' => $email,
       ]);
 
-      return $business->users()->firstOrCreate(
-        ['user_id' => $businessUser->id],
-        ['user_id' => $businessUser->id]
+      return $business->workers()->firstOrCreate(
+        ['user_id' => $worker->id],
+        ['user_id' => $worker->id]
       );
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Worker  $businessUser
+     * @param  \App\Models\Worker  $worker
      * @return \Illuminate\Http\Response
      */
-    public function show(Worker $businessUser)
+    public function show(Worker $worker)
     {
-      $this->authorize('view', $businessUser);
-      return $businessUser;
+      $this->authorize('view', $worker);
+      return $worker;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Worker  $businessUser
+     * @param  \App\Models\Worker  $worker
      * @return \Illuminate\Http\Response
      */
-    public function edit(Worker $businessUser)
+    public function edit(Worker $worker)
     {
         //
     }
@@ -96,27 +100,27 @@ class WorkerController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Worker  $businessUser
+     * @param  \App\Models\Worker  $worker
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Worker $businessUser)
+    public function update(Request $request, Worker $worker)
     {
-      $this->authorize('update', $businessUser);
+      $this->authorize('update', $worker);
       $request->validate([]);
       $user     = $request->user();
-      $businessUser->update(array_filter($request->only($businessUser->getFillable())));
-      return $businessUser;
+      $worker->update(array_filter($request->only($worker->getFillable())));
+      return $worker;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Worker  $businessUser
+     * @param  \App\Models\Worker  $worker
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Worker $businessUser)
+    public function destroy(Worker $worker)
     {
-      $this->authorize('delete', $businessUser);
-      return ['status' => $businessUser->delete()];
+      $this->authorize('delete', $worker);
+      return ['status' => $worker->delete()];
     }
 }

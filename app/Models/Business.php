@@ -67,7 +67,7 @@ class Business extends Model
       return $this->hasMany(Variation::class);
     }
 
-    public function workers(){
+    public function workers($business_id = null, $vars = []){
       return $this->hasMany(Worker::class);
     }
     public function customers($customer_id = null){

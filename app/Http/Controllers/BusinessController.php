@@ -61,7 +61,7 @@ class BusinessController extends Controller
         'name', 'email'
       ]));
 
-      $business->users()->create([
+      $business->workers()->create([
         'user_id' => $user->id
       ]);
 

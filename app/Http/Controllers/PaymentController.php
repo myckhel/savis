@@ -19,21 +19,23 @@ class PaymentController extends Controller
       $request->validate([
         'search'        => '',
         'orderBy'       => ['regex:(amount|message|reference|currency_code|status)', 'nullable'],
-        'pageSize'      => 'nullable|int',
+        'pageSize'      => 'int',
+        'business_id'   => 'int',
       ]);
 
       $user           = $request->user();
       $search         = $request->search;
       $orderBy        = $request->orderBy;
       $pageSize       = $request->pageSize;
+      $business_id    = $request->business_id;
 
-      $payments = $user->payments();
-
-      if ($search) $payments->where('status', 'LIKE', '%'.$search.'%')
-      ->orWhere('amount', 'LIKE', '%'.$search.'%')->orWhere('reference', 'LIKE', '%'.$search.'%')
-      ->orWhere('message', 'LIKE', '%'.$search.'%')->orWhere('currency_code', 'LIKE', '%'.$search.'%');
-
-      return $payments->orderBy($orderBy ?? 'id')->paginate($pageSize ?? 15);
+      return Payment::business($business_id, ['user_id' => $user->id])
+      ->when($search,
+        fn ($q) => $q->where('status', 'LIKE', '%'.$search.'%')
+        ->orWhere('amount', 'LIKE', '%'.$search.'%')->orWhere('reference', 'LIKE', '%'.$search.'%')
+        ->orWhere('message', 'LIKE', '%'.$search.'%')->orWhere('currency_code', 'LIKE', '%'.$search.'%')
+      )->orderBy($orderBy ?? 'id')
+      ->paginate($pageSize ?? 15);
     }
 
     /**
@@ -56,25 +58,32 @@ class PaymentController extends Controller
     {
       $request->validate([
         'customer_service_id'   => 'required|int',
+        'business_id'           => 'int',
         'type'                  => 'in:card,cash,pos',
         'status'                => 'in:pending,completed,failed',
       ]);
       \Request::instance()->query->set('trxref', $request->trxref);
-      $customerService  = CustomerService::findOrFail($request->customer_service_id);
-      $amount           = $customerService->getAmount();
-      $type             = $request->type;
-      $status           = $request->status;
-      $user             = $request->user();
+      $type                = $request->type;
+      $status              = $request->status;
+      $business_id         = $request->business_id;
+      $customer_service_id = $request->customer_service_id;
+      $user                = $request->user();
 
-      if ($user->isAdmin()) {
-        $customer = $customerService->customer;
-        return $customer->payments()->create([
-          'customer_service_id'   => $customerService->id,
+      if ($business_id) {
+        $business = $user->findOrFailBusinessWhereHas(
+          $request->business_id,
+          ['customer_service_id' => $customer_service_id],
+        );
+        $amount = CustomerService::find($customer_service_id)->getAmount();
+
+        return Payment::create([
+          'customer_service_id'   => $customer_service_id,
           'amount'                => $amount,
           'type'                  => $type,
           'status'                => $status,
         ]);
       } else {
+        $customerService  = CustomerService::findOrFail($request->customer_service_id);
         $data             = ["amount" => $amount, "email" => $user->email];
         $response         = Paystack::getAuthorizationResponse($data);
 

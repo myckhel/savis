@@ -25,12 +25,12 @@ class WorkerPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Worker  $businessUser
+     * @param  \App\Models\Worker  $worker
      * @return mixed
      */
-    public function view(User $user, Worker $businessUser)
+    public function view(User $user, Worker $worker)
     {
-      return $businessUser->business->findWorker($user->id);
+      return true;
     }
 
     /**
@@ -48,10 +48,10 @@ class WorkerPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Worker  $businessUser
+     * @param  \App\Models\Worker  $worker
      * @return mixed
      */
-    public function update(User $user, Worker $businessUser)
+    public function update(User $user, Worker $worker)
     {
         //
     }
@@ -60,22 +60,22 @@ class WorkerPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Worker  $businessUser
+     * @param  \App\Models\Worker  $worker
      * @return mixed
      */
-    public function delete(User $user, Worker $businessUser)
+    public function delete(User $user, Worker $worker)
     {
-      return $user->id == $businessUser->user_id || $user->id == $businessUser->business->owner->id;
+      return $user->id == $worker->user_id || $user->id == $worker->business->owner->id;
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Worker  $businessUser
+     * @param  \App\Models\Worker  $worker
      * @return mixed
      */
-    public function restore(User $user, Worker $businessUser)
+    public function restore(User $user, Worker $worker)
     {
         //
     }
@@ -84,10 +84,10 @@ class WorkerPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Worker  $businessUser
+     * @param  \App\Models\Worker  $worker
      * @return mixed
      */
-    public function forceDelete(User $user, Worker $businessUser)
+    public function forceDelete(User $user, Worker $worker)
     {
         //
     }

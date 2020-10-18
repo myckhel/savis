@@ -29,10 +29,9 @@ class WorkPolicy
      * @param  \App\Models\work  $work
      * @return mixed
      */
-    public function view($user, work $work)
+    public function view(User $user, work $work)
     {
-      $job = $user->jobs()->find($work->id);
-      return $job->id ?? false == $work->id;
+      return !!$work->relatedTo($user->id)->first();
     }
 
     /**
@@ -55,7 +54,7 @@ class WorkPolicy
      */
     public function update(User $user, work $work)
     {
-      return $user->jobs()->find($work->id)->id == $work->id;
+      return !!$work->relatedToWork($user->id)->first();
     }
 
     /**
