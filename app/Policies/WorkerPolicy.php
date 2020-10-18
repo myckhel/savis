@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\BusinessUser;
+use App\Models\Worker;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class BusinessUserPolicy
+class WorkerPolicy
 {
     use HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class BusinessUserPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\BusinessUser  $businessUser
+     * @param  \App\Models\Worker  $businessUser
      * @return mixed
      */
-    public function view(User $user, BusinessUser $businessUser)
+    public function view(User $user, Worker $businessUser)
     {
       return $businessUser->business->findWorker($user->id);
     }
@@ -48,10 +48,10 @@ class BusinessUserPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\BusinessUser  $businessUser
+     * @param  \App\Models\Worker  $businessUser
      * @return mixed
      */
-    public function update(User $user, BusinessUser $businessUser)
+    public function update(User $user, Worker $businessUser)
     {
         //
     }
@@ -60,10 +60,10 @@ class BusinessUserPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\BusinessUser  $businessUser
+     * @param  \App\Models\Worker  $businessUser
      * @return mixed
      */
-    public function delete(User $user, BusinessUser $businessUser)
+    public function delete(User $user, Worker $businessUser)
     {
       return $user->id == $businessUser->user_id || $user->id == $businessUser->business->owner->id;
     }
@@ -72,10 +72,10 @@ class BusinessUserPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\BusinessUser  $businessUser
+     * @param  \App\Models\Worker  $businessUser
      * @return mixed
      */
-    public function restore(User $user, BusinessUser $businessUser)
+    public function restore(User $user, Worker $businessUser)
     {
         //
     }
@@ -84,10 +84,10 @@ class BusinessUserPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\BusinessUser  $businessUser
+     * @param  \App\Models\Worker  $businessUser
      * @return mixed
      */
-    public function forceDelete(User $user, BusinessUser $businessUser)
+    public function forceDelete(User $user, Worker $businessUser)
     {
         //
     }

@@ -4,17 +4,17 @@ namespace Database\Factories;
 
 use App\Models\User;
 use App\Models\Business;
-use App\Models\BusinessUser;
+use App\Models\Worker;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class BusinessUserFactory extends Factory
+class WorkerFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = BusinessUser::class;
+    protected $model = Worker::class;
 
     /**
      * Define the model's default state.

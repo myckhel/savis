@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBusinessUsersTable extends Migration
+class CreateWorkersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateBusinessUsersTable extends Migration
      */
     public function up()
     {
-      Schema::create('business_users', function (Blueprint $table) {
+      Schema::create('workers', function (Blueprint $table) {
         $table->id();
         $table->bigInteger('business_id')->unsigned();
         $table->bigInteger('user_id')->unsigned();
@@ -30,6 +30,6 @@ class CreateBusinessUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('business_users');
+        Schema::dropIfExists('workers');
     }
 }

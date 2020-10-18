@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\BusinessUser;
+use App\Models\Worker;
 use App\Http\Requests\BusinessModelRequest;
 use Illuminate\Http\Request;
 
-class BusinessUserController extends Controller
+class WorkerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -72,10 +72,10 @@ class BusinessUserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\BusinessUser  $businessUser
+     * @param  \App\Models\Worker  $businessUser
      * @return \Illuminate\Http\Response
      */
-    public function show(BusinessUser $businessUser)
+    public function show(Worker $businessUser)
     {
       $this->authorize('view', $businessUser);
       return $businessUser;
@@ -84,10 +84,10 @@ class BusinessUserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\BusinessUser  $businessUser
+     * @param  \App\Models\Worker  $businessUser
      * @return \Illuminate\Http\Response
      */
-    public function edit(BusinessUser $businessUser)
+    public function edit(Worker $businessUser)
     {
         //
     }
@@ -96,10 +96,10 @@ class BusinessUserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\BusinessUser  $businessUser
+     * @param  \App\Models\Worker  $businessUser
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, BusinessUser $businessUser)
+    public function update(Request $request, Worker $businessUser)
     {
       $this->authorize('update', $businessUser);
       $request->validate([]);
@@ -111,10 +111,10 @@ class BusinessUserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\BusinessUser  $businessUser
+     * @param  \App\Models\Worker  $businessUser
      * @return \Illuminate\Http\Response
      */
-    public function destroy(BusinessUser $businessUser)
+    public function destroy(Worker $businessUser)
     {
       $this->authorize('delete', $businessUser);
       return ['status' => $businessUser->delete()];

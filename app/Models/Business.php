@@ -42,6 +42,15 @@ class Business extends Model
       ->when($customer_id, fn ($q) => $q->whereCustomerId($customer_id))
       ->when($user_id, fn ($q) => $q->whereHas('customer', fn ($q) => $q->whereUserId($user_id)));
     }
+    public function customerService($customer_id = null, $user_id = null){
+      return $this->hasOneThrough(CustomerService::class, Service::class)
+      ->when($customer_id, fn ($q) => $q->whereCustomerId($customer_id))
+      ->when($user_id, fn ($q) => $q->whereHas('customer', fn ($q) => $q->whereUserId($user_id)));
+    }
+
+    public function payments(){
+      return $this->hasManyThrough(Payment::class, CustomerService::class);
+    }
 
     public function services(){
       return $this->hasMany(Service::class);
@@ -59,7 +68,7 @@ class Business extends Model
     }
 
     public function workers(){
-      return $this->hasMany(BusinessUser::class);
+      return $this->hasMany(Worker::class);
     }
     public function customers($customer_id = null){
       return $this->hasMany(Customer::class)

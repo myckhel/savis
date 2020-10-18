@@ -7,7 +7,7 @@ use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BusinessUser extends Model
+class Worker extends Model
 {
     use HasFactory, Searchable, HasMeta;
     protected $fillable = ['user_id', 'business_id'];

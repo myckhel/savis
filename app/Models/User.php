@@ -16,7 +16,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use App\Traits\HasImage;
 use App\Traits\User\Role;
 use UserCustomer;
-use Payment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -27,12 +26,13 @@ class User extends Authenticatable implements HasMedia
     public function findOrFailBusiness($business_id, $call = null){
       return $this->businessUsing($business_id)->with('business')->when($call, $call)->firstOrFail()->business;
     }
-    public function findOrFailBusinessWhereHas($business_id, $vars = []){
+    public function findOrFailBusinessWhereHas($business_id, $vars = [], $call = null){
       $variation_id         = $vars['variation_id'] ?? null;
       $service_id           = $vars['service_id'] ?? null;
       $service_variation_id = $vars['service_variation_id'] ?? null;
 
-      return $this->findOrFailBusiness($business_id,
+      return $this->findOrFailBusiness(
+        $business_id,
         fn ($q)     => $q->whereHas('business',
           fn ($q)   => $q->when($variation_id, fn ($q) => $q->whereHas('variations',
             fn ($q) => $q->whereId($variation_id)
@@ -45,7 +45,8 @@ class User extends Authenticatable implements HasMedia
               )
             )
           )
-        )
+        ),
+        $call,
       );
     }
     public function findBusiness($business_id){
@@ -125,16 +126,6 @@ class User extends Authenticatable implements HasMedia
       // $this->can('delete', $medis);
     }
 
-    public function jobs() {
-      $id = $this->id;
-      return Work::whereHas('customer_service', function ($q) use($id) {
-        $q->whereHas('customer', function ($q) use($id) {
-          $q->whereHas('clients', fn ($q) => $q->where('user_id', $id));
-        })
-        ->whereHas('service', fn ($q) => $q->where('user_id', $id));
-      });
-    }
-
     public function customers(){
       return $this->belongsToMany(Customer::class, UserCustomer::class)->withTimestamps();
     }
@@ -148,20 +139,15 @@ class User extends Authenticatable implements HasMedia
     //   return $this->hasManyThrough(CustomerService::class, UserCustomer::class);
     // }
 
-    public function payments(){
-      return $this->hasManyThrough(Payment::class, CustomerService::class);
-      // return $this->customers->services;
-    }
-
     public function ownedBusinesses(){
       return $this->hasMany(Business::class);
     }
     public function businessUsing($business_id = null){
-      return $this->hasMany(BusinessUser::class, 'user_id')
+      return $this->hasMany(Worker::class, 'user_id')
       ->when($business_id, fn ($q) => $q->whereBusinessId($business_id));
     }
     // public function businesses(){
-    //   return $this->hasMany(BusinessUser::class);
+    //   return $this->hasMany(Worker::class);
     // }
 
     public function customerServices(){
