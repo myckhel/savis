@@ -31,7 +31,7 @@ class CreatePaymentsTable extends Migration
        Schema::table('payments', function (Blueprint $table) {
          $table->foreign('customer_service_id')->references('id')->on('customer_services')->onDelete('cascade');
        });
-       DB::statement("ALTER TABLE payments AUTO_INCREMENT = 345226;");
+       // DB::statement("ALTER TABLE payments AUTO_INCREMENT = 345226;");
      }
 
      /**
