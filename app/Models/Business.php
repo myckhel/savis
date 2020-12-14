@@ -22,6 +22,11 @@ class Business extends Model
       $q->whereUserId($id)->first();
     }
 
+    public function addCustomer($create){
+      return $this->customers()
+      ->firstOrCreate($create, $create);
+    }
+
     public function createService($request){
       $create = [
         'name'    => $request->name,

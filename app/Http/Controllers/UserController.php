@@ -51,7 +51,7 @@ class UserController extends Controller
     public function show(User $user)
     {
       $this->authorize('view', $user);
-      return $user->withImageUrl(null, 'avatar');
+      return $user->withUrls('avatar');
     }
 
     /**

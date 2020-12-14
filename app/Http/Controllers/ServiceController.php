@@ -21,19 +21,19 @@ class ServiceController extends Controller
      public function index(Request $request)
      {
        $this->validatePagination($request, [
-         'business_id' => 'required|int',
+         'business_id' => 'int',
          'orderBy'     => ['regex:(id|created_at|name)'],
        ]);
 
        $user = $request->user();
-       $business = Business::findOrFail($request->business_id);
 
-       $services = $business->services()->search($request->search)
+       $services = Service::when($request->business_id, fn ($q) => $q->whereBusinessId($request->business_id))
+       ->search($request->search)
        ->orderBy($request->orderBy, $request->order)
                   ->paginate($request->pageSize);
 
         $services->map(function (Service $service) {
-          $service->withImageUrl(null, 'logo');
+          $service->withUrls('logo');
         });
         return $services;
      }

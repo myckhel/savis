@@ -1,71 +1,112 @@
 <?php
 namespace App\Traits;
-use App\Models\Media;
-use Spatie\MediaLibrary\MediaCollections\Models\Media as PMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  *
  */
 trait HasImage
 {
-  public function saveImage($image, $collection, $getMedia=false){
-    $medias = [];
-    if (\is_array($image))
-      foreach ($image as $img)
-        $medias[] = $this->uploadImage($img, $collection);
-    else $medias = $this->uploadImage($image, $collection);
-    if ($getMedia) {
-      return $medias;
-    } else {
-      return $this->withImageUrl($medias, $collection, \is_array($image));
+  protected $mimes = ['image/jpeg', 'image/png', 'image/gif'];
+
+  public function saveImage($image, $collection, $getMedia = false){
+    if ($image) {
+      $medias = [];
+      if (\is_array($image))
+        foreach ($image as $img)
+          $medias[] = $this->uploadImage($img, $collection);
+      else $medias[] = $this->uploadImage($image, $collection);
+      if ($getMedia) {
+        return $medias;
+      } else {
+        return $this->withUrls($collection, \is_array($image), $medias);
+      }
     }
   }
 
-  public function withImageUrl($medias = null, $collection, $is_array = false){
-    if (!$medias) $medias = $is_array ? $this->getMedia($collection) : $this->getFirstMedia($collection);
-
+  private function generateCollectionUrl(&$medias, $is_array, $collection) {
     if ($medias) {
-      $images = [];
+      $images;
       if ($is_array) {
         $images = [];
+        $medias = $this->getMedia($collection);
         for ($i=0; $i < sizeof($medias); $i++) {
           $images[] = $this->imageObj($medias[$i]);
         }
       } else {
-        $images = $this->imageObj($medias);
+        $images = $this->imageObj(is_array($medias) ? $medias[0] : $medias);
       }
       if ($images) $this->$collection = $images;
+    } else {
+      // if (!$is_array) {
+      //   $this->$collection = $this->imageObj(null, true);
+      // }
+    }
+  }
+
+  private function generateCollectionsUrl($collection, $medias = false){
+    $is_array = $this->collectionIsArray($collection);
+    $collection_name_is_array = is_array($collection);
+    $collection_name = $collection_name_is_array ? $collection[0] : $collection;
+    $collection_medias = !$medias ? $is_array ? $this->getMedia($collection_name) : $this->getFirstMedia($collection_name) : $medias;
+
+    $this->generateCollectionUrl($collection_medias, $is_array, $collection_name);
+  }
+
+  public function withUrls($collections, $is_array = false, $medias = null){
+    if (is_array($collections)) {
+      foreach ($collections as $collection) {
+        $this->generateCollectionsUrl($collection, $medias);
+      }
+    } else {
+      $this->generateCollectionsUrl($collections, $medias);
     }
     return $this;
   }
 
-  private function imageObj($media){
+  private function collectionIsArray($collection){
+    $collection = $this->getMediaCollection(is_array($collection) ? $collection[0] : $collection);
+    return match($collection->collectionSizeLimit) {
+      1 => false,
+      false => true,
+      default => true
+    };
+  }
+
+  private function imageObj($media, $fallback = false){
     $image = new \stdClass();
-    $image->thumb = $media->getUrl('thumb');
-    $image->url = $media->getUrl();
-    $image->metas = $media->custom_properties;
-    $image->metas['id'] = $media->id;
+    $fallbackUrl = 'https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';
+    $image->thumb   = $fallback ? $fallbackUrl : $media->getUrl('thumb');
+    $image->medium  = $fallback ? $fallbackUrl : $media->getUrl('medium');
+    $image->url     = $fallback ? $fallbackUrl : $media->getUrl();
+    $image->metas   = $fallback ? ['fallback' => true] : ['fallback' => false] + $media->custom_properties;
     return $image;
   }
 
   public function uploadImage($image, $collection){
+    $type           = strpos($image, ';');
+    $type           = explode(':', substr($image, 0, $type))[1];
+    $ext            = explode('/', $type)[1];
+    $file_name      = rand().'.'.$ext;
+
     return $this->addMediaFromBase64($image)
-    ->usingName($collection)->toMediaCollection($collection);
+    ->usingName($collection)->usingFileName($file_name)
+    ->toMediaCollection($collection);
   }
 
-  public function destroyMedia(Media $media)
-  {
-    dd($media);
-    // $media->delete();
-  }
-
-  private function convertionCallback(){
-    return (function (PMedia $media = null) {
-      $this->addMediaConversion('thumb')->nonQueued()
-      ->width(368)->height(232);
-      //->sharpen(10)
-      $this->addMediaConversion('medium')->nonQueued()
-      ->width(400)->height(400);
+  private function convertionCallback($queued = false){
+    return (function (Media $media = null) use($queued) {
+      if ($queued) {
+        $this->addMediaConversion('thumb')
+        ->width(368)->height(232);
+        $this->addMediaConversion('medium')
+        ->width(400)->height(400);
+      } else {
+        $this->addMediaConversion('thumb')->nonQueued()
+        ->width(368)->height(232);
+        $this->addMediaConversion('medium')->nonQueued()
+        ->width(400)->height(400);
+      }
     });
   }
 }

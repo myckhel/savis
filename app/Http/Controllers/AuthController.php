@@ -104,7 +104,7 @@ class AuthController extends Controller
             ], 401);
 
         $user = $request->user();
-        $user->withImageUrl(null, 'avatar');
+        $user->withUrls('avatar');
         $tokenResult = $user->createToken('UAT');
         // $token = $tokenResult->token;
         // if ($request->remember_me)
@@ -246,7 +246,7 @@ class AuthController extends Controller
 
     if ($user) {
       if (Hash::check($password, $user->password)) {
-        $user->withImageUrl(null, 'avatar');
+        $user->withUrls(null, 'avatar');
         $token = $user->grantMeToken();
         return [
           'access_token'    => $token['access_token'],

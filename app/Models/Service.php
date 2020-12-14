@@ -107,11 +107,11 @@ class Service extends Model implements HasMedia
     return $this->hasManyThrough(Payment::class, CustomerService::class);
   }
 
-  public function registerMediaCollections(Media $media = null) : void {
+  public function registerMediaCollections() : void {
     $this->addMediaCollection('logo')
-    ->useFallbackUrl('https://www.pngitem.com/middle/hhmRJo_profile-icon-png-image-free-download-searchpng-employee')
-    ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/gif'])
+    ->useFallbackUrl('https://picsum.photos/200/300')
+    ->acceptsMimeTypes($this->mimes)
     ->singleFile()->useDisk('service_images')
-    ->registerMediaConversions($this->convertionCallback());
+    ->registerMediaConversions($this->convertionCallback(true));
   }
 }
