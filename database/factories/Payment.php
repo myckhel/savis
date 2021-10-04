@@ -2,8 +2,8 @@
 
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use App\Payment;
-use App\CustomerService;
+use App\Models\Payment;
+use App\Models\CustomerService;
 use Faker\Generator as Faker;
 
 $factory->define(Payment::class, function (Faker $faker) {
@@ -16,6 +16,6 @@ $factory->define(Payment::class, function (Faker $faker) {
       'access_code'         => $faker->unique()->sha256,
       'authorization_code'  => $faker->sha256,
       'currency_code'       => $faker->currencyCode,
-      'paid_at'            => $faker->dateTime,
+      'paid_at'             => $faker->dateTimeThisYear,
     ];
 });

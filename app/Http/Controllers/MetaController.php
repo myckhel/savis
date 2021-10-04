@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Meta;
+use App\Models\Meta;
 use Illuminate\Http\Request;
 
 class MetaController extends Controller

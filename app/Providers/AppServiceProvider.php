@@ -3,11 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
-use Laravel\Passport\Console\ClientCommand;
-use Laravel\Passport\Console\InstallCommand;
-use Laravel\Passport\Console\KeysCommand;
-use Laravel\Passport\Passport;
+use Illuminate\Support\Facades\Validator;
+use App\Observers\CustomerServiceObserver;
+use App\Models\CustomerService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,11 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-        $this->commands([
-            InstallCommand::class,
-            ClientCommand::class,
-            KeysCommand::class,
-        ]);
+      CustomerService::observe(CustomerServiceObserver::class);
+      // Validator::extend('exists', ModelExist::class);
     }
 }

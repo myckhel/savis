@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\ServiceProperty;
-use App\CustomerProperty;
+use App\Models\User;
+use App\Models\Business;
+use App\Models\ServiceProperty;
+use App\Models\CustomerProperty;
 use Illuminate\Http\Request;
 
 class CustomerPropertyController extends Controller
@@ -15,8 +17,15 @@ class CustomerPropertyController extends Controller
      */
     public function index(Request $request)
     {
-      $this->validatePagination($request);
-      $user   = $request->user();
+      $this->validatePagination($request, [
+        'business_id' => 'int',
+        'user_id'     => 'int',
+      ]);
+      $business = $request->business_id ? Business::findOrFail($request->business_id) : null;
+      if ($request->user_id) {
+        $this->authorize('canWork', $business);
+      }
+      $user     = $request->user_id ? User::findOrFail($request->user_id) : $request->user();
       return CustomerProperty::getProps($request, $user);
     }
 
@@ -39,37 +48,62 @@ class CustomerPropertyController extends Controller
     public function store(Request $request)
     {
       $request->validate([
-        'service_property_id' => 'required|int',
-        'value'               => 'required',
-        'attachments'         => 'array:file',
+        'properties'          => 'required|array',
+        'business_id'         => 'required|int',
+        'customer_email'      => 'email',
+        'customer_id'         => 'email',
+        'properties.values'   => 'required|array',
+        'properties.service_property_ids'   => 'required|array',
+        'properties.service_property_ids.*' => 'int',
       ]);
+      // todo either fields required
 
-      $authUser = $request->user();
-      $value = $request->value;
-      $attachments = $request->file('attachments');
-      $service_property_id = $request->service_property_id;
-      $prop = ServiceProperty::findOrFail($service_property_id);
-
-      if ($authUser->isCustomer()) {
-        $customer = $authUser;
+      $authUser          = $request->user();
+      $properties        = $request->properties;
+      $customer_id       = $request->customer_id;
+      $user_id           = $request->user_id;
+      $email             = $request->email;
+      $business          = Business::findOrFail($request->business_id);
+      $customer;
+      if ($customer_id) {
+        $customer = $business->customers()->findOrFail($customer_id);
       } else {
-        $user = $authUser;
-        $request->validate(['customer_id' => 'required|int']);
-        $customer = $user->customers()->findOrFail($request->customer_id);
-        // auth user can attach properties for his customer service
-        $this->authorize('attach', $prop);
+        $user;
+        if ($email) {
+          $user = User::firstOrCreate([
+            'email' => $email,
+          ], [
+            'email' => $email,
+          ]);
+        } elseif ($user_id) {
+          $user = User::findOrFail($user_id);
+        }
+        $customer = $business->customers()->firstOrCreate(
+          ['user_id' => $user->id ?? $authUser->id],
+          ['user_id' => $user->id ?? $authUser->id]
+        );
       }
 
-      $toCreate = [
-        'service_property_id' => $prop->id,
-        'value'               => $value
-      ];
-      $customerProperty = $customer->properties()->updateOrCreate(
-        $toCreate, $toCreate
-      );
+      $creates = [];
+      $len     = sizeof($properties['service_property_ids'] ?? []);
+      for ($key=0; $key < $len; $key++) {
+        // $attachments  = $request->file('attachments');
+        $value               = $properties['values'][$key];
+        $service_property_id = $properties['service_property_ids'][$key];
+        // validate all fields
 
-      ($customerProperty && $attachments) && $customerProperty->saveAttachments($attachments, 'attachments', true);
-      return $customerProperty->withAttachedUrl('attachments');
+        // serial
+        $creates[] = [
+          'value'               => $value,
+          'service_property_id' => $service_property_id,
+          'customer_id'         => $customer->id,
+        ];
+      }
+
+      $customerProperties = $customer->properties()->createMany($creates);
+
+      return $customerProperties;
+      // ->withAttachedUrl('attachments');
     }
 
     /**

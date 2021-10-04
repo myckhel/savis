@@ -2,9 +2,9 @@
 
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use App\Service;
-use App\ServiceMeta;
-use App\ServiceProperty;
+use App\Models\Service;
+use App\Models\ServiceMeta;
+use App\Models\ServiceProperty;
 use Faker\Generator as Faker;
 
 $factory->define(Service::class, function (Faker $faker) {

@@ -1,4 +1,7 @@
 <?php
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+use App\Models\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +20,7 @@ Route::get('/clear-cache', function() {
 });
 
 Route::get('/test', function(){
-  return App\Service::all()->count();
+  return App\Models\Service::all()->count();
 });
 
 // migrate db
@@ -59,6 +62,6 @@ Route::get('/db/migrate/fresh', function() {
 // Route::view('/', 'welcome');
 // Route::view('home','welcome');
 
-Auth::routes();
+// Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');

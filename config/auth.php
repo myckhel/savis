@@ -42,12 +42,12 @@ return [
         ],
 
         'api' => [
-            'driver' => 'passport',
+            'driver' => 'sanctum',
             'provider' => 'users',
             'hash' => false,
         ],
         'customer' => [
-            'driver' => 'passport',
+            'driver' => 'sanctum',
             'provider' => 'customers',
             'hash' => false,
         ],
@@ -73,12 +73,12 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model' => App\Models\User::class,
         ],
 
         'customers' => [
             'driver' => 'eloquent',
-            'model' => App\Customer::class,
+            'model' => App\Models\Customer::class,
         ],
     ],
 

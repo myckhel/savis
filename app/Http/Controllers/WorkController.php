@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Work;
+use App\Models\Work;
 use Illuminate\Http\Request;
 
 class WorkController extends Controller
@@ -15,24 +15,16 @@ class WorkController extends Controller
     public function index(Request $request)
     {
       $request->validate([
-        'orderBy' => ['regex:(id|created_at)'],
-        'order' => ['regex:(desc|asc)'],
+        'orderBy'     => ['regex:(id|created_at)'],
+        'order'       => ['regex:(desc|asc)'],
+        'business_id' => 'int',
       ]);
 
       $user = $request->user();
-      return $user->jobs()->search($request->search)
+      return Work::business($request->business_id, ['user_id', $user->id])
+      ->search($request->search)
       ->orderBy($request->orderBy ?? 'id', $request->order ?? 'asc')
       ->paginate();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**

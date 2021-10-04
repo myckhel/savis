@@ -2,8 +2,8 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\CustomerProperty;
-use App\ServiceProperty;
+use App\Models\CustomerProperty;
+use App\Models\ServiceProperty;
 use Faker\Generator as Faker;
 
 $factory->define(CustomerProperty::class, function (Faker $faker) {

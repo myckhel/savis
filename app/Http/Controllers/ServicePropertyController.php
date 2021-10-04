@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\ServiceProperty;
+use App\Models\ServiceProperty;
 use Illuminate\Http\Request;
-use App\Service;
+use App\Models\Service;
 
 class ServicePropertyController extends Controller
 {
@@ -40,6 +40,7 @@ class ServicePropertyController extends Controller
          'metas'      => 'required|array',//[{name=> 'phone', rules => {required: true, file: cdr}}]
        ]);
        $service = Service::findOrFail($request->service_id);
+       $this->authorize('create', [ServiceProperty::class, $service]);
        $creates = $request->metas;
        $serviceProperties = $service->properties()->createMany($creates);
        return ['status' => true, 'serviceProperties' => $serviceProperties];

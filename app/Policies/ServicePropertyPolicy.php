@@ -2,8 +2,9 @@
 
 namespace App\Policies;
 
-use App\ServiceProperty;
-use App\User;
+use App\Models\ServiceProperty;
+use App\Models\User;
+use App\Models\Service;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ServicePropertyPolicy
@@ -13,7 +14,7 @@ class ServicePropertyPolicy
     /**
      * Determine whether the user can view any service properties.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
     public function viewAny(User $user)
@@ -24,7 +25,7 @@ class ServicePropertyPolicy
     /**
      * Determine whether the user can view any service properties.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
     public function attach(User $user, ServiceProperty $serviceProperty)
@@ -35,8 +36,8 @@ class ServicePropertyPolicy
     /**
      * Determine whether the user can view the service property.
      *
-     * @param  \App\User  $user
-     * @param  \App\ServiceProperty  $serviceProperty
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\ServiceProperty  $serviceProperty
      * @return mixed
      */
     public function view(User $user, ServiceProperty $serviceProperty)
@@ -47,19 +48,19 @@ class ServicePropertyPolicy
     /**
      * Determine whether the user can create service properties.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user, Service $service)
     {
-        //
+      return !!$service->business()->findWorker($user->id);
     }
 
     /**
      * Determine whether the user can update the service property.
      *
-     * @param  \App\User  $user
-     * @param  \App\ServiceProperty  $serviceProperty
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\ServiceProperty  $serviceProperty
      * @return mixed
      */
     public function update(User $user, ServiceProperty $serviceProperty)
@@ -70,8 +71,8 @@ class ServicePropertyPolicy
     /**
      * Determine whether the user can delete the service property.
      *
-     * @param  \App\User  $user
-     * @param  \App\ServiceProperty  $serviceProperty
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\ServiceProperty  $serviceProperty
      * @return mixed
      */
     public function delete(User $user, ServiceProperty $serviceProperty)
@@ -82,8 +83,8 @@ class ServicePropertyPolicy
     /**
      * Determine whether the user can restore the service property.
      *
-     * @param  \App\User  $user
-     * @param  \App\ServiceProperty  $serviceProperty
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\ServiceProperty  $serviceProperty
      * @return mixed
      */
     public function restore(User $user, ServiceProperty $serviceProperty)
@@ -94,8 +95,8 @@ class ServicePropertyPolicy
     /**
      * Determine whether the user can permanently delete the service property.
      *
-     * @param  \App\User  $user
-     * @param  \App\ServiceProperty  $serviceProperty
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\ServiceProperty  $serviceProperty
      * @return mixed
      */
     public function forceDelete(User $user, ServiceProperty $serviceProperty)

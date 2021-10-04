@@ -16,10 +16,10 @@ class CreatePaymentsTable extends Migration
        Schema::create('payments', function (Blueprint $table) {
          $table->bigIncrements('id');
          $table->bigInteger('customer_service_id')->unsigned();
-         $table->string('access_code')->unique();
+         $table->string('access_code')->unique()->nullable();
          $table->string('reference')->nullable();
          $table->decimal('amount', 9,3);
-         // $table->float('paid', 10, 2)->nullable();
+         $table->enum('type', ['card', 'cash', 'pos'])->default('card');
          $table->enum('status', ['processing', 'success', 'on hold', 'pending', 'completed', 'canceled', 'failed'])->default('pending');
          $table->string('message')->nullable();
          $table->string('authorization_code')->nullable();
@@ -31,7 +31,7 @@ class CreatePaymentsTable extends Migration
        Schema::table('payments', function (Blueprint $table) {
          $table->foreign('customer_service_id')->references('id')->on('customer_services')->onDelete('cascade');
        });
-       DB::statement("ALTER TABLE payments AUTO_INCREMENT = 345226;");
+       // DB::statement("ALTER TABLE payments AUTO_INCREMENT = 345226;");
      }
 
      /**

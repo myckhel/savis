@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\CustomerService;
-use App\CustomerProperty;
-use App\CustomerServiceProperty;
-use App\CustomerServiceServiceProperty;
+use App\Models\CustomerService;
+use App\Models\CustomerProperty;
+use App\Models\CustomerServiceProperty;
+use App\Models\CustomerServiceServiceProperty;
 use Faker\Generator as Faker;
 
 $factory->define(CustomerServiceProperty::class, function (Faker $faker) {
