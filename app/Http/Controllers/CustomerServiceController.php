@@ -60,10 +60,10 @@ class CustomerServiceController extends Controller
        ]);
 
        $user = $request->user();
-       $service = Service::findOrFail($request->service_id);
+       $service = Service::with('business')->whereId($request->service_id)->firstOrFail();
+       $business = $service->business;
 
        if ($request->business_id) {
-         $business = Business::findOrFail($request->business_id);
          $this->authorize('canWork', [$business, $service]);
 
          if ($customer_id = $request->customer_id) {
@@ -77,6 +77,8 @@ class CustomerServiceController extends Controller
            $customer = $business->customers()
            ->firstOrCreate(['user_id' => $userc->id], ['user_id' => $userc->id]);
          }
+       } else {
+         $customer = $business->addCustomer(['user_id' => $user->id]);
        }
 
        $customerService = $customer->services()->create([

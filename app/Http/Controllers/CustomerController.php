@@ -86,7 +86,7 @@ class CustomerController extends Controller
        $email,
        fn ($q) => $q->whereEmail($email),
        fn ($q) => $q->whereId($user_id)
-     )->firstOrCreate([
+     )->firstOrCreate([],[
        'email' => $email,
      ]);
 

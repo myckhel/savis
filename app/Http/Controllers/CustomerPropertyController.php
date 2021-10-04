@@ -85,7 +85,7 @@ class CustomerPropertyController extends Controller
       }
 
       $creates = [];
-      $len     = sizeof($properties);
+      $len     = sizeof($properties['service_property_ids'] ?? []);
       for ($key=0; $key < $len; $key++) {
         // $attachments  = $request->file('attachments');
         $value               = $properties['values'][$key];

@@ -28,14 +28,13 @@ class CustomerServicePropertyController extends Controller
       $customer_id  = $request->customer_id;
       $business     = $request->business_id ? Business::findOrFail($request->business_id) : null;
       $service      = $request->service_id  ? Service::findOrFail($request->service_id) : null;
-      $user         = $request->user_id     ? User::findOrFail($request->user_id) : null;
+
       $customer     = $business->customers()
-      ->when($user, fn ($q) => $q->whereHas('user', fn ($q) => $q->where('id', $user->id)))
+      ->when($request->user_id, fn ($q) => $q->whereUserId($request->user_id))
       ->when($customer_id, fn ($q) => $q->whereId($customer_id))
       ->firstOrFail();
       $this->authorize('canWork', [$business, $service]);
 
-      // $user           = $request->user();
       return $customer->serviceProperties($request->service_id)->paginate();
     }
 

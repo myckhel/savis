@@ -94,7 +94,7 @@ Route::group([ 'middleware' => 'localization' ], function () {
     Route::post('payments/verify',                [PaymentController::class, 'verify']);
 
     Route::resource('customers',    CustomerController::class)->except(['update']);
-    Route::resource('users',        UserController::class)->except(['index']);
+    Route::resource('users',        UserController::class);
     // Route::resource('service_variations', ServiceVariationController::class)->only(['index', 'show']);
     Route::apiResources([
       'customer_services'           => CustomerServiceController::class,

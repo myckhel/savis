@@ -80,7 +80,7 @@ class ServiceController extends Controller
      */
      public function show(Service $service)
      {
-       return $service->getProfile()->withImageUrl(null, 'logo');
+       return $service->getProfile()->withUrls('logo');
      }
 
     /**
