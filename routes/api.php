@@ -1,23 +1,25 @@
 <?php
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\BusinessController;
-use App\Http\Controllers\WorkerController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\WorkController;
-use App\Http\Controllers\MetaController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\MediaController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\VariationController;
-use App\Http\Controllers\CustomerServiceController;
-use App\Http\Controllers\ServicePropertyController;
-use App\Http\Controllers\ServiceVariationController;
-use App\Http\Controllers\CustomerPropertyController;
-use App\Http\Controllers\CustomerServicePropertyController;
-use App\Http\Controllers\CustomerServiceVariationController;
+use App\Http\Controllers\{
+    BusinessController,
+    WorkerController,
+    AuthController,
+    WorkController,
+    MetaController,
+    UserController,
+    MediaController,
+    PaymentController,
+    ServiceController,
+    CustomerController,
+    VariationController,
+    CustomerServiceController,
+    ServicePropertyController,
+    ServiceVariationController,
+    CustomerPropertyController,
+    CustomerServicePropertyController,
+    CustomerServiceVariationController,
+};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -93,7 +95,7 @@ Route::group([ 'middleware' => 'localization' ], function () {
     Route::get('services/{service}/fields',       [ServiceController::class, 'fields']);
     Route::post('payments/verify',                [PaymentController::class, 'verify']);
 
-    Route::resource('customers',    CustomerController::class)->except(['update']);
+    Route::resource('customers',    CustomerController::class);
     Route::resource('users',        UserController::class);
     // Route::resource('service_variations', ServiceVariationController::class)->only(['index', 'show']);
     Route::apiResources([

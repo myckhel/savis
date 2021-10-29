@@ -11,15 +11,15 @@ use ServiceMeta;
 use UserCustomer;
 use CustomerServiceMeta;
 use Carbon\Carbon;
-use App\Traits\HasMeta;
 use App\Traits\User\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Casts\Jsonable;
 
 class Customer extends Authenticatable
 {
-  use Role, HasFactory, HasMeta;
+  use Role, HasFactory;
 
   public static function lookOrFail($customer_id = null, $email = null){
     if(!$customer_id && !$email) return null;
@@ -37,8 +37,9 @@ class Customer extends Authenticatable
   //   return $customer ? $customer : User::create(['email' => $email])->;
   // }
 
-  protected $fillable = ['user_id', 'business_id'];
-  protected $hidden = [];
+  protected $fillable = ['user_id', 'business_id', 'metas'];
+  protected $casts    = ['metas' => Jsonable::class];
+  protected $hidden   = [];
 
   public function authorizeMedia(Media $media, String $method, Model $user){
     return $media->model_id == $user->id && $media->model_type == get_class($user);
@@ -151,10 +152,6 @@ class Customer extends Authenticatable
 
   public function jobs(){
     return $this->hasManyThrough(Work::class, CustomerService::class);
-  }
-
-  public function metas(){
-    return $this->morphMany(Meta::class, 'metable');
   }
 
   public function registerMediaCollections(Media $media = null) : void {
