@@ -18,7 +18,7 @@ class UserController extends Controller
     {
       $this->validatePagination($request);
       $user = $request->user();
-      return $user->with('metas')->paginate($this->paginate($request));
+      return $user->paginate($this->paginate($request));
     }
 
     /**

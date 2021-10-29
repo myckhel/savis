@@ -9,21 +9,10 @@ use App\Models\Payment;
 use App\Models\Service;
 use App\Models\Customer;
 use App\Models\CustomerServiceMeta;
-use App\Http\Controllers\MetaController;
 use App\Http\Requests\BusinessModelRequest;
 
 class CustomerController extends Controller
 {
-  public function getMeta(Request $request){
-    $control = new MetaController;
-    return $control->index($request);
-  }
-
-  public function addMeta(Request $request){
-    $control = new MetaController;
-    return $control->store($request);
-  }
-
   public function payments(Request $request, Customer $customer){
     $histories = $customer->payments()->get();
 

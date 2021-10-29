@@ -7,7 +7,6 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Traits\HasMeta;
 use Spatie\MediaLibrary\File;
 use Spatie\Image\Image;
 use Spatie\MediaLibrary\HasMedia;
@@ -18,10 +17,11 @@ use App\Traits\User\Role;
 use UserCustomer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Casts\Jsonable;
 
 class User extends Authenticatable implements HasMedia
 {
-    use HasFactory, HasApiTokens, Role, InteractsWithMedia, Notifiable, SoftDeletes, HasMeta, HasImage;
+    use HasFactory, HasApiTokens, Role, InteractsWithMedia, Notifiable, SoftDeletes, HasImage;
 
     public function findOrFailBusiness($business_id, $call = null){
       return $this->businessUsing($business_id)->with('business')->when($call, $call)->firstOrFail()->business;
@@ -90,7 +90,7 @@ class User extends Authenticatable implements HasMedia
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'activation_token', 'lat', 'lng'
+        'name', 'email', 'password', 'activation_token', 'lat', 'lng', 'metas'
     ];
     protected $dates = ['deleted_at'];
 
@@ -109,7 +109,7 @@ class User extends Authenticatable implements HasMedia
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime', 'metas' => Jsonable::class
     ];
 
     public function properties($business_id = null) {
@@ -128,10 +128,6 @@ class User extends Authenticatable implements HasMedia
 
     public function customers(){
       return $this->belongsToMany(Customer::class, UserCustomer::class)->withTimestamps();
-    }
-
-    public function metas(){
-      return $this->morphMany(Meta::class, 'metable');
     }
 
     // public function customer_services(){
