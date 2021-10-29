@@ -19,6 +19,7 @@ use App\Policies\{
     VariationPolicy,
     WorkerPolicy,
     WorkPolicy,
+    SupportPolicy,
 };
 use App\Models\{
     Business,
@@ -34,6 +35,7 @@ use App\Models\{
     Variation,
     Worker,
     Work,
+    Support,
 };
 
 class AuthServiceProvider extends ServiceProvider
@@ -57,6 +59,7 @@ class AuthServiceProvider extends ServiceProvider
       Variation::class                  => VariationPolicy::class,
       Worker::class                     => WorkerPolicy::class,
       Work::class                       => WorkPolicy::class,
+      Support::class                    => SupportPolicy::class,
     ];
 
     /**

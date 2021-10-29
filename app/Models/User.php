@@ -167,6 +167,22 @@ class User extends Authenticatable implements HasMedia, ChatEventMaker
     public function variations(){
       return $this->hasMany(Variation::class);
     }
+
+    function supports() {
+        return $this->hasMany(Support::class);
+    }
+
+    function supportsClosed() {
+        return $this->hasMany(Support::class, 'closer_id');
+    }
+
+    function close(Support $support, $status = 'Resolved') {
+        return $support->update([
+        'closer_id' => $this->id,
+        'closed_at' => now(),
+        'status' => $status
+        ]);
+    }
     // public function customerServiceVariations(){
     //   return $this->hasManyThrough(ServiceVariation::class, CustomerService::class, 'customer_id', 'service_id');
     // }

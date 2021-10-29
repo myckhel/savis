@@ -18,6 +18,7 @@ use App\Http\Controllers\{
     CustomerPropertyController,
     CustomerServicePropertyController,
     CustomerServiceVariationController,
+    SupportController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -94,6 +95,9 @@ Route::group([ 'middleware' => 'localization' ], function () {
     Route::get('services/{service}/fields',       [ServiceController::class, 'fields']);
     Route::post('payments/verify',                [PaymentController::class, 'verify']);
 
+    Route::delete('supports/{support}/close',      [SupportController::class, 'close']);
+  Route::post('supports/{support}/join',           [SupportController::class, 'join']);
+
     Route::resource('customers',    CustomerController::class);
     Route::resource('users',        UserController::class);
     // Route::resource('service_variations', ServiceVariationController::class)->only(['index', 'show']);
@@ -111,6 +115,7 @@ Route::group([ 'middleware' => 'localization' ], function () {
       'customer_service_variations' => CustomerServiceVariationController::class,
       'business'                    => BusinessController::class,
       'workers'                     => WorkerController::class,
+      'supports'                    => SupportController::class,
     ]);
   });
 });
