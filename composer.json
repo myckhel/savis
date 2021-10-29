@@ -27,6 +27,7 @@
         "laravel/sanctum": "^2.8",
         "laravel/telescope": "^4.6",
         "laravel/tinker": "^2.5",
+        "myckhel/laravel-chat-system": "^1.0@alpha",
         "nunomaduro/collision": "^5.1",
         "predis/predis": "^1.1",
         "spatie/laravel-medialibrary": "^9.4",

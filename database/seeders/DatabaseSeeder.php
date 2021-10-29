@@ -22,5 +22,6 @@ class DatabaseSeeder extends Seeder
       // x $this->call(WorkTableSeeder::class);
       $this->call(UserCustomerSeeder::class);
       $this->call(CustomerPropertySeeder::class);
+      $this->call(ConversationSeeder::class);
     }
 }
