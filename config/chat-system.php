@@ -15,7 +15,7 @@ return [
     * The model you want to use as a Conversation model needs to implement the
     * `Myckhel\ChatSystem\Contracts\IConversation` contract.
     */
-    "conversation"        => Myckhel\ChatSystem\Models\Conversation::class,
+    "conversation"        => App\Models\Conversation::class,
 
     /*
     * The model you want to use as a ConversationUser model needs to implement the
@@ -29,7 +29,7 @@ return [
     * `Myckhel\ChatSystem\Contracts\IMessage` contract or extends the
     * `Myckhel\ChatSystem\Models\Message`
     */
-    "message"             => Myckhel\ChatSystem\Models\Message::class,
+    "message"             => App\Models\Message::class,
 
     /*
     * The model you want to use as a ChatEvent model needs to implement the

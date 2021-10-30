@@ -21,6 +21,8 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "http-interop/http-factory-guzzle": "1.0",
+        "intervention/image": "^2.7",
+        "james-heinrich/getid3": "^1.9",
         "laravel/framework": "^8.16",
         "laravel/horizon": "^5.7",
         "laravel/octane": "^1.0",

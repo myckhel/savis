@@ -69,6 +69,8 @@ return [
         'user_images'         => useFileConfig('user_images', []),
         'customer_images'     => useFileConfig('customer_images', []),
         'attachments'         => useFileConfig('attachments', []),
+        'msg_images'          => useFileConfig('msg_images', []),
+        'msg_videos'          => useFileConfig('msg_videos', []),
     ],
 
     /*
