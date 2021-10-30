@@ -18,10 +18,13 @@ use UserCustomer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Casts\Jsonable;
+use Myckhel\ChatSystem\Traits\Message\HasMessage;
+use Myckhel\ChatSystem\Traits\ChatEvent\CanMakeChatEvent;
+use Myckhel\ChatSystem\Contracts\ChatEventMaker;
 
-class User extends Authenticatable implements HasMedia
+class User extends Authenticatable implements HasMedia, ChatEventMaker
 {
-    use HasFactory, HasApiTokens, Role, InteractsWithMedia, Notifiable, SoftDeletes, HasImage;
+    use HasFactory, HasApiTokens, Role, InteractsWithMedia, Notifiable, SoftDeletes, HasImage, HasMessage, CanMakeChatEvent;
 
     public function findOrFailBusiness($business_id, $call = null){
       return $this->businessUsing($business_id)->with('business')->when($call, $call)->firstOrFail()->business;

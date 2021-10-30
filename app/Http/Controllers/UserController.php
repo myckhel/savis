@@ -139,4 +139,8 @@ class UserController extends Controller
       $user->loadCount(['customers']);
       return ['status' => true, 'user' => $user];
     }
+
+    public function whoami(Request $request){
+        return $request->user();
+    }
 }

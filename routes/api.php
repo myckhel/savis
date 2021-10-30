@@ -76,6 +76,7 @@ Route::group([ 'middleware' => 'localization' ], function () {
 });*/
 
   Route::group([ 'middleware' => 'auth:api' ], function() {
+    Route::get('whoami',                       [UserController::class, 'whoami']);
     Route::get('users/current',                [UserController::class, 'current']);
     Route::delete('customers/delete/multiple', [CustomerController::class, 'delete']);
     // Route::get('customer_services', [CustomerController::class, 'customer_services']);

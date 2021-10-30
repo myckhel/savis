@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "18b44889718584b101faf4cfb0087722",
+    "content-hash": "c25599ea23a0c5c51d5205aaf556af40",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2598,6 +2598,71 @@
                 }
             ],
             "time": "2021-10-01T21:08:31+00:00"
+        },
+        {
+            "name": "myckhel/laravel-chat-system",
+            "version": "v1.0.0-alpha.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/myckhel/laravel-chat-system.git",
+                "reference": "7e45d8cba32b1a1291d7c4284d25b98f21273da0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/myckhel/laravel-chat-system/zipball/7e45d8cba32b1a1291d7c4284d25b98f21273da0",
+                "reference": "7e45d8cba32b1a1291d7c4284d25b98f21273da0",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~7|~8",
+                "nesbot/carbon": "^2.50",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "fakerphp/faker": "^1.12",
+                "orchestra/testbench": "~5|~6",
+                "pestphp/pest": "^1.11",
+                "php": "^8",
+                "spatie/pest-plugin-test-time": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Myckhel\\ChatSystem\\ChatSystemServiceProvider"
+                    ],
+                    "aliases": {
+                        "ChatSystem": "Myckhel\\ChatSystem\\Facades\\ChatSystem"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Myckhel\\ChatSystem\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "myckhel",
+                    "email": "myckhel1@hotmail.com",
+                    "homepage": "https://myckhel.com"
+                }
+            ],
+            "description": "laravel chat system",
+            "homepage": "https://github.com/myckhel/laravel-chat-system",
+            "keywords": [
+                "ChatSystem",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/myckhel/laravel-chat-system/issues",
+                "source": "https://github.com/myckhel/laravel-chat-system/tree/v1.0.0-alpha.3"
+            },
+            "time": "2021-10-17T00:53:26+00:00"
         },
         {
             "name": "myclabs/php-enum",
@@ -9162,6 +9227,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "myckhel/laravel-chat-system": 15,
         "spatie/laravel-permission": 20,
         "unicodeveloper/laravel-paystack": 20
     },

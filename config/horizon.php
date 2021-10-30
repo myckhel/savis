@@ -165,30 +165,73 @@ return [
     */
 
     'defaults' => [
-        'supervisor-1' => [
-            'connection' => 'redis',
-            'queue' => ['default'],
-            'balance' => 'auto',
-            'maxProcesses' => 1,
-            'memory' => 128,
-            'tries' => 1,
-            'nice' => 0,
-        ],
+      'default' => [
+        'connection' => 'redis',
+        'queue' => ['default'],
+        'balance' => 'auto',
+        'minProcesses' => 1,
+        'maxProcesses' => 20,
+        'balanceMaxShift' => 1,
+        'balanceCooldown' => 3,
+        'retry' => 2,
+      ],
+      'notifications' => [
+        'connection' => 'redis',
+        'queue' => ['notifications'],
+        'balance' => 'auto',
+        'minProcesses' => 1,
+        'maxProcesses' => 20,
+        'balanceMaxShift' => 1,
+        'balanceCooldown' => 3,
+        'retry' => 3,
+      ],
+      'media' => [
+        'connection' => 'redis',
+        'queue' => ['media'],
+        'balance' => 'auto',
+        'minProcesses' => 1,
+        'maxProcesses' => 20,
+        'balanceMaxShift' => 1,
+        'balanceCooldown' => 3,
+        'retry' => 2,
+      ],
+      'chat' => [
+        'connection' => 'redis',
+        'queue' => ['chat'],
+        'balance' => 'auto',
+        'minProcesses' => 1,
+        'maxProcesses' => 20,
+        'balanceMaxShift' => 1,
+        'balanceCooldown' => 3,
+        'retry' => 2,
+      ],
+      'chat-event' => [
+        'connection' => 'redis',
+        'queue' => ['chat-event'],
+        'balance' => 'auto',
+        'minProcesses' => 1,
+        'maxProcesses' => 20,
+        'balanceMaxShift' => 1,
+        'balanceCooldown' => 3,
+        'retry' => 2,
+      ],
     ],
 
     'environments' => [
-        'production' => [
-            'supervisor-1' => [
-                'maxProcesses' => 10,
-                'balanceMaxShift' => 1,
-                'balanceCooldown' => 3,
-            ],
-        ],
+      'production' => [
+        'default' => [],
+        'notifications' => [],
+        'media' => [],
+        'chat' => [],
+        'chat-event' => [],
+      ],
 
-        'local' => [
-            'supervisor-1' => [
-                'maxProcesses' => 3,
-            ],
-        ],
+      'local' => [
+        'default' => [],
+        'notifications' => [],
+        'media' => [],
+        'chat' => [],
+        'chat-event' => [],
+      ],
     ],
 ];
