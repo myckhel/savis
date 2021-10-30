@@ -6,7 +6,6 @@ use App\Http\Controllers\{
     WorkerController,
     AuthController,
     WorkController,
-    MetaController,
     UserController,
     MediaController,
     PaymentController,
@@ -69,7 +68,6 @@ Route::group([ 'middleware' => 'localization' ], function () {
         'jobs'                            => WorkController::class,
         'properties'                      => CustomerPropertyController::class,
         'services'                        => CustomerServiceController::class,
-        'metas'                           => MetaController::class,
         'service_properties'              => CustomerServicePropertyController::class,
         'payments'                        => PaymentController::class,
       ]);
@@ -104,7 +102,6 @@ Route::group([ 'middleware' => 'localization' ], function () {
       'customer_service_properties' => CustomerServicePropertyController::class,
       'services'                    => ServiceController::class,
       'payments'                    => PaymentController::class,
-      'metas'                       => MetaController::class,
       'jobs'                        => WorkController::class,
       'customer_properties'         => CustomerPropertyController::class,
       'medias'                      => MediaController::class,
