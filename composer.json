@@ -24,6 +24,7 @@
         "laravel/framework": "^8.16",
         "laravel/octane": "^1.0",
         "laravel/sanctum": "^2.8",
+        "laravel/telescope": "^4.6",
         "laravel/tinker": "^2.5",
         "nunomaduro/collision": "^5.1",
         "spatie/laravel-medialibrary": "^9.4",
