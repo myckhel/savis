@@ -21,6 +21,8 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "http-interop/http-factory-guzzle": "1.0",
+        "inertiajs/inertia-laravel": "^0.4.5",
+        "innocenzi/laravel-vite": "^0.1.19",
         "intervention/image": "^2.7",
         "james-heinrich/getid3": "^1.9",
         "laravel/framework": "^8.16",
@@ -34,6 +36,7 @@
         "predis/predis": "^1.1",
         "spatie/laravel-medialibrary": "^9.4",
         "spatie/laravel-permission": "dev-master",
+        "tightenco/ziggy": "^1.4",
         "unicodeveloper/laravel-paystack": "dev-master"
     },
     "require-dev": {

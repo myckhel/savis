@@ -64,4 +64,5 @@ Route::get('/db/migrate/fresh', function() {
 
 // Auth::routes();
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+// Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/', fn () => inertia('index', []))->name('home');
