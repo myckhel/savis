@@ -13,4 +13,10 @@ npm-debug.log
 yarn-error.log
 public/media/*
 .htaccess
-.yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
