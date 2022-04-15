@@ -18,6 +18,7 @@ createInertiaApp({
     const page = Object.keys(pages).find((page) =>
       page.endsWith(`${name}.jsx`)
     )
+    console.log({ pages })
 
     const resolvedPage = (await pages[page]()).default
 
