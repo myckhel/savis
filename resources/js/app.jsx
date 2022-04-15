@@ -15,14 +15,17 @@ InertiaProgress.init()
 createInertiaApp({
   resolve: async (name) => {
     const pages = import.meta.glob('./pages/**/*.jsx')
-    const page = Object.keys(pages).find((page) =>
-      page.endsWith(`${name}.jsx`)
-    )
     console.log({ pages })
 
-    const resolvedPage = (await pages[page]()).default
+    for (const path in pages) {
+      if (path.endsWith(`${name.replace('.', '/')}.jsx`)) {
+        return typeof pages[path] === 'function'
+          ? (await pages[path]()).default
+          : pages[path]
+      }
+    }
 
-    return resolvedPage
+    throw new Error(`Page not found: ${name}`)
   },
   setup ({ el, App, props }) {
     render(
