@@ -18,7 +18,7 @@ return [
         'ignore' => '/\\.(d\\.ts|json)$/',
       ],
       'dev_server' => [
-        'enabled' => true,
+        'enabled' => env('DEV_SERVER_ENABLED', true),
         'url' => env('DEV_SERVER_URL', 'http://localhost:3000'),
         'ping_before_using_manifest' => true,
         'ping_url' => null,
