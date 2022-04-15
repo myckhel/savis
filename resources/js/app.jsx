@@ -9,7 +9,7 @@ import { createInertiaApp } from '@inertiajs/inertia-react'
 import { InertiaProgress } from '@inertiajs/progress'
 import { Provider } from 'react-redux'
 import store from './redux/store'
-// import SimpleReactLightbox from 'simple-react-lightbox'
+import SimpleReactLightbox from 'simple-react-lightbox'
 
 InertiaProgress.init()
 createInertiaApp({
@@ -26,9 +26,9 @@ createInertiaApp({
   setup ({ el, App, props }) {
     render(
       <Provider store={store}>
-      {/* //     <SimpleReactLightbox> */}
-               <App {...props} />
-      {/* //     </SimpleReactLightbox> */}
+        <SimpleReactLightbox>
+          <App {...props} />
+        </SimpleReactLightbox>
       </Provider>,
       el
     )

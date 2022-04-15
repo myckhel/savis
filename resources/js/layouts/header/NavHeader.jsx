@@ -1,13 +1,13 @@
-import { Link } from "@inertiajs/inertia-react";
-import { useState } from "react";
+import { Link } from '@inertiajs/inertia-react'
+import { useState } from 'react'
 const NavHeader = () => {
-    const [active, setActive] = useState(false);
-    const toggleFun = () => {
-        var aaa = document.querySelector("#main-wrapper");
-        aaa.classList.toggle("menu-toggle");
-        setActive(!active);
-    };
-    return (
+  const [active, setActive] = useState(false)
+  const toggleFun = () => {
+    const aaa = document.querySelector('#main-wrapper')
+    aaa.classList.toggle('menu-toggle')
+    setActive(!active)
+  }
+  return (
         <div className="nav-header">
             <Link href="/">
                 <a className="brand-logo">
@@ -37,7 +37,7 @@ const NavHeader = () => {
             </Link>
             <div className="nav-control">
                 <div
-                    className={`hamburger ${active ? "is-active" : ""}`}
+                    className={`hamburger ${active ? 'is-active' : ''}`}
                     onClick={() => toggleFun()}
                 >
                     <span className="line" />
@@ -46,7 +46,7 @@ const NavHeader = () => {
                 </div>
             </div>
         </div>
-    );
-};
+  )
+}
 
-export default NavHeader;
+export default NavHeader
