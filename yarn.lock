@@ -46,7 +46,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.1.0, @babel/core@npm:^7.12.3, @babel/core@npm:^7.14.3, @babel/core@npm:^7.7.2, @babel/core@npm:^7.8.0":
+"@babel/core@npm:^7.1.0, @babel/core@npm:^7.12.3, @babel/core@npm:^7.7.2, @babel/core@npm:^7.8.0":
   version: 7.17.5
   resolution: "@babel/core@npm:7.17.5"
   dependencies:
@@ -482,7 +482,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-syntax-typescript@npm:^7.12.13, @babel/plugin-syntax-typescript@npm:^7.7.2":
+"@babel/plugin-syntax-typescript@npm:^7.7.2":
   version: 7.16.7
   resolution: "@babel/plugin-syntax-typescript@npm:7.16.7"
   dependencies:
@@ -526,7 +526,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-react-jsx@npm:^7.14.3, @babel/plugin-transform-react-jsx@npm:^7.16.7, @babel/plugin-transform-react-jsx@npm:^7.17.3":
+"@babel/plugin-transform-react-jsx@npm:^7.16.7, @babel/plugin-transform-react-jsx@npm:^7.17.3":
   version: 7.17.3
   resolution: "@babel/plugin-transform-react-jsx@npm:7.17.3"
   dependencies:
@@ -8826,7 +8826,6 @@ __metadata:
     vite-plugin-eslint: ^1.3.0
     vite-plugin-laravel: ^0.2.0-beta.10
     vite-plugin-svgr: ^1.1.0
-    vite-react-jsx: ^1.1.2
     yup: ^0.32.11
   languageName: unknown
   linkType: soft
@@ -9901,21 +9900,6 @@ __metadata:
   peerDependencies:
     vite: ^2.6.0
   checksum: b79042cf75b096464402f36b492503af65d0d63f5a33441f0ec173aa9b32ce98b1f1005d75e2b0cfd7d8574cf5f9b86d837ef6b64807c21e31d1a5648122141b
-  languageName: node
-  linkType: hard
-
-"vite-react-jsx@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "vite-react-jsx@npm:1.1.2"
-  dependencies:
-    "@babel/core": ^7.14.3
-    "@babel/plugin-syntax-jsx": ^7.12.13
-    "@babel/plugin-syntax-typescript": ^7.12.13
-    "@babel/plugin-transform-react-jsx": ^7.14.3
-    resolve: ^1.20.0
-  peerDependencies:
-    vite: ">2.0.0-0"
-  checksum: 0c928e82264eba5cd0892c8424f8edb54d1abd9c391e4c77ae69d5ceca04cd5cbd00cf74b189e5bf345f3f7897ad82995e251e06cb2b102211ce7b26e68160df
   languageName: node
   linkType: hard
 
