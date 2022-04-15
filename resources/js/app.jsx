@@ -19,7 +19,9 @@ createInertiaApp({
       page.endsWith(`${name}.jsx`)
     )
 
-    return (await pages[page]()).default
+    const resolvedPage = (await pages[page]()).default
+
+    return resolvedPage
   },
   setup ({ el, App, props }) {
     render(
