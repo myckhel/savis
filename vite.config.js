@@ -1,14 +1,18 @@
-import { defineConfig } from "laravel-vite";
+import laravel from "vite-plugin-laravel";
 import reactJsx from "vite-react-jsx";
-import reactSvgPlugin from "vite-plugin-react-svg";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import svgrPlugin from "vite-plugin-svgr";
 
 export default defineConfig({
   plugins: [
+    react(),
     reactJsx(),
-    reactSvgPlugin({
-      memo: true,
-      defaultExport: "component",
-      expandProps: "start",
+    laravel(),
+    svgrPlugin({
+      svgrOptions: {
+        icon: true,
+      },
     }),
   ],
 });

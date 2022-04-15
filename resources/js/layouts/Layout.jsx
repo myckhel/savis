@@ -1,22 +1,22 @@
 // import Router from "next/router";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from 'react'
 // import { getUser } from "../redux/action/auth";
-import Footer from "./Footer";
+import Footer from './Footer'
 // import ChatBox from "./header/chatbox/ChatBox";
-import Header from "./header/Header";
-import NavHeader from "./header/NavHeader";
-import PreLoader from "./PreLoader";
-import Sidebar from "./Sidebar";
+import Header from './header/Header'
+import NavHeader from './header/NavHeader'
+import PreLoader from './PreLoader'
+import Sidebar from './Sidebar'
 
 const Layout = ({ children }) => {
-    const [height, setHeight] = useState();
-    const [active, setActive] = useState(false);
-    useEffect(() => {
-        setHeight(window.screen.height - 100);
-        setActive(document.querySelectorAll(".metismenu a") ? true : false);
-    }, []);
+  const [height, setHeight] = useState()
+  const [active, setActive] = useState(false)
+  useEffect(() => {
+    setHeight(window.screen.height - 100)
+    setActive(!!document.querySelectorAll('.metismenu a'))
+  }, [])
 
-    return (
+  return (
         <Fragment>
             {!active ? (
                 <PreLoader />
@@ -33,7 +33,7 @@ const Layout = ({ children }) => {
                 </div>
             )}
         </Fragment>
-    );
-};
+  )
+}
 
-export default Layout;
+export default Layout
