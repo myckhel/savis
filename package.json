@@ -89,5 +89,6 @@
         "sweetalert": "^2.1.2",
         "vite-plugin-svgr": "^1.1.0",
         "yup": "^0.32.11"
-    }
+    },
+    "packageManager": "yarn@3.2.0"
 }
