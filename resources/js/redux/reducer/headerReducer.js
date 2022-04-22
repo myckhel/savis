@@ -1,21 +1,21 @@
-import { NOTIFICATION, NOTIFICATION_2 } from "../action/type";
+import { NOTIFICATION, NOTIFICATION_2 } from '../action/type'
 
 const headerReducer = (state = [], action) => {
-  const { type, payload } = action;
+  const { type, payload } = action
   switch (type) {
     case NOTIFICATION:
       return {
         ...state,
-        notification: payload,
-      };
+        notification: payload
+      }
     case NOTIFICATION_2:
       return {
         ...state,
-        notification_2: payload,
-      };
+        notification_2: payload
+      }
 
     default:
-      return state;
+      return state
   }
-};
-export default headerReducer;
+}
+export default headerReducer

@@ -1,20 +1,20 @@
-import { AUTH_ERROR, GET_USER } from "../action/type";
+import { AUTH_ERROR, GET_USER } from '../action/type'
 
 const authReducer = (state = [], action) => {
-  const { type, payload } = action;
+  const { type, payload } = action
   switch (type) {
     case GET_USER:
       return {
         ...state,
-        users: payload,
-      };
+        users: payload
+      }
     case AUTH_ERROR:
       return {
         ...state,
-        authErrors: payload,
-      };
+        authErrors: payload
+      }
     default:
-      return state;
+      return state
   }
-};
-export default authReducer;
+}
+export default authReducer

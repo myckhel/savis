@@ -7,7 +7,7 @@ const PreLoader = () => {
         <div className="sk-child sk-bounce3"></div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PreLoader;
+export default PreLoader

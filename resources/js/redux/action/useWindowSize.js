@@ -1,29 +1,28 @@
 // utils/useWindowSize.js
 
-import React from "react";
+import React from 'react'
 
-export default function useWindowSize() {
-  const isSSR = typeof window !== "undefined";
+export default function useWindowSize () {
   const [windowSize, setWindowSize] = React.useState({
     width: 1200,
-    height: 800,
-  });
+    height: 800
+  })
 
-  function changeWindowSize() {
+  function changeWindowSize () {
     setWindowSize({
       width: window.innerWidth,
-      height: window.innerHeight,
-    });
+      height: window.innerHeight
+    })
   }
 
   React.useEffect(() => {
-    setWindowSize({ height: window.innerHeight, width: window.innerWidth });
-    window.addEventListener("resize", changeWindowSize);
+    setWindowSize({ height: window.innerHeight, width: window.innerWidth })
+    window.addEventListener('resize', changeWindowSize)
 
     return () => {
-      window.removeEventListener("resize", changeWindowSize);
-    };
-  }, []);
+      window.removeEventListener('resize', changeWindowSize)
+    }
+  }, [])
 
-  return windowSize;
+  return windowSize
 }

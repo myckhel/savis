@@ -1,122 +1,115 @@
-import MetisMenu from "@metismenu/react";
-import { Link } from "@inertiajs/inertia-react";
-import { useEffect, useState } from "react";
-import PerfectScrollbar from "react-perfect-scrollbar";
+import MetisMenu from '@metismenu/react'
+import { Link } from '@inertiajs/inertia-react'
+import { useEffect, useState } from 'react'
+import PerfectScrollbar from 'react-perfect-scrollbar'
 // import { sideBarActive } from "../redux/action/utils";
 const Sidebar = () => {
-    const [loveEmoji, setLoveEmoji] = useState(false);
-    const [doc, setDoc] = useState();
-    useEffect(() => {
-        setDoc(window);
-        // sideBarActive(doc);
-    }, [doc]);
+  const [loveEmoji, setLoveEmoji] = useState(false)
+  const [doc, setDoc] = useState()
+  useEffect(() => {
+    setDoc(window)
     // sideBarActive(doc);
-    let path = doc && doc.location.pathname;
-    path = path && path.split("/");
-    path = path && path[path.length - 1];
-    let dashboard = [
-            "",
-            "index-dark",
-            "orders-list",
-            "order-detail",
-            "customer-list",
-            "analytics",
-            "reviews",
-        ],
-        app = [
-            "apps/profile",
-            "apps/post-details",
-            "apps/email/compose",
-            "apps/email/inbox",
-            "apps/email/read",
-            "apps/ecom/product/grid",
-            "apps/ecom/product/list",
-            "apps/ecom/product/order",
-            "apps/ecom/checkout",
-            "apps/ecom/invoice",
-            "apps/ecom/customers",
-            "apps/ecom/product/detail",
-        ],
-        email = ["apps/email/compose", "apps/email/inbox", "apps/email/read"],
-        shop = [
-            "apps/ecom/product/grid",
-            "apps/ecom/product/list",
-            "apps/ecom/product/list",
-            "apps/ecom/product/order",
-            "apps/ecom/checkout",
-            "apps/ecom/invoice",
-            "apps/ecom/customers",
-            "apps/ecom/product/detail",
-        ],
-        charts = [
-            "chart/rechart",
-            "chart/apex",
-            "chart/chartjs",
-            "chart/chartist",
-            "chart/sparkline",
-        ],
-        bootstrap = [
-            "ui/accordion",
-            "ui/badge",
-            "ui/alert",
-            "ui/button",
-            "ui/modal",
-            "ui/button-group",
-            "ui/list-group",
-            "ui/media-object",
-            "ui/card",
-            "ui/carousel",
-            "ui/dropdown",
-            "ui/popover",
-            "ui/progressbar",
-            "ui/tab",
-            "ui/typography",
-            "ui/pagination",
-            "ui/grid",
-        ],
-        plugins = [
-            "plugins/select2",
-            "plugins/sweetalert",
-            "plugins/toastr",
-            "plugins/noui-slider",
-            "plugins/jqvmap",
-            "plugins/lightgallery",
-        ],
-        widget = ["widget-basic"],
-        forms = [
-            "form/element",
-            "form/wizard",
-            "form/editor",
-            "form/pickers",
-            "form/validation",
-        ],
-        table = ["table-bootstrap-basic", "table-datatable-basic"],
-        pages = [
-            "page-register",
-            "page-login",
-            "page-lock-screen",
-            "page-error-400",
-            "page-error-403",
-            "page-error-404",
-            "page-error-500",
-            "page-error-503",
-            "empty-page",
-        ],
-        error = [
-            "page-error-400",
-            "page-error-403",
-            "page-error-404",
-            "page-error-500",
-            "page-error-503",
-        ];
-    return (
+  }, [doc])
+  // sideBarActive(doc);
+  let path = doc && doc.location.pathname
+  path = path && path.split('/')
+  path = path && path[path.length - 1]
+  const dashboard = [
+    '',
+    'index-dark',
+    'orders-list',
+    'order-detail',
+    'customer-list',
+    'analytics',
+    'reviews'
+  ]
+  const app = [
+    'apps/profile',
+    'apps/post-details',
+    'apps/email/compose',
+    'apps/email/inbox',
+    'apps/email/read',
+    'apps/ecom/product/grid',
+    'apps/ecom/product/list',
+    'apps/ecom/product/order',
+    'apps/ecom/checkout',
+    'apps/ecom/invoice',
+    'apps/ecom/customers',
+    'apps/ecom/product/detail'
+  ]
+  const email = ['apps/email/compose', 'apps/email/inbox', 'apps/email/read']
+  const shop = [
+    'apps/ecom/product/grid',
+    'apps/ecom/product/list',
+    'apps/ecom/product/list',
+    'apps/ecom/product/order',
+    'apps/ecom/checkout',
+    'apps/ecom/invoice',
+    'apps/ecom/customers',
+    'apps/ecom/product/detail'
+  ]
+  const charts = [
+    'chart/rechart',
+    'chart/apex',
+    'chart/chartjs',
+    'chart/chartist',
+    'chart/sparkline'
+  ]
+  const bootstrap = [
+    'ui/accordion',
+    'ui/badge',
+    'ui/alert',
+    'ui/button',
+    'ui/modal',
+    'ui/button-group',
+    'ui/list-group',
+    'ui/media-object',
+    'ui/card',
+    'ui/carousel',
+    'ui/dropdown',
+    'ui/popover',
+    'ui/progressbar',
+    'ui/tab',
+    'ui/typography',
+    'ui/pagination',
+    'ui/grid'
+  ]
+  const plugins = [
+    'plugins/select2',
+    'plugins/sweetalert',
+    'plugins/toastr',
+    'plugins/noui-slider',
+    'plugins/jqvmap',
+    'plugins/lightgallery'
+  ]
+  const widget = ['widget-basic']
+  const forms = [
+    'form/element',
+    'form/wizard',
+    'form/editor',
+    'form/pickers',
+    'form/validation'
+  ]
+  const table = ['table-bootstrap-basic', 'table-datatable-basic']
+  const pages = [
+    'page-register',
+    'page-login',
+    'page-lock-screen',
+    'page-error-400',
+    'page-error-403',
+    'page-error-404',
+    'page-error-500',
+    'page-error-503',
+    'empty-page'
+  ]
+  return (
         <div className="deznav">
             {doc && (
                 <PerfectScrollbar className="deznav-scroll">
                     <MetisMenu className="metismenu" id="menu">
                         <li
                             className={`${
-                                dashboard.includes(path) ? "mm-active" : ""
+                                dashboard.includes(path) ? 'mm-active' : ''
                             }`}
                         >
                             <a
@@ -131,7 +124,7 @@ const Sidebar = () => {
                                     <Link href="/">
                                         <a
                                             className={`${
-                                                path === "" ? "mm-active" : ""
+                                                path === '' ? 'mm-active' : ''
                                             }`}
                                         >
                                             Dashboard Light
@@ -142,9 +135,9 @@ const Sidebar = () => {
                                     <Link href="/index-dark">
                                         <a
                                             className={`${
-                                                path === "index-dark"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'index-dark'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Dashboard Dark
@@ -155,9 +148,9 @@ const Sidebar = () => {
                                     <Link href="/orders-list">
                                         <a
                                             className={`${
-                                                path === "orders-list"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'orders-list'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Orders list
@@ -168,9 +161,9 @@ const Sidebar = () => {
                                     <Link href="/order-detail">
                                         <a
                                             className={`${
-                                                path === "order-detail"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'order-detail'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Order Detail
@@ -181,9 +174,9 @@ const Sidebar = () => {
                                     <Link href="/customer-list">
                                         <a
                                             className={`${
-                                                path === "customer-list"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'customer-list'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Customers
@@ -194,9 +187,9 @@ const Sidebar = () => {
                                     <Link href="/analytics">
                                         <a
                                             className={`${
-                                                path === "analytics"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'analytics'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Analytics
@@ -207,9 +200,9 @@ const Sidebar = () => {
                                     <Link href="/reviews">
                                         <a
                                             className={`${
-                                                path === "reviews"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'reviews'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Reviews
@@ -220,7 +213,7 @@ const Sidebar = () => {
                         </li>
                         <li
                             className={`${
-                                app.includes(path) ? "mm-active" : ""
+                                app.includes(path) ? 'mm-active' : ''
                             }`}
                         >
                             <a
@@ -235,9 +228,9 @@ const Sidebar = () => {
                                     <Link href="/apps/profile">
                                         <a
                                             className={`${
-                                                path === "apps/profile"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'apps/profile'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Profile
@@ -248,9 +241,9 @@ const Sidebar = () => {
                                     <Link href="/apps/post-details">
                                         <a
                                             className={`${
-                                                path === "apps/post-details"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'apps/post-details'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Post Details
@@ -259,7 +252,7 @@ const Sidebar = () => {
                                 </li>
                                 <li
                                     className={`${
-                                        email.includes(path) ? "mm-active" : ""
+                                        email.includes(path) ? 'mm-active' : ''
                                     }`}
                                 >
                                     <a
@@ -274,9 +267,9 @@ const Sidebar = () => {
                                                 <a
                                                     className={`${
                                                         path ===
-                                                        "apps/email/compose"
-                                                            ? "mm-active"
-                                                            : ""
+                                                        'apps/email/compose'
+                                                            ? 'mm-active'
+                                                            : ''
                                                     }`}
                                                 >
                                                     Compose
@@ -288,9 +281,9 @@ const Sidebar = () => {
                                                 <a
                                                     className={`${
                                                         path ===
-                                                        "apps/email/inbox"
-                                                            ? "mm-active"
-                                                            : ""
+                                                        'apps/email/inbox'
+                                                            ? 'mm-active'
+                                                            : ''
                                                     }`}
                                                 >
                                                     Inbox
@@ -302,9 +295,9 @@ const Sidebar = () => {
                                                 <a
                                                     className={`${
                                                         path ===
-                                                        "apps/email/read"
-                                                            ? "mm-active"
-                                                            : ""
+                                                        'apps/email/read'
+                                                            ? 'mm-active'
+                                                            : ''
                                                     }`}
                                                 >
                                                     Read
@@ -318,7 +311,7 @@ const Sidebar = () => {
               </li> */}
                                 <li
                                     className={`${
-                                        shop.includes(path) ? "mm-active" : ""
+                                        shop.includes(path) ? 'mm-active' : ''
                                     }`}
                                 >
                                     <a
@@ -333,9 +326,9 @@ const Sidebar = () => {
                                                 <a
                                                     className={`${
                                                         path ===
-                                                        "apps/ecom/product-grid"
-                                                            ? "mm-active"
-                                                            : ""
+                                                        'apps/ecom/product-grid'
+                                                            ? 'mm-active'
+                                                            : ''
                                                     }`}
                                                 >
                                                     Product Grid
@@ -347,9 +340,9 @@ const Sidebar = () => {
                                                 <a
                                                     className={`${
                                                         path ===
-                                                        "apps/ecom/product-list"
-                                                            ? "mm-active"
-                                                            : ""
+                                                        'apps/ecom/product-list'
+                                                            ? 'mm-active'
+                                                            : ''
                                                     }`}
                                                 >
                                                     Product List
@@ -361,9 +354,9 @@ const Sidebar = () => {
                                                 <a
                                                     className={`${
                                                         path ===
-                                                        "apps/ecom/product-detail"
-                                                            ? "mm-active"
-                                                            : ""
+                                                        'apps/ecom/product-detail'
+                                                            ? 'mm-active'
+                                                            : ''
                                                     }`}
                                                 >
                                                     Product Details
@@ -375,9 +368,9 @@ const Sidebar = () => {
                                                 <a
                                                     className={`${
                                                         path ===
-                                                        "apps/ecom/product-order"
-                                                            ? "mm-active"
-                                                            : ""
+                                                        'apps/ecom/product-order'
+                                                            ? 'mm-active'
+                                                            : ''
                                                     }`}
                                                 >
                                                     Order
@@ -389,9 +382,9 @@ const Sidebar = () => {
                                                 <a
                                                     className={`${
                                                         path ===
-                                                        "apps/ecom/checkout"
-                                                            ? "mm-active"
-                                                            : ""
+                                                        'apps/ecom/checkout'
+                                                            ? 'mm-active'
+                                                            : ''
                                                     }`}
                                                 >
                                                     Checkout
@@ -403,9 +396,9 @@ const Sidebar = () => {
                                                 <a
                                                     className={`${
                                                         path ===
-                                                        "apps/ecom/invoice"
-                                                            ? "mm-active"
-                                                            : ""
+                                                        'apps/ecom/invoice'
+                                                            ? 'mm-active'
+                                                            : ''
                                                     }`}
                                                 >
                                                     Invoice
@@ -417,9 +410,9 @@ const Sidebar = () => {
                                                 <a
                                                     className={`${
                                                         path ===
-                                                        "apps/ecom/customers"
-                                                            ? "mm-active"
-                                                            : ""
+                                                        'apps/ecom/customers'
+                                                            ? 'mm-active'
+                                                            : ''
                                                     }`}
                                                 >
                                                     Customers
@@ -432,7 +425,7 @@ const Sidebar = () => {
                         </li>
                         <li
                             className={`${
-                                charts.includes(path) ? "mm-active" : ""
+                                charts.includes(path) ? 'mm-active' : ''
                             }`}
                         >
                             <a
@@ -447,9 +440,9 @@ const Sidebar = () => {
                                     <Link href="/chart/rechart">
                                         <a
                                             className={`${
-                                                path === "chart/rechart"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'chart/rechart'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Rechart
@@ -461,9 +454,9 @@ const Sidebar = () => {
                                     <Link href="/chart/chartjs">
                                         <a
                                             className={`${
-                                                path === "chart/chartjs"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'chart/chartjs'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Chartjs
@@ -474,9 +467,9 @@ const Sidebar = () => {
                                     <Link href="/chart/apex">
                                         <a
                                             className={`${
-                                                path === "chart/apex"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'chart/apex'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             ApexChart
@@ -487,9 +480,9 @@ const Sidebar = () => {
                                     <Link href="/chart/chartist">
                                         <a
                                             className={`${
-                                                path === "chart/chartist"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'chart/chartist'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Chartist
@@ -500,9 +493,9 @@ const Sidebar = () => {
                                     <Link href="/chart/sparkline">
                                         <a
                                             className={`${
-                                                path === "chart/sparkline"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'chart/sparkline'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Sparkline
@@ -513,7 +506,7 @@ const Sidebar = () => {
                         </li>
                         <li
                             className={`${
-                                bootstrap.includes(path) ? "mm-active" : ""
+                                bootstrap.includes(path) ? 'mm-active' : ''
                             }`}
                         >
                             <a
@@ -528,9 +521,9 @@ const Sidebar = () => {
                                     <Link href="/ui/accordion">
                                         <a
                                             className={`${
-                                                path === "ui/accordion"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'ui/accordion'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Accordion
@@ -541,9 +534,9 @@ const Sidebar = () => {
                                     <Link href="/ui/alert">
                                         <a
                                             className={`${
-                                                path === "ui/alert"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'ui/alert'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Alert
@@ -554,9 +547,9 @@ const Sidebar = () => {
                                     <Link href="/ui/badge">
                                         <a
                                             className={`${
-                                                path === "ui/badge"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'ui/badge'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Badge
@@ -570,9 +563,9 @@ const Sidebar = () => {
                                     <Link href="/ui/modal">
                                         <a
                                             className={`${
-                                                path === "ui/button"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'ui/button'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Modal
@@ -583,9 +576,9 @@ const Sidebar = () => {
                                     <Link href="/ui/button-group">
                                         <a
                                             className={`${
-                                                path === "ui/button-group"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'ui/button-group'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Button Group
@@ -596,9 +589,9 @@ const Sidebar = () => {
                                     <Link href="/ui/list-group">
                                         <a
                                             className={`${
-                                                path === "ui/list-group"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'ui/list-group'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             List Group
@@ -609,9 +602,9 @@ const Sidebar = () => {
                                     <Link href="/ui/media-object">
                                         <a
                                             className={`${
-                                                path === "ui/media-object"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'ui/media-object'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Media Object
@@ -622,9 +615,9 @@ const Sidebar = () => {
                                     <Link href="/ui/card">
                                         <a
                                             className={`${
-                                                path === "ui/card"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'ui/card'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Cards
@@ -635,9 +628,9 @@ const Sidebar = () => {
                                     <Link href="/ui/dropdown">
                                         <a
                                             className={`${
-                                                path === "ui/dropdown"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'ui/dropdown'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Dropdown
@@ -648,9 +641,9 @@ const Sidebar = () => {
                                     <Link href="/ui/popover">
                                         <a
                                             className={`${
-                                                path === "ui/popover"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'ui/popover'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Popover
@@ -661,9 +654,9 @@ const Sidebar = () => {
                                     <Link href="/ui/progressbar">
                                         <a
                                             className={`${
-                                                path === "ui/progressbar"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'ui/progressbar'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Progressbar
@@ -674,9 +667,9 @@ const Sidebar = () => {
                                     <Link href="/ui/tab">
                                         <a
                                             className={`${
-                                                path === "ui/tab"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'ui/tab'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Tab
@@ -687,9 +680,9 @@ const Sidebar = () => {
                                     <Link href="/ui/typography">
                                         <a
                                             className={`${
-                                                path === "ui/typography"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'ui/typography'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Typography
@@ -700,9 +693,9 @@ const Sidebar = () => {
                                     <Link href="/ui/pagination">
                                         <a
                                             className={`${
-                                                path === "ui/pagination"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'ui/pagination'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Pagination
@@ -713,9 +706,9 @@ const Sidebar = () => {
                                     <Link href="/ui/grid">
                                         <a
                                             className={`${
-                                                path === "ui/grid"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'ui/grid'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Grid
@@ -726,7 +719,7 @@ const Sidebar = () => {
                         </li>
                         <li
                             className={`${
-                                plugins.includes(path) ? "mm-active" : ""
+                                plugins.includes(path) ? 'mm-active' : ''
                             }`}
                         >
                             <a
@@ -771,7 +764,7 @@ const Sidebar = () => {
 
                         <li
                             className={`${
-                                widget.includes(path) ? "mm-active" : ""
+                                widget.includes(path) ? 'mm-active' : ''
                             }`}
                         >
                             <Link href="/widget-basic">
@@ -783,7 +776,7 @@ const Sidebar = () => {
                         </li>
                         <li
                             className={`${
-                                forms.includes(path) ? "mm-active" : ""
+                                forms.includes(path) ? 'mm-active' : ''
                             }`}
                         >
                             <a
@@ -798,9 +791,9 @@ const Sidebar = () => {
                                     <Link href="/form/element">
                                         <a
                                             className={`${
-                                                path === "/form/element"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === '/form/element'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Form Elements
@@ -811,9 +804,9 @@ const Sidebar = () => {
                                     <Link href="/form/wizard">
                                         <a
                                             className={`${
-                                                path === "/form/wizard"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === '/form/wizard'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Wizard
@@ -824,9 +817,9 @@ const Sidebar = () => {
                                     <Link href="/form/editor">
                                         <a
                                             className={`${
-                                                path === "/form/editor"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === '/form/editor'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Summernote
@@ -837,9 +830,9 @@ const Sidebar = () => {
                                     <Link href="/form/pickers">
                                         <a
                                             className={`${
-                                                path === "/form/pickers"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === '/form/pickers'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Pickers
@@ -850,9 +843,9 @@ const Sidebar = () => {
                                     <Link href="/form/validation">
                                         <a
                                             className={`${
-                                                path === "/form/validation"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === '/form/validation'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Formik Validate
@@ -863,7 +856,7 @@ const Sidebar = () => {
                         </li>
                         <li
                             className={`${
-                                table.includes(path) ? "mm-active" : ""
+                                table.includes(path) ? 'mm-active' : ''
                             }`}
                         >
                             <a
@@ -878,9 +871,9 @@ const Sidebar = () => {
                                     <Link href="/table/bootstrap">
                                         <a
                                             className={`${
-                                                path === "/table/bootstrap"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === '/table/bootstrap'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Bootstrap
@@ -891,9 +884,9 @@ const Sidebar = () => {
                                     <Link href="/table/datatable">
                                         <a
                                             className={`${
-                                                path === "/table/datatable"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === '/table/datatable'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Datatable
@@ -904,9 +897,9 @@ const Sidebar = () => {
                                     <Link href="/table/react">
                                         <a
                                             className={`${
-                                                path === "/table/react"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === '/table/react'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             React Table
@@ -917,7 +910,7 @@ const Sidebar = () => {
                         </li>
                         <li
                             className={`${
-                                pages.includes(path) ? "mm-active" : ""
+                                pages.includes(path) ? 'mm-active' : ''
                             }`}
                         >
                             <a
@@ -929,14 +922,14 @@ const Sidebar = () => {
                             </a>
                             <ul aria-expanded="false">
                                 {/* <li>
-                  <Link href="/pages/login1">Login 1</Link>
-			  </li>
-                <li>
-                  <Link href="/pages/login2">Login 2</Link>
-                </li>
-                <li>
-                  <Link href="/pages/register">Register</Link>
-                </li>*/}
+                                  <Link href="/pages/login1">Login 1</Link>
+                                  </li>
+                                <li>
+                                  <Link href="/pages/login2">Login 2</Link>
+                                </li>
+                                <li>
+                                  <Link href="/pages/register">Register</Link>
+                                </li> */}
                                 <li>
                                     <a
                                         className="has-arrow c-pointer"
@@ -981,9 +974,9 @@ const Sidebar = () => {
                                     <Link href="/empty-page">
                                         <a
                                             className={`${
-                                                path === "empty-page"
-                                                    ? "mm-active"
-                                                    : ""
+                                                path === 'empty-page'
+                                                    ? 'mm-active'
+                                                    : ''
                                             }`}
                                         >
                                             Empty Page
@@ -995,24 +988,24 @@ const Sidebar = () => {
                     </MetisMenu>
                     <div className="copyright">
                         <p>
-                            <strong>Uena Admin Dashboard</strong> ©{" "}
+                            <strong>Uena Admin Dashboard</strong> ©{' '}
                             {new Date().getFullYear()} All Rights Reserved
                         </p>
                         <p>
-                            Made with{" "}
+                            Made with{' '}
                             <span
                                 className={`${
-                                    loveEmoji ? "heart heart-blast" : "heart"
+                                    loveEmoji ? 'heart heart-blast' : 'heart'
                                 }`}
                                 onClick={() => setLoveEmoji(!loveEmoji)}
-                            ></span>{" "}
+                            ></span>{' '}
                             by DexignZone
                         </p>
                     </div>
                 </PerfectScrollbar>
             )}
         </div>
-    );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

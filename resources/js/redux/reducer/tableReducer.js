@@ -17,128 +17,128 @@ import {
   PATIENT_TABLE,
   PROFILE_TABLE,
   RECENT_PAYMENT_QUEUE,
-  TABLE_STRIPPED,
-} from "../action/type";
+  TABLE_STRIPPED
+} from '../action/type'
 
 const tableReducer = (state = [], action) => {
-  const { type, payload } = action;
+  const { type, payload } = action
   switch (type) {
     case PROFILE_TABLE:
       return {
         ...state,
-        profile: payload,
-      };
+        profile: payload
+      }
     case FEE_TABLE:
       return {
         ...state,
-        fees: payload,
-      };
+        fees: payload
+      }
     case PATIENT_TABLE:
       return {
         ...state,
-        patient: payload,
-      };
+        patient: payload
+      }
     case BASIC_TABLE:
       return {
         ...state,
-        basic: payload,
-      };
+        basic: payload
+      }
     case DELETE_PROFILE_TABLE:
       return {
         ...state,
-        profile: state.profile.filter((table, i) => i !== payload && table),
-      };
+        profile: state.profile.filter((table, i) => i !== payload && table)
+      }
     case EDIT_PROFILE_TABLE:
       return {
         ...state,
         profile: state.profile.map((table, i) =>
-          i == payload.id ? payload.data : table
-        ),
-      };
+          i === payload.id ? payload.data : table
+        )
+      }
     // bs table
     case GET_BS_TABLE:
       return {
         ...state,
-        bsTables: payload,
-      };
+        bsTables: payload
+      }
     case RECENT_PAYMENT_QUEUE:
       return {
         ...state,
-        recentPayment: payload,
-      };
+        recentPayment: payload
+      }
     case EXAM_TOPPERS:
       return {
         ...state,
-        examTopper: payload,
-      };
+        examTopper: payload
+      }
     case BORDER_TABLE:
       return {
         ...state,
-        borderTable: payload,
-      };
+        borderTable: payload
+      }
     case TABLE_STRIPPED:
       return {
         ...state,
-        tableStripped: payload,
-      };
+        tableStripped: payload
+      }
     case DELETE_RECENT_PAYMENT_QUEUE:
       return {
         ...state,
         recentPayment: state.recentPayment.filter(
           (table, i) => i !== payload && table
-        ),
-      };
+        )
+      }
     case DELETE_BORDER_TABLE:
       return {
         ...state,
         borderTable: state.borderTable.filter(
           (table, i) => i !== payload && table
-        ),
-      };
+        )
+      }
     case DELETE_TABLE_STRIPPED:
       return {
         ...state,
         tableStripped: state.tableStripped.filter(
           (table, i) => i !== payload && table
-        ),
-      };
+        )
+      }
     case DELETE_EXAM_TOPPERS:
       return {
         ...state,
         examTopper: state.examTopper.filter(
           (table, i) => i !== payload && table
-        ),
-      };
+        )
+      }
     case EDIT_RECENT_PAYMENT_QUEUE:
       return {
         ...state,
         recentPayment: state.recentPayment.map((table, i) =>
-          i == payload.id ? payload.data : table
-        ),
-      };
+          i === payload.id ? payload.data : table
+        )
+      }
     case EDIT_EXAM_TOPPERS:
       return {
         ...state,
         examTopper: state.examTopper.map((table, i) =>
-          i == payload.id ? payload.data : table
-        ),
-      };
+          i === payload.id ? payload.data : table
+        )
+      }
     case EDIT_BORDER_TABLE:
       return {
         ...state,
         borderTable: state.borderTable.map((table, i) =>
-          i == payload.id ? payload.data : table
-        ),
-      };
+          i === payload.id ? payload.data : table
+        )
+      }
     case EDIT_TABLE_STRIPPED:
       return {
         ...state,
         tableStripped: state.tableStripped.map((table, i) =>
-          i == payload.id ? payload.data : table
-        ),
-      };
+          i === payload.id ? payload.data : table
+        )
+      }
     default:
-      return state;
+      return state
   }
-};
-export default tableReducer;
+}
+export default tableReducer

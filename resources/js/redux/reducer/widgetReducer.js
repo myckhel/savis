@@ -1,15 +1,15 @@
-import { WIDGET_BASIC } from "../action/type";
+import { WIDGET_BASIC } from '../action/type'
 
 const widgetReducer = (state = [], action) => {
-  const { type, payload } = action;
+  const { type, payload } = action
   switch (type) {
     case WIDGET_BASIC:
       return {
         ...state,
-        data: payload,
-      };
+        data: payload
+      }
     default:
-      return state;
+      return state
   }
-};
-export default widgetReducer;
+}
+export default widgetReducer

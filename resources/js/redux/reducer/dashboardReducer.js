@@ -13,91 +13,91 @@ import {
   ORDER_DETAILS_ITEMS,
   ORDER_REQUEST,
   REVIEWS,
-  TRANDING_MENU,
-} from "../action/type";
+  TRANDING_MENU
+} from '../action/type'
 
 const dashBoardReducer = (state = [], action) => {
-  const { type, payload } = action;
+  const { type, payload } = action
   switch (type) {
     case DAILY_TARGET_CHART:
       return {
         ...state,
-        dailyTargetChart: payload,
-      };
+        dailyTargetChart: payload
+      }
     case ORDER_CHART:
       return {
         ...state,
-        orderChart: payload,
-      };
+        orderChart: payload
+      }
     case CUSTOMER_CHART:
       return {
         ...state,
-        customerChart: payload,
-      };
+        customerChart: payload
+      }
     case MENU_CHART:
       return {
         ...state,
-        menuChart: payload,
-      };
+        menuChart: payload
+      }
     case CUSTOMER_MAP_CHART:
       return {
         ...state,
-        customerMapChart: payload,
-      };
+        customerMapChart: payload
+      }
     case TRANDING_MENU:
       return {
         ...state,
-        trendingMenu: payload,
-      };
+        trendingMenu: payload
+      }
     case ORDER_REQUEST:
       return {
         ...state,
-        orderRequest: payload,
-      };
+        orderRequest: payload
+      }
     case ORDERS_LIST:
       return {
         ...state,
-        ordersList: payload,
-      };
+        ordersList: payload
+      }
     case ORDER_DETAILS:
       return {
         ...state,
-        orderDetail: payload,
-      };
+        orderDetail: payload
+      }
     case ORDER_DETAILS_ITEMS:
       return {
         ...state,
-        orderDetailItems: payload,
-      };
+        orderDetailItems: payload
+      }
     case DELETE_ORDER_DETAILS:
       return {
         ...state,
         orderDetailItems: state.orderDetailItems.filter(
           (order, i) => i !== payload && order
-        ),
-      };
+        )
+      }
     case CUSTOMER_LIST:
       return {
         ...state,
-        customerList: payload,
-      };
+        customerList: payload
+      }
     case ADD_CUSTOMER_LIST:
       return {
         ...state,
-        customerList: [payload, ...state.customerList],
-      };
+        customerList: [payload, ...state.customerList]
+      }
     case ANALYTICS:
       return {
         ...state,
-        analytics: payload,
-      };
+        analytics: payload
+      }
     case REVIEWS:
       return {
         ...state,
-        reviews: payload,
-      };
+        reviews: payload
+      }
     default:
-      return state;
+      return state
   }
-};
-export default dashBoardReducer;
+}
+export default dashBoardReducer
