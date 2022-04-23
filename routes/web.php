@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\Http\Controllers\HomeController;
@@ -14,21 +15,21 @@ use App\Models\Http\Controllers\HomeController;
 |
 */
 //shared server clear cache
-Route::get('/clear-cache', function() {
-    return Artisan::call('cache:clear');
-    // return what you want
+Route::get('/clear-cache', function () {
+  return Artisan::call('cache:clear');
+  // return what you want
 });
 
-Route::get('/test', function(){
+Route::get('/test', function () {
   return App\Models\Service::all()->count();
 });
 
 // migrate db
-Route::get('/db/migrate', function() {
-    return Artisan::call('migrate');
+Route::get('/db/migrate', function () {
+  return Artisan::call('migrate');
 });
 
-Route::get('/app/reset', function() {
+Route::get('/app/reset', function () {
   $output = [];
   // $output['inspire'] = Artisan::call('inspire');
   $output['freshDb'] = Artisan::call('migrate:fresh');
@@ -45,7 +46,7 @@ Route::get('/app/reset', function() {
   return $output;
 });
 
-Route::get('/db/migrate/fresh', function() {
+Route::get('/db/migrate/fresh', function () {
   return Artisan::call('migrate:fresh');
 });
 
@@ -64,4 +65,6 @@ Route::get('/db/migrate/fresh', function() {
 
 // Auth::routes();
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+// Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/', fn () => inertia('index', []))->name('home');
+Route::get('/auth', fn () => inertia('auth/index', []))->name('auth');
