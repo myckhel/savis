@@ -2,7 +2,7 @@
 
 return [
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Default Filesystem Disk
     |--------------------------------------------------------------------------
@@ -13,9 +13,9 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DRIVER', 'local'),
+  'default' => env('FILESYSTEM_DISK', 'local'),
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Default Cloud Filesystem Disk
     |--------------------------------------------------------------------------
@@ -26,9 +26,9 @@ return [
     |
     */
 
-    'cloud' => env('FILESYSTEM_CLOUD', 's3'),
+  'cloud' => env('FILESYSTEM_CLOUD', 's3'),
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Filesystem Disks
     |--------------------------------------------------------------------------
@@ -41,39 +41,39 @@ return [
     |
     */
 
-    'disks' => [
+  'disks' => [
 
-        'local' => [
-            'driver' => 'local',
-            'root' => storage_path('app'),
-        ],
-
-        'public' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
-        ],
-
-        's3' => [
-            'driver' => 's3',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => env('AWS_BUCKET'),
-            'url' => env('AWS_URL'),
-            'endpoint' => env('AWS_ENDPOINT'),
-        ],
-
-        'service_images'      => useFileConfig('service_images', []),
-        'user_images'         => useFileConfig('user_images', []),
-        'customer_images'     => useFileConfig('customer_images', []),
-        'attachments'         => useFileConfig('attachments', []),
-        'msg_images'          => useFileConfig('msg_images', []),
-        'msg_videos'          => useFileConfig('msg_videos', []),
+    'local' => [
+      'driver' => 'local',
+      'root' => storage_path('app'),
     ],
 
-    /*
+    'public' => [
+      'driver' => 'local',
+      'root' => storage_path('app/public'),
+      'url' => env('APP_URL') . '/storage',
+      'visibility' => 'public',
+    ],
+
+    's3' => [
+      'driver' => 's3',
+      'key' => env('AWS_ACCESS_KEY_ID'),
+      'secret' => env('AWS_SECRET_ACCESS_KEY'),
+      'region' => env('AWS_DEFAULT_REGION'),
+      'bucket' => env('AWS_BUCKET'),
+      'url' => env('AWS_URL'),
+      'endpoint' => env('AWS_ENDPOINT'),
+    ],
+
+    'service_images'      => useFileConfig('service_images', []),
+    'user_images'         => useFileConfig('user_images', []),
+    'customer_images'     => useFileConfig('customer_images', []),
+    'attachments'         => useFileConfig('attachments', []),
+    'msg_images'          => useFileConfig('msg_images', []),
+    'msg_videos'          => useFileConfig('msg_videos', []),
+  ],
+
+  /*
     |--------------------------------------------------------------------------
     | Symbolic Links
     |--------------------------------------------------------------------------
@@ -84,8 +84,8 @@ return [
     |
     */
 
-    'links' => [
-        public_path('storage') => storage_path('app/public'),
-    ],
+  'links' => [
+    public_path('storage') => storage_path('app/public'),
+  ],
 
 ];
