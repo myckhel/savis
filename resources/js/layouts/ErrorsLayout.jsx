@@ -1,11 +1,11 @@
-import { Link } from "@inertiajs/inertia-react";
-import { useEffect } from "react";
+import { Link } from '@inertiajs/inertia-react'
+import { useEffect } from 'react'
 
 const ErrorsLayout = ({ children }) => {
-    useEffect(() => {
-        document.querySelector("body").classList.add("vh-100");
-    }, []);
-    return (
+  useEffect(() => {
+    document.querySelector('body').classList.add('vh-100')
+  }, [])
+  return (
         <div className="authincation h-100">
             <div className="container vh-100">
                 <div className="row justify-content-center h-100 align-items-center">
@@ -24,7 +24,7 @@ const ErrorsLayout = ({ children }) => {
                 </div>
             </div>
         </div>
-    );
-};
+  )
+}
 
-export default ErrorsLayout;
+export default ErrorsLayout
