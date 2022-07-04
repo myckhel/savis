@@ -32,6 +32,7 @@
         "vite-plugin-laravel": "^0.2.0-beta.24"
     },
     "dependencies": {
+        "@babel/plugin-syntax-dynamic-import": "^7.8.3",
         "@date-io/date-fns": "^2.11.0",
         "@inertiajs/inertia": "^0.11.0",
         "@inertiajs/inertia-react": "^0.8.0",
