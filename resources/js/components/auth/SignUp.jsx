@@ -1,18 +1,18 @@
-import { Formik } from "formik";
-import swal from "sweetalert";
-import { sigupSchema } from "./Schema";
+import { Formik } from 'formik';
+import swal from 'sweetalert';
+import { sigupSchema } from './Schema';
 const SignUp = ({ onClick, registerUser, errorMsg }) => {
   const msg = () => {
     swal({
-      title: errorMsg && !errorMsg.auth ? "error" : "success",
+      title: errorMsg && !errorMsg.auth ? 'error' : 'success',
       text: errorMsg && errorMsg.errorMessage,
-      icon: errorMsg && !errorMsg.auth ? "error" : "success",
+      icon: errorMsg && !errorMsg.auth ? 'error' : 'success',
       buttons: {
         confirm: {
-          text: errorMsg && !errorMsg.auth ? "Try Again" : "Signup success",
-          closeModal: true,
-        },
-      },
+          text: errorMsg && !errorMsg.auth ? 'Try Again' : 'Signup success',
+          closeModal: true
+        }
+      }
     }).then();
   };
   return (
@@ -22,7 +22,7 @@ const SignUp = ({ onClick, registerUser, errorMsg }) => {
     >
       {errorMsg && msg()}
       <Formik
-        initialValues={{ username: "", password: "", email: "" }}
+        initialValues={{ username: '', password: '', email: '' }}
         validationSchema={sigupSchema}
         onSubmit={(values, { setSubmitting }) => {
           registerUser(values);
@@ -34,7 +34,7 @@ const SignUp = ({ onClick, registerUser, errorMsg }) => {
           handleChange,
           handleBlur,
           handleSubmit,
-          isSubmitting,
+          isSubmitting
         }) => (
           <form
             id="dz_login_signup_form"
@@ -62,7 +62,7 @@ const SignUp = ({ onClick, registerUser, errorMsg }) => {
                 <div
                   id="val-username1-error"
                   className="invalid-feedback animated fadeInUp"
-                  style={{ display: "block" }}
+                  style={{ display: 'block' }}
                 >
                   {errors.username && errors.username}
                 </div>
@@ -86,7 +86,7 @@ const SignUp = ({ onClick, registerUser, errorMsg }) => {
                 <div
                   id="val-username1-error"
                   className="invalid-feedback animated fadeInUp"
-                  style={{ display: "block" }}
+                  style={{ display: 'block' }}
                 >
                   {errors.email && errors.email}
                 </div>
@@ -110,7 +110,7 @@ const SignUp = ({ onClick, registerUser, errorMsg }) => {
                 <div
                   id="val-username1-error"
                   className="invalid-feedback animated fadeInUp"
-                  style={{ display: "block" }}
+                  style={{ display: 'block' }}
                 >
                   {errors.password && errors.password}
                 </div>
@@ -133,10 +133,10 @@ const SignUp = ({ onClick, registerUser, errorMsg }) => {
       </Formik>
       <div className="new-account mt-3">
         <p>
-          Already have an account?{" "}
+          Already have an account?{' '}
           <a
             className="text-primary"
-            href="#"
+            href="./#"
             data-toggle="tab"
             onClick={() => onClick()}
           >

@@ -1,18 +1,18 @@
-import { Formik } from "formik";
-import swal from "sweetalert";
-import { siginSchema } from "./Schema";
+import { Formik } from 'formik';
+import swal from 'sweetalert';
+import { siginSchema } from './Schema';
 const SignIn = ({ onClick, onClick1, loginUser, errorMsg }) => {
   const msg = () => {
     swal({
-      title: !errorMsg.auth ? "error" : "success",
+      title: !errorMsg.auth ? 'error' : 'success',
       text: errorMsg.msg,
-      icon: !errorMsg.auth ? "error" : "success",
+      icon: !errorMsg.auth ? 'error' : 'success',
       buttons: {
         confirm: {
-          text: !errorMsg.auth ? "Try Again" : "Login success",
-          closeModal: true,
-        },
-      },
+          text: !errorMsg.auth ? 'Try Again' : 'Login success',
+          closeModal: true
+        }
+      }
     }).then();
   };
   return (
@@ -22,7 +22,7 @@ const SignIn = ({ onClick, onClick1, loginUser, errorMsg }) => {
     >
       {errorMsg && msg()}
       <Formik
-        initialValues={{ password: "user123", email: "user@user.com" }}
+        initialValues={{ password: 'user123', email: 'user@user.com' }}
         validationSchema={siginSchema}
         onSubmit={(values, { setSubmitting }) => {
           loginUser(values);
@@ -34,7 +34,7 @@ const SignIn = ({ onClick, onClick1, loginUser, errorMsg }) => {
           handleChange,
           handleBlur,
           handleSubmit,
-          isSubmitting,
+          isSubmitting
         }) => (
           <form
             id="dz_login_signup_form"
@@ -62,7 +62,7 @@ const SignIn = ({ onClick, onClick1, loginUser, errorMsg }) => {
                 <div
                   id="val-username1-error"
                   className="invalid-feedback animated fadeInUp"
-                  style={{ display: "block" }}
+                  style={{ display: 'block' }}
                 >
                   {errors.email && errors.email}
                 </div>
@@ -86,7 +86,7 @@ const SignIn = ({ onClick, onClick1, loginUser, errorMsg }) => {
                 <div
                   id="val-username1-error"
                   className="invalid-feedback animated fadeInUp"
-                  style={{ display: "block" }}
+                  style={{ display: 'block' }}
                 >
                   {errors.password && errors.password}
                 </div>
@@ -110,6 +110,7 @@ const SignIn = ({ onClick, onClick1, loginUser, errorMsg }) => {
               </div>
               <div className="form-group">
                 <a
+                  href="./#"
                   onClick={() => onClick()}
                   className="c-pointer"
                   data-toggle="tab"
@@ -136,10 +137,10 @@ const SignIn = ({ onClick, onClick1, loginUser, errorMsg }) => {
       </Formik>
       <div className="new-account mt-3">
         <p>
-          Don't have an account?{" "}
+          Don't have an account?{' '}
           <a
             className="text-primary"
-            href="#"
+            href="./#"
             data-toggle="tab"
             onClick={() => onClick1()}
           >

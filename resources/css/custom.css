@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Lato');
 .rating-stars ul > li.star.selected > i.fa {
   color: #ff912c;
 }
@@ -133,7 +134,7 @@ button.pickadate--element.pickadate--button.pickadate--button__today {
   cursor: pointer;
 }
 .i-false:after {
-  content: "" !important;
+  content: '' !important;
 }
 
 .swal-button {
@@ -189,7 +190,7 @@ button.pickadate--element.pickadate--button.pickadate--button__today {
 
 /* Basic Table */
 .i-none:after {
-  content: "" !important;
+  content: '' !important;
 }
 .rbc-month-view {
   min-height: 100vh;
@@ -232,11 +233,11 @@ button.pickadate--element.pickadate--button.pickadate--button__today {
 } */
 
 /* noui slider */
-code[class*="language-"],
-pre[class*="language-"] {
+code[class*='language-'],
+pre[class*='language-'] {
   color: #ccc;
   background: none;
-  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   text-align: left;
   white-space: pre;
   word-spacing: normal;
@@ -269,19 +270,19 @@ pre[class*="language-"] {
 }
 
 /* Code blocks */
-pre[class*="language-"] {
+pre[class*='language-'] {
   padding: 1em;
   margin: 0.5em 0;
   overflow: auto;
 }
 
-:not(pre) > code[class*="language-"],
-pre[class*="language-"] {
+:not(pre) > code[class*='language-'],
+pre[class*='language-'] {
   background: #2d2d2d;
 }
 
 /* Inline code */
-:not(pre) > code[class*="language-"] {
+:not(pre) > code[class*='language-'] {
   padding: 0.1em;
   border-radius: 0.3em;
   white-space: normal;
@@ -406,7 +407,7 @@ svg.svg-map {
   .tab-content
   .tab-pane
   .admin-settings
-  input[type="radio"]:checked
+  input[type='radio']:checked
   + label::after {
   background-color: rgba(1, 1, 1, 0) !important;
 }
@@ -553,7 +554,7 @@ span.mail-text {
 }
 
 #tp-btn::after {
-  content: "";
+  content: '';
 }
 
 .swal-footer {
@@ -674,7 +675,6 @@ rect#chart_ChartBorder {
 .pagination {
   margin-bottom: 0 !important;
 }
-@import url("https://fonts.googleapis.com/css?family=Lato");
 .rc-backdrop {
   position: fixed;
   top: 0;
@@ -784,7 +784,7 @@ rect#chart_ChartBorder {
   border: 1px solid #e4e4e4;
   padding: 15px;
   background: white;
-  font-family: "Lato";
+  font-family: 'Lato';
   font-size: 12px;
 }
 .time__container__div {
@@ -831,7 +831,7 @@ rect#chart_ChartBorder {
 
 .react-calendar {
   border: none !important;
-  font-family: "poppins", sans-serif;
+  font-family: 'poppins', sans-serif;
 }
 
 abbr[title],
@@ -840,14 +840,14 @@ abbr[data-original-title] {
 }
 button.react-calendar__tile.react-calendar__month-view__days__day.react-calendar__month-view__days__day--neighboringMonth {
   color: #dee2e6 !important;
-  font-family: "poppins", sans-serif;
+  font-family: 'poppins', sans-serif;
 }
 
 span.react-calendar__navigation__label__labelText.react-calendar__navigation__label__labelText--from {
   font-size: 20px;
   font-weight: 500;
   color: #000;
-  font-family: "poppins", sans-serif;
+  font-family: 'poppins', sans-serif;
 }
 button.react-calendar__navigation__arrow.react-calendar__navigation__prev-button,
 button.react-calendar__navigation__arrow.react-calendar__navigation__next-button {
@@ -865,7 +865,7 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "poppins", sans-serif;
+  font-family: 'poppins', sans-serif;
 }
 button.react-calendar__navigation__label {
   /* padding: 20px 15px; */
@@ -925,7 +925,7 @@ button.react-calendar__tile.react-calendar__tile--active.react-calendar__tile--r
 }
 .calendar__container {
   width: 270px;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   display: none;
 }
 .calendar__list {

@@ -1,21 +1,21 @@
-import { Formik } from "formik";
-import { useState } from "react";
+import { Formik } from 'formik';
+import { useState } from 'react';
 // import { auth } from "../../firebaseConfig";
-import { forgetPasswordSchema } from "./Schema";
+import { forgetPasswordSchema } from './Schema';
 const ForgetPassword = () => {
-  const [error, setError] = useState("");
+  const [error] = useState('');
   return (
     <div
       id="forgot-password"
       className="auth-form tab-pane fade show active form-validation"
     >
       {error && (
-        <div class={`alert alert-${error.error ? "danger" : "success"}`}>
+        <div class={`alert alert-${error.error ? 'danger' : 'success'}`}>
           {error.msg}
         </div>
       )}
       <Formik
-        initialValues={{ email: "" }}
+        initialValues={{ email: '' }}
         validationSchema={forgetPasswordSchema}
         onSubmit={(values, { setSubmitting }) => {
           // auth
@@ -37,7 +37,7 @@ const ForgetPassword = () => {
           handleChange,
           handleBlur,
           handleSubmit,
-          isSubmitting,
+          isSubmitting
         }) => (
           <form
             id="dz_login_signup_form"
@@ -63,7 +63,7 @@ const ForgetPassword = () => {
                 <div
                   id="val-username1-error"
                   className="invalid-feedback animated fadeInUp"
-                  style={{ display: "block" }}
+                  style={{ display: 'block' }}
                 >
                   {errors.email && errors.email}
                 </div>
@@ -83,7 +83,7 @@ const ForgetPassword = () => {
             </div>
           </form>
         )}
-      </Formik>{" "}
+      </Formik>{' '}
     </div>
   );
 };

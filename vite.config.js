@@ -1,16 +1,9 @@
-import laravel from 'vite-plugin-laravel'
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import svgrPlugin from 'vite-plugin-svgr'
+import laravel from 'laravel-vite-plugin';
+import { defineConfig } from 'vite';
+import svgr from 'vite-plugin-svgr';
+import react from '@vitejs/plugin-react';
+import eslint from 'vite-plugin-eslint';
 
 export default defineConfig({
-  plugins: [
-    react(),
-    laravel(),
-    svgrPlugin({
-      svgrOptions: {
-        icon: true
-      }
-    })
-  ]
-})
+  plugins: [react(), laravel(['resources/js/app.jsx']), svgr(), eslint()]
+});
