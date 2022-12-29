@@ -45,8 +45,8 @@ class AppResetCommand extends Command
       print("freshDb");
       $output['eventGen'] = Artisan::call('event:generate');
       print("eventGen\n");
-      $output['dbSeed'] = Artisan::call('db:seed');
-      print("dbSeed\n");
+      // $output['dbSeed'] = Artisan::call('db:seed');
+      // print("dbSeed\n");
       // $output['MigrateDB'] = Artisan::call('migrate');
       Log::debug($output);
       print_r($output);
