@@ -1,4 +1,5 @@
 <?php
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Work;
@@ -13,7 +14,7 @@ class WorkTableSeeder extends Seeder
     public function run()
     {
       //
-      factory(Work::class, 1)->create()->each(function ($work){
+      Work::factory(1)->create()->each(function ($work){
         $work->save();
       });
     }
