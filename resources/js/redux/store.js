@@ -1,10 +1,23 @@
-import { combineReducers, createStore } from 'redux';
-// import rootReducer from './reducer';
+import { configureStore } from '@reduxjs/toolkit';
+import {
+  mergeReducers,
+  setConfig,
+  SET_REDUX_STATE,
+  SUBSCRIBE_REDUX_STATE
+} from 'use-redux-states';
 
-const initialState = {};
+const reducer = mergeReducers({});
 
-// const middleware = [];
+const store = configureStore({
+  reducer,
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [SET_REDUX_STATE, SUBSCRIBE_REDUX_STATE]
+      }
+    })
+});
 
-const store = createStore(combineReducers({}), initialState);
+setConfig({ cleanup: false });
 
 export default store;

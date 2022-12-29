@@ -29,12 +29,13 @@
     "@inertiajs/inertia": "^0.11.1",
     "@inertiajs/inertia-react": "^0.8.1",
     "@inertiajs/progress": "^0.2.7",
+    "@reduxjs/toolkit": "^1.9.1",
     "date-fns": "^2.27.0",
     "process": "^0.11.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-redux": "^7.2.6",
-    "redux": "^4.1.2"
+    "react-redux": "^8.0.5",
+    "use-redux-states": "^1.1.0"
   },
   "packageManager": "yarn@3.2.0"
 }

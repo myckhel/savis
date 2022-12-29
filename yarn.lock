@@ -1658,7 +1658,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.9.2":
+"@babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.9.2":
   version: 7.17.2
   resolution: "@babel/runtime@npm:7.17.2"
   dependencies:
@@ -1667,7 +1667,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.8.4":
+"@babel/runtime@npm:^7.12.1, @babel/runtime@npm:^7.8.4":
   version: 7.20.7
   resolution: "@babel/runtime@npm:7.20.7"
   dependencies:
@@ -2342,6 +2342,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@reduxjs/toolkit@npm:^1.5.1, @reduxjs/toolkit@npm:^1.9.1":
+  version: 1.9.1
+  resolution: "@reduxjs/toolkit@npm:1.9.1"
+  dependencies:
+    immer: ^9.0.16
+    redux: ^4.2.0
+    redux-thunk: ^2.4.2
+    reselect: ^4.1.7
+  peerDependencies:
+    react: ^16.9.0 || ^17.0.0 || ^18
+    react-redux: ^7.2.1 || ^8.0.2
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-redux:
+      optional: true
+  checksum: e6700a0d45198ab525c96ff0425fa0125fbdc37ce514f0c77c30225837113279ceec9190ac3da35cb20e77553e56342021788bbf17465819068c4db34cb3d87f
+  languageName: node
+  linkType: hard
+
 "@rollup/pluginutils@npm:^4.2.1":
   version: 4.2.1
   resolution: "@rollup/pluginutils@npm:4.2.1"
@@ -2594,7 +2614,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/hoist-non-react-statics@npm:^3.3.0":
+"@types/hoist-non-react-statics@npm:^3.3.1":
   version: 3.3.1
   resolution: "@types/hoist-non-react-statics@npm:3.3.1"
   dependencies:
@@ -2678,18 +2698,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-redux@npm:^7.1.20":
-  version: 7.1.22
-  resolution: "@types/react-redux@npm:7.1.22"
-  dependencies:
-    "@types/hoist-non-react-statics": ^3.3.0
-    "@types/react": "*"
-    hoist-non-react-statics: ^3.3.0
-    redux: ^4.0.0
-  checksum: eef458c0cda27eabd8d458b7fc40553aab8d2f218145b896b9059b86d88680ae479079aee13683f2a0f35774f20346b732e91182252402bd8777455e004561c9
-  languageName: node
-  linkType: hard
-
 "@types/react@npm:*":
   version: 17.0.39
   resolution: "@types/react@npm:17.0.39"
@@ -2719,6 +2727,13 @@ __metadata:
   version: 2.0.1
   resolution: "@types/stack-utils@npm:2.0.1"
   checksum: 205fdbe3326b7046d7eaf5e494d8084f2659086a266f3f9cf00bccc549c8e36e407f88168ad4383c8b07099957ad669f75f2532ed4bc70be2b037330f7bae019
+  languageName: node
+  linkType: hard
+
+"@types/use-sync-external-store@npm:^0.0.3":
+  version: 0.0.3
+  resolution: "@types/use-sync-external-store@npm:0.0.3"
+  checksum: 161ddb8eec5dbe7279ac971531217e9af6b99f7783213566d2b502e2e2378ea19cf5e5ea4595039d730aa79d3d35c6567d48599f69773a02ffcff1776ec2a44e
   languageName: node
   linkType: hard
 
@@ -5062,6 +5077,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"immer@npm:^9.0.16":
+  version: 9.0.16
+  resolution: "immer@npm:9.0.16"
+  checksum: e9a5ca65c929b329da7a3b7beccf7984271cda7bdd47b2cab619eac3277dcd56598c211b55cc340786b6eff0c06652ac018808d9fd744443f06882364dece6bc
+  languageName: node
+  linkType: hard
+
 "immutable@npm:^4.0.0":
   version: 4.2.1
   resolution: "immutable@npm:4.2.1"
@@ -6171,7 +6193,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.21, lodash@npm:^4.7.0":
+"lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.7.0":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -6934,7 +6956,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -6987,6 +7009,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-fast-compare@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "react-fast-compare@npm:3.2.0"
+  checksum: 8ef272c825ae329f61633ce4ce7f15aa5b84e5214d88bc0823880236e03e985a13195befa2c7a4eda7db3b017dc7985729152d88445823f652403cf36c2b86aa
+  languageName: node
+  linkType: hard
+
 "react-is@npm:^16.13.1, react-is@npm:^16.7.0":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
@@ -6994,31 +7023,49 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^17.0.1, react-is@npm:^17.0.2":
+"react-is@npm:^17.0.1":
   version: 17.0.2
   resolution: "react-is@npm:17.0.2"
   checksum: 9d6d111d8990dc98bc5402c1266a808b0459b5d54830bbea24c12d908b536df7883f268a7868cfaedde3dd9d4e0d574db456f84d2e6df9c4526f99bb4b5344d8
   languageName: node
   linkType: hard
 
-"react-redux@npm:^7.2.6":
-  version: 7.2.6
-  resolution: "react-redux@npm:7.2.6"
+"react-is@npm:^18.0.0":
+  version: 18.2.0
+  resolution: "react-is@npm:18.2.0"
+  checksum: e72d0ba81b5922759e4aff17e0252bd29988f9642ed817f56b25a3e217e13eea8a7f2322af99a06edb779da12d5d636e9fda473d620df9a3da0df2a74141d53e
+  languageName: node
+  linkType: hard
+
+"react-redux@npm:^8.0.5":
+  version: 8.0.5
+  resolution: "react-redux@npm:8.0.5"
   dependencies:
-    "@babel/runtime": ^7.15.4
-    "@types/react-redux": ^7.1.20
+    "@babel/runtime": ^7.12.1
+    "@types/hoist-non-react-statics": ^3.3.1
+    "@types/use-sync-external-store": ^0.0.3
     hoist-non-react-statics: ^3.3.2
-    loose-envify: ^1.4.0
-    prop-types: ^15.7.2
-    react-is: ^17.0.2
+    react-is: ^18.0.0
+    use-sync-external-store: ^1.0.0
   peerDependencies:
-    react: ^16.8.3 || ^17
+    "@types/react": ^16.8 || ^17.0 || ^18.0
+    "@types/react-dom": ^16.8 || ^17.0 || ^18.0
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
+    react-native: ">=0.59"
+    redux: ^4
   peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
     react-dom:
       optional: true
     react-native:
       optional: true
-  checksum: 0bf142ce0d0b80aef955650fd5e9489fca32d94f19ee23893b332f1b01ceee7bd3623337c942cbda642667d1dc9de5ac869c3c1946afa6cf2046407b57d24741
+    redux:
+      optional: true
+  checksum: a108f4f7ead6ac005e656d46051474a2bbdb31ede481bbbb3d8d779c1a35e1940b8655577cc5021313411864d305f67fc719aa48d6e5ed8288cf9cbe8b7042e4
   languageName: node
   linkType: hard
 
@@ -7058,12 +7105,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"redux@npm:^4.0.0, redux@npm:^4.1.2":
-  version: 4.1.2
-  resolution: "redux@npm:4.1.2"
+"redux-thunk@npm:^2.4.2":
+  version: 2.4.2
+  resolution: "redux-thunk@npm:2.4.2"
+  peerDependencies:
+    redux: ^4
+  checksum: c7f757f6c383b8ec26152c113e20087818d18ed3edf438aaad43539e9a6b77b427ade755c9595c4a163b6ad3063adf3497e5fe6a36c68884eb1f1cfb6f049a5c
+  languageName: node
+  linkType: hard
+
+"redux@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "redux@npm:4.2.0"
   dependencies:
     "@babel/runtime": ^7.9.2
-  checksum: 6a839cee5bd580c5298d968e9e2302150e961318253819bcd97f9d945a5a409559eacddf6026f4118bb68b681c593d90e8a2c5bbf278f014aff9bf0d2d8fa084
+  checksum: 75f3955c89b3f18edf5411e5fb482aa2e4f41a416183e8802a6bf6472c4fc3d47675b8b321d147f8af8e0f616436ac507bf5a25f1c4d6180e797b549c7db2c1d
   languageName: node
   linkType: hard
 
@@ -7159,6 +7215,13 @@ __metadata:
   version: 2.1.1
   resolution: "require-directory@npm:2.1.1"
   checksum: fb47e70bf0001fdeabdc0429d431863e9475e7e43ea5f94ad86503d918423c1543361cc5166d713eaa7029dd7a3d34775af04764bebff99ef413111a5af18c80
+  languageName: node
+  linkType: hard
+
+"reselect@npm:^4.0.0, reselect@npm:^4.1.7":
+  version: 4.1.7
+  resolution: "reselect@npm:4.1.7"
+  checksum: 738d8e2b8f0dca154ad29de6a209c9fbca2d70ae6788fd85df87f2c74b95a65bbf2d16d43a9e2faff39de34d17a29d706ba08a6b2ee5660c09589edbd19af7e1
   languageName: node
   linkType: hard
 
@@ -7324,6 +7387,7 @@ __metadata:
     "@inertiajs/inertia": ^0.11.1
     "@inertiajs/inertia-react": ^0.8.1
     "@inertiajs/progress": ^0.2.7
+    "@reduxjs/toolkit": ^1.9.1
     "@vitejs/plugin-react": ^3.0.0
     axios: ^0.26.0
     chokidar: ^3.5.3
@@ -7338,9 +7402,9 @@ __metadata:
     process: ^0.11.10
     react: ^18.2.0
     react-dom: ^18.2.0
-    react-redux: ^7.2.6
-    redux: ^4.1.2
+    react-redux: ^8.0.5
     sass: ^1.57.1
+    use-redux-states: ^1.1.0
     vite: ^4.0.3
     vite-plugin-eslint: ^1.8.1
     vite-plugin-svgr: ^2.4.0
@@ -8011,6 +8075,35 @@ __metadata:
   dependencies:
     punycode: ^2.1.0
   checksum: 7167432de6817fe8e9e0c9684f1d2de2bb688c94388f7569f7dbdb1587c9f4ca2a77962f134ec90be0cc4d004c939ff0d05acc9f34a0db39a3c797dada262633
+  languageName: node
+  linkType: hard
+
+"use-redux-states@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "use-redux-states@npm:1.1.0"
+  dependencies:
+    "@reduxjs/toolkit": ^1.5.1
+    lodash: ^4.17.20
+    react-fast-compare: ^3.2.0
+    reselect: ^4.0.0
+  peerDependencies:
+    react: "*"
+    react-redux: ^7.2.4
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: aef38946c50d0e7baf6fe9f64ed0c7af033f4ccc4d4225b749d982c8db9de25adeb7ed1f60b979aea02e68cb64e451b5b8e80f6352765620aca08be31bcaa156
+  languageName: node
+  linkType: hard
+
+"use-sync-external-store@npm:^1.0.0":
+  version: 1.2.0
+  resolution: "use-sync-external-store@npm:1.2.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 5c639e0f8da3521d605f59ce5be9e094ca772bd44a4ce7322b055a6f58eeed8dda3c94cabd90c7a41fb6fa852210092008afe48f7038792fd47501f33299116a
   languageName: node
   linkType: hard
 
