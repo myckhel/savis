@@ -10,15 +10,15 @@ import { InertiaProgress } from '@inertiajs/progress';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 import SimpleReactLightbox from 'simple-react-lightbox';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 
 InertiaProgress.init();
 createInertiaApp({
-  resolve: async name => {
-    const pages = import.meta.glob('./Pages/**/*.jsx');
-    const page = Object.keys(pages).find(page => page.endsWith(`${name}.jsx`));
-
-    return (await pages[page]()).default;
-  },
+  resolve: name =>
+    resolvePageComponent(
+      `./Pages/${name}.jsx`,
+      import.meta.glob('./Pages/**/*.jsx')
+    ),
   setup({ el, App, props }) {
     createRoot(el).render(
       <Provider store={store}>
