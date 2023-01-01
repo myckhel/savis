@@ -10,6 +10,7 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ConfigProvider } from 'antd';
+import en_US from 'antd/locale/en_US';
 
 InertiaProgress.init();
 createInertiaApp({
@@ -21,7 +22,7 @@ createInertiaApp({
   setup({ el, App, props }) {
     createRoot(el).render(
       <Provider store={store}>
-        <ConfigProvider>
+        <ConfigProvider locale={en_US}>
           <App {...props} />
         </ConfigProvider>
       </Provider>
