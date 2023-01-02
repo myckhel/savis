@@ -1,43 +1,29 @@
 // import Router from "next/router";
+import { Head } from '@inertiajs/inertia-react';
 import { Layout as ALayout, theme } from 'antd';
+import { memo } from 'react';
+import Footer from './Footer';
 import Header from './Header';
+import SideBar from './SideBar';
 // import { getUser } from "../redux/action/auth";
 
 const { Content } = ALayout;
 
-const Layout = ({ children }) => {
+const Layout = memo(({ children, title, description }) => {
   const {
     token: { colorBgContainer }
   } = theme.useToken();
 
   return (
-    <ALayout>
-      {/* <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="logo" />
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={['1']}
-          items={[
-            {
-              key: '1',
-              icon: <UserOutlined />,
-              label: 'nav 1'
-            },
-            {
-              key: '2',
-              icon: <VideoCameraOutlined />,
-              label: 'nav 2'
-            },
-            {
-              key: '3',
-              icon: <UploadOutlined />,
-              label: 'nav 3'
-            }
-          ]}
-        />
-      </Sider> */}
-      <ALayout className="site-layout">
+    <ALayout hasSider>
+      <Head title={`Savis | ${title}`} />
+      <SideBar />
+      <ALayout
+        className="site-layout"
+        style={{
+          marginLeft: 200
+        }}
+      >
         <Header />
         <Content
           style={{
@@ -49,9 +35,36 @@ const Layout = ({ children }) => {
         >
           {children}
         </Content>
+        <Footer />
       </ALayout>
     </ALayout>
   );
-};
+});
+
+export const BasicLayout = memo(({ children, title }) => {
+  const {
+    token: { colorBgContainer }
+  } = theme.useToken();
+
+  return (
+    <ALayout>
+      <Head title={`Savis | ${title}`} />
+      <ALayout className="site-layout">
+        <Header showLogo />
+        <Content
+          style={{
+            margin: '24px 16px',
+            padding: 24,
+            minHeight: 280,
+            background: colorBgContainer
+          }}
+        >
+          {children}
+        </Content>
+        <Footer />
+      </ALayout>
+    </ALayout>
+  );
+});
 
 export default Layout;

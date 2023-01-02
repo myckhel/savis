@@ -8,7 +8,7 @@ import { Tabs } from 'antd';
 import useState from 'use-react-state';
 import { memo } from 'react';
 import './styles.sass';
-import Layout from '../../layouts/Layout';
+import { BasicLayout } from '../../layouts/Layout';
 import { logo } from '../../../assets/images';
 
 const Auth = memo(() => {
@@ -144,6 +144,6 @@ const Auth = memo(() => {
   );
 });
 
-Auth.layout = page => <Layout title="Authenticate" children={page} />;
+Auth.layout = page => <BasicLayout title="Authenticate" children={page} />;
 
 export default Auth;
