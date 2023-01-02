@@ -11,7 +11,7 @@ import './styles.sass';
 import { BasicLayout } from '../../layouts/Layout';
 import { logo } from '../../../assets/images';
 import { useCallback } from 'react';
-import { loginUser } from '../../utils/api/user';
+import { loginUser, registerUser } from '../../utils/api/user';
 import { Notify } from '../../utils';
 import { batch, useDispatch } from 'react-redux';
 import { setToken, storeUser } from '../../redux/auth';
@@ -19,39 +19,44 @@ import { Inertia } from '@inertiajs/inertia';
 
 const Auth = memo(() => {
   const dispatch = useDispatch();
-  const [{ loginType }, setState] = useState({
-    loginType: 'login'
+  const [{ loginType, password }, setState] = useState({
+    loginType: 'login',
+    password: undefined
   });
 
-  const onFinish = useCallback(async ({ name, email, password }) => {
-    try {
-      const {
-        access_token: token,
-        token_type,
-        expires_at,
-        user
-      } = await loginUser({
-        name,
-        email,
-        password
-      });
+  const onFinish = useCallback(
+    async ({ name, email, password, password_confirmation }) => {
+      try {
+        const {
+          access_token: token,
+          token_type,
+          expires_at,
+          user
+        } = await (loginType === 'login' ? loginUser : registerUser)({
+          name,
+          email,
+          password,
+          password_confirmation
+        });
 
-      batch(() => {
-        dispatch(storeUser(user));
-        dispatch(setToken({ token, token_type, expires_at }));
-      });
+        batch(() => {
+          dispatch(storeUser(user));
+          dispatch(setToken({ token, token_type, expires_at }));
+        });
 
-      Inertia.get('/dash', {}, { replace: true });
+        Inertia.get('/dash', {}, { replace: true });
 
-      Notify({
-        type: 'success',
-        message: 'Yaaaaaay!',
-        description: 'Logged In!'
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
+        Notify({
+          type: 'success',
+          message: 'Yaaaaaay!',
+          description: loginType === 'login' ? 'Logged In!' : 'Registered!'
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [loginType]
+  );
 
   const auth = (
     <>
@@ -96,7 +101,8 @@ const Auth = memo(() => {
         fieldProps={{
           size: 'large',
           prefix: <LockOutlined className={'prefixIcon'} />,
-          type: 'password'
+          type: 'password',
+          onChange: ({ target: { value: password } }) => setState({ password })
         }}
         placeholder={'Enter password'}
         rules={[
@@ -106,6 +112,32 @@ const Auth = memo(() => {
           }
         ]}
       />
+      {loginType === 'signup' && (
+        <ProFormText.Password
+          name="password_confirmation"
+          fieldProps={{
+            size: 'large',
+            prefix: <LockOutlined className={'prefixIcon'} />,
+            type: 'password'
+          }}
+          placeholder={'Enter password confirmation'}
+          rules={[
+            {
+              required: true,
+              message: 'Please confirm your password! '
+            },
+            {
+              validator: (_, _password) => {
+                if (password === _password) {
+                  return Promise.resolve(true);
+                } else {
+                  return Promise.reject({ message: 'Password does not match' });
+                }
+              }
+            }
+          ]}
+        />
+      )}
       {loginType === 'login' && (
         <div style={{ marginBlockEnd: 24 }}>
           <ProFormCheckbox noStyle name="remember">

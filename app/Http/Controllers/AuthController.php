@@ -48,6 +48,8 @@ class AuthController extends Controller
     }
 
     $tokenResult = $user->createToken('UAT');
+    Auth::login($user);
+
     // $token = $tokenResult->plainTextToken;
     // if ($request->remember_me)
     //     $token->expires_at = Carbon::now()->addWeeks(1);
@@ -98,7 +100,7 @@ class AuthController extends Controller
     $credentials['active'] = 0;
     // $credentials['deleted_at'] = null;
 
-    if (!Auth::attempt($credentials))
+    if (!Auth::attempt($credentials, $request->remember_me))
       return response()->json([
         'message' => 'credentials does not match our records',
         'status' => false,
