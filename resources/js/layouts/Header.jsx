@@ -1,17 +1,20 @@
 import { createElement, useState } from 'react';
 import {
+  DashboardOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   PoweroffOutlined,
   SolutionOutlined,
-  UserOutlined
+  UserOutlined,
+  UserSwitchOutlined
 } from '@ant-design/icons';
 import { Avatar, Dropdown, Layout, theme } from 'antd';
 import { memo } from 'react';
 import { logo } from '../../assets/images';
 import { Link } from '@inertiajs/inertia-react';
-import { useIsLoggedIn, useLogout, useUser } from '../redux/auth/hooks';
+import { useLogout, useUser } from '../redux/auth/hooks';
 import { Inertia } from '@inertiajs/inertia';
+import { useMemo } from 'react';
 
 const { Header: AHeader } = Layout;
 
@@ -21,7 +24,6 @@ const Header = ({ showLogo }) => {
   const {
     token: { colorBgContainer }
   } = theme.useToken();
-  const isLoggendin = useIsLoggedIn();
 
   return (
     <AHeader
@@ -35,7 +37,7 @@ const Header = ({ showLogo }) => {
           })
         : null}
       {showLogo && <Logo />}
-      {isLoggendin && <UserMenu />}
+      <UserMenu />
     </AHeader>
   );
 };
@@ -49,18 +51,26 @@ const UserMenu = memo(() => {
       if (key === 'signout') {
         await Inertia.visit('/api/auth/logout', undefined, { replace: true });
         logout();
+      } else if (key === 'signin') {
+        await Inertia.visit('auth');
+      } else if (key === 'dashboard') {
+        await Inertia.visit('dash');
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  return (
-    <Dropdown
-      className="ml-auto mr-4"
-      menu={{
-        onClick,
-        items: [
+  const items = useMemo(() => {
+    const items = [];
+
+    user?.id
+      ? items.push(
+          {
+            key: 'dashboard',
+            label: 'Dashboard',
+            icon: <DashboardOutlined className="icon" />
+          },
           {
             key: 'profile',
             label: 'Profile',
@@ -72,9 +82,18 @@ const UserMenu = memo(() => {
             icon: <PoweroffOutlined className="icon" />,
             danger: true
           }
-        ]
-      }}
-    >
+        )
+      : items.push({
+          key: 'signin',
+          label: 'Sign in / Sign up',
+          icon: <UserSwitchOutlined className="icon" />
+        });
+
+    return items;
+  }, [user?.id]);
+
+  return (
+    <Dropdown className="ml-auto mr-4" menu={{ onClick, items }}>
       <Avatar
         className="cursor-pointer"
         icon={user?.avatar || <UserOutlined />}
