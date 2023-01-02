@@ -32,4 +32,5 @@ window.Http = axios.create({
     'X-Requested-With': 'XMLHttpRequest'
   }
 });
-export default axios;
+
+export default window.Http;

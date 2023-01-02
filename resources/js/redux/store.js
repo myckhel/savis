@@ -14,6 +14,7 @@ import {
   PERSIST
 } from 'redux-persist';
 import createSagaMiddleware from '@redux-saga/core';
+import sagas from './sagas';
 
 const persistConfig = {
   key: 'root',
@@ -43,6 +44,8 @@ const store = configureStore({
 });
 
 setConfig({ cleanup: false });
+
+sagaMiddleware.run(sagas);
 
 export const persistor = persistStore(store);
 
