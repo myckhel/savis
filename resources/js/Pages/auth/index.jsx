@@ -7,18 +7,22 @@ import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Tabs } from 'antd';
 import useState from 'use-react-state';
 import { memo } from 'react';
+import './styles.sass';
+import Layout from '../../layouts/Layout';
+import { logo } from '../../../assets/images';
 
-const Auth = () => {
+const Auth = memo(() => {
   const [{ loginType }, setState] = useState({
-    loginType: 'phone'
+    loginType: 'account'
   });
 
   return (
-    <div className="flex h-screen items-center justify-center bg-yellow-200">
+    <div className="flex h-full items-center justify-center">
       <LoginForm
-        logo="https://www.pngall.com/wp-content/uploads/8/Service-Gear-PNG-Free-Download.png"
+        logo={logo}
         title="Savis"
         subTitle="Nigerian largest online service rendering"
+        onFinish={e => console.log(e)}
         // actions={
         //   <Space>
         //     other login methods
@@ -121,11 +125,7 @@ const Auth = () => {
             // }
           ]}
         />
-        <div
-          style={{
-            marginBlockEnd: 24
-          }}
-        >
+        <div style={{ marginBlockEnd: 24 }}>
           <ProFormCheckbox noStyle name=" autoLogin ">
             automatic log-in
           </ProFormCheckbox>
@@ -142,6 +142,8 @@ const Auth = () => {
       </LoginForm>
     </div>
   );
-};
+});
 
-export default memo(Auth);
+Auth.layout = page => <Layout title="Authenticate" children={page} />;
+
+export default Auth;
