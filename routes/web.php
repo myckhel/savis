@@ -66,5 +66,8 @@ Route::get('/db/migrate/fresh', function () {
 // Auth::routes();
 
 // Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::group(['middleware' => ['auth:web']], function () {
+  Route::get('/dash', fn () => inertia('app/index', []))->name('dashboad');
+});
+Route::get('/auth', fn () => inertia('auth/index', []))->middleware('guest')->name('auth');
 Route::get('/', fn () => inertia('index', []))->name('home');
-Route::get('/auth', fn () => inertia('auth/index', []))->name('auth');
