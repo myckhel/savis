@@ -12,27 +12,28 @@ use App\Models\User;
 use App\Notifications\SignupActivate;
 use App\Models\Customer;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
-/**
- * Create user
- *
- * @param  [string] name
- * @param  [string] email
- * @param  [string] password
- * @param  [string] password_confirmation
- * @return [string] message
- */
+  /**
+   * Create user
+   *
+   * @param  [string] name
+   * @param  [string] email
+   * @param  [string] password
+   * @param  [string] password_confirmation
+   * @return [string] message
+   */
   public function signup(Request $request)
   {
     $request->validate([
-        'name'                => 'required|unique:users',
-        'email'               => 'required|email|unique:users',
-        'password'            => 'required|min:6|confirmed',
-        'avatar'              => '',
+      'name'                => 'required|unique:users',
+      'email'               => 'required|email|unique:users',
+      'password'            => 'required|min:6|confirmed',
+      'avatar'              => '',
     ], [
-        'password.confirmed'  => 'The password does not match.'
+      'password.confirmed'  => 'The password does not match.'
     ]);
 
     $avatar = $request->avatar;
@@ -53,106 +54,111 @@ class AuthController extends Controller
     // $token->save();
 
     return response()->json([
-        'message' => 'Successfully created user!',
-        'user' => $user,
-        'access_token' => $tokenResult->plainTextToken,
-        'token_type' => 'Bearer',
+      'message' => 'Successfully created user!',
+      'user' => $user,
+      'access_token' => $tokenResult->plainTextToken,
+      'token_type' => 'Bearer',
     ], 201);
   }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array $data
-     * @return User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'activation_token' => Str::random(60)
-        ]);
+  /**
+   * Create a new user instance after a valid registration.
+   *
+   * @param  array $data
+   * @return User
+   */
+  protected function create(array $data)
+  {
+    return User::create([
+      'name' => $data['name'],
+      'email' => $data['email'],
+      'password' => bcrypt($data['password']),
+      'activation_token' => Str::random(60)
+    ]);
+  }
+
+  /**
+   * Login user and create token
+   *
+   * @param  [string] email
+   * @param  [string] password
+   * @param  [boolean] remember_me
+   * @return [string] access_token
+   * @return [string] token_type
+   * @return [string] expires_at
+   */
+  public function login(Request $request)
+  {
+    $request->validate([
+      'email' => 'required|email',
+      'password' => 'required|string',
+      'remember_me' => 'boolean'
+    ]);
+    $credentials = request(['email', 'password']);
+    $credentials['active'] = 0;
+    // $credentials['deleted_at'] = null;
+
+    if (!Auth::attempt($credentials))
+      return response()->json([
+        'message' => 'credentials does not match our records',
+        'status' => false,
+      ], 401);
+
+    $user = $request->user();
+    $user->withUrls('avatar');
+    $tokenResult = $user->createToken('UAT');
+    // $token = $tokenResult->token;
+    // if ($request->remember_me)
+    //     $token->expires_at = Carbon::now()->addWeeks(1);
+    // $token->save();
+    return response()->json([
+      'access_token' => $tokenResult->plainTextToken,
+      'token_type' => 'Bearer',
+      'user' => $user,
+    ]);
+  }
+
+  /**
+   * Logout user (Revoke the token)
+   *
+   * @return [string] message
+   */
+  public function logout(Request $request)
+  {
+    if (!$request->wantsJson()) {
+      auth('web')->logout();
+      return redirect('auth');
     }
 
-    /**
-     * Login user and create token
-     *
-     * @param  [string] email
-     * @param  [string] password
-     * @param  [boolean] remember_me
-     * @return [string] access_token
-     * @return [string] token_type
-     * @return [string] expires_at
-     */
-    public function login(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
-            'remember_me' => 'boolean'
-        ]);
-        $credentials = request(['email', 'password']);
-        $credentials['active'] = 0;
-        // $credentials['deleted_at'] = null;
+    $request->user()->currentAccessToken()->delete();
+    return response()->json([
+      'message' => 'Successfully logged out'
+    ]);
+  }
 
-        if(!Auth::attempt($credentials))
-            return response()->json([
-                'message' => 'credentials does not match our records',
-                'status' => false,
-            ], 401);
+  /**
+   * Get the authenticated User
+   *
+   * @return [json] user object
+   */
+  public function user(Request $request)
+  {
+    return response()->json($request->user());
+  }
 
-        $user = $request->user();
-        $user->withUrls('avatar');
-        $tokenResult = $user->createToken('UAT');
-        // $token = $tokenResult->token;
-        // if ($request->remember_me)
-        //     $token->expires_at = Carbon::now()->addWeeks(1);
-        // $token->save();
-        return response()->json([
-            'access_token' => $tokenResult->plainTextToken,
-            'token_type' => 'Bearer',
-            'user' => $user,
-        ]);
+  public function signupActivate($token)
+  {
+    $user = User::where('activation_token', $token)->first();
+    if (!$user) {
+      return response()->json([
+        'message' => 'This activation token is invalid.'
+      ], 404);
     }
-
-    /**
-     * Logout user (Revoke the token)
-     *
-     * @return [string] message
-     */
-    public function logout(Request $request)
-    {
-        $request->user()->currentAccessToken()->delete();
-        return response()->json([
-            'message' => 'Successfully logged out'
-        ]);
-    }
-
-    /**
-     * Get the authenticated User
-     *
-     * @return [json] user object
-     */
-    public function user(Request $request)
-    {
-        return response()->json($request->user());
-    }
-
-    public function signupActivate($token)
-    {
-        $user = User::where('activation_token', $token)->first();
-        if (!$user) {
-            return response()->json([
-                'message' => 'This activation token is invalid.'
-            ], 404);
-        }
-        $user->active = true;
-        $user->activation_token = '';
-        $user->save();
-        return $user;
-    }
+    $user->active = true;
+    $user->activation_token = '';
+    $user->save();
+    return $user;
+  }
 
   /**
    * Register customer
@@ -166,21 +172,21 @@ class AuthController extends Controller
   public function register(Request $request)
   {
     $request->validate([
-        // 'name' => 'required|unique:customers',
-        'email'       => 'required|email',
-        'password'    => 'required|min:6|confirmed',
-        'firstname'   => 'required|min:3|max:30',
-        'lastname'    => 'required|min:3|max:30',
-        'avatar'      => '',
+      // 'name' => 'required|unique:customers',
+      'email'       => 'required|email',
+      'password'    => 'required|min:6|confirmed',
+      'firstname'   => 'required|min:3|max:30',
+      'lastname'    => 'required|min:3|max:30',
+      'avatar'      => '',
     ], [
-        'password.confirmed' => 'The password does not match.'
+      'password.confirmed' => 'The password does not match.'
     ]);
     $email = $request->email;
     $avatar = $request->avatar;
 
     // check email exists
     $customer = Customer::where('email', $email)->first();
-    if($customer){
+    if ($customer) {
       // check password is set
       if ($customer->password) {
         // respond email exists and option to reset password
@@ -205,11 +211,11 @@ class AuthController extends Controller
       // $token->save();
 
       return response()->json([
-          'status' => true,
-          'message' => 'Successfully created user!',
-          'user' => $customer,
-          'access_token' => $tokenResult->plainTextToken,
-          'token_type' => 'Bearer',
+        'status' => true,
+        'message' => 'Successfully created user!',
+        'user' => $customer,
+        'access_token' => $tokenResult->plainTextToken,
+        'token_type' => 'Bearer',
       ], 201);
     }
   }
@@ -219,7 +225,7 @@ class AuthController extends Controller
     $data['password'] = bcrypt($data['password']);
     $data['activation_token'] = Str::random(60);
 
-      return Customer::create($data);
+    return Customer::create($data);
   }
 
   /**
@@ -235,9 +241,9 @@ class AuthController extends Controller
   public function signin(Request $request)
   {
     $request->validate([
-        'email'       => 'required|email',
-        'password'    => 'required|string',
-        'remember_me' => 'boolean'
+      'email'       => 'required|email',
+      'password'    => 'required|string',
+      'remember_me' => 'boolean'
     ]);
     $email        = $request->email;
     $password     = $request->password;
@@ -270,9 +276,9 @@ class AuthController extends Controller
    */
   public function signout(Request $request)
   {
-      $request->user()->currentAccessToken()->delete();
-      return response()->json([
-          'message' => 'Successfully logged out'
-      ]);
+    $request->user()->currentAccessToken()->delete();
+    return response()->json([
+      'message' => 'Successfully logged out'
+    ]);
   }
 }
