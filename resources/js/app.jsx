@@ -22,7 +22,15 @@ createInertiaApp({
   setup({ el, App, props }) {
     createRoot(el).render(
       <Provider store={store}>
-        <ConfigProvider locale={en_US}>
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: '#F97316'
+              // colorSecondary: '#F97316'
+            }
+          }}
+          locale={en_US}
+        >
           <App {...props} />
         </ConfigProvider>
       </Provider>
