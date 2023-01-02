@@ -1,6 +1,6 @@
 // import Router from "next/router";
 import { Head } from '@inertiajs/inertia-react';
-import { Layout as ALayout, theme } from 'antd';
+import { Layout as ALayout, notification, theme } from 'antd';
 import { memo } from 'react';
 import Footer from './Footer';
 import Header from './Header';
@@ -13,6 +13,7 @@ const Layout = memo(({ children, title, description }) => {
   const {
     token: { colorBgContainer }
   } = theme.useToken();
+  const [, contextHolder] = notification.useNotification();
 
   return (
     <ALayout hasSider>
@@ -33,6 +34,7 @@ const Layout = memo(({ children, title, description }) => {
             background: colorBgContainer
           }}
         >
+          {contextHolder}
           {children}
         </Content>
         <Footer />
@@ -45,6 +47,7 @@ export const BasicLayout = memo(({ children, title }) => {
   const {
     token: { colorBgContainer }
   } = theme.useToken();
+  const [, contextHolder] = notification.useNotification();
 
   return (
     <ALayout>
@@ -59,6 +62,7 @@ export const BasicLayout = memo(({ children, title }) => {
             background: colorBgContainer
           }}
         >
+          {contextHolder}
           {children}
         </Content>
         <Footer />
