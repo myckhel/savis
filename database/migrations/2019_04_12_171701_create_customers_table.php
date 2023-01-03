@@ -17,7 +17,7 @@ class CreateCustomersTable extends Migration
       $table->id();
       $table->bigInteger('business_id')->unsigned();
       $table->bigInteger('user_id')->unsigned();
-      $table->json('metas'); //->default('{}');
+      $table->json('metas')->nullable(); //->default('{}');
       $table->timestamps();
       $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
       $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
