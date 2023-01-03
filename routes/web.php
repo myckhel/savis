@@ -16,7 +16,9 @@ use App\Models\Http\Controllers\HomeController;
 */
 //shared server clear cache
 Route::get('/clear-cache', function () {
-  return Artisan::call('cache:clear');
+  return Artisan::call('cache:clear', [
+    '--force' => true
+  ]);
   // return what you want
 });
 
@@ -26,7 +28,9 @@ Route::get('/test', function () {
 
 // migrate db
 Route::get('/db/migrate', function () {
-  return Artisan::call('migrate');
+  return Artisan::call('migrate', [
+    '--force' => true
+  ]);
 });
 
 Route::get('/app/reset', function () {
@@ -47,7 +51,9 @@ Route::get('/app/reset', function () {
 });
 
 Route::get('/db/migrate/fresh', function () {
-  return Artisan::call('migrate:fresh');
+  return Artisan::call('migrate:fresh', [
+    '--force' => true
+  ]);
 });
 
 // Api::routes();
