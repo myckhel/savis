@@ -48,5 +48,5 @@
     "use-redux-states": "^1.1.0",
     "ziggy-js": "^1.5.0"
   },
-  "packageManager": "yarn@3.3.1"
+  "packageManager": "yarn@4.7.0"
 }
