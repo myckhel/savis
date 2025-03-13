@@ -2,6 +2,7 @@ import axios from 'axios';
 import { NotifyError } from '..';
 import { logoutUser } from '../../redux/actions';
 
+// @ts-expect-error
 const { VITE_APP_URL } = import.meta.env;
 
 axios.defaults.baseURL = VITE_APP_URL;
@@ -17,7 +18,7 @@ axios.interceptors.response.use(
     ) {
       console.log(error.response.data);
     } else if (error.response.status === 400) {
-      NotifyError({ msg: error.response?.data?.message });
+      NotifyError({ message: error.response?.data?.message as string });
     }
 
     // return error
@@ -25,7 +26,7 @@ axios.interceptors.response.use(
   }
 );
 
-window.Http = axios.create({
+const Http = axios.create({
   baseURL: VITE_APP_URL,
   headers: {
     Accept: 'application/json',
@@ -33,4 +34,4 @@ window.Http = axios.create({
   }
 });
 
-export default window.Http;
+export default Http;

@@ -1,6 +1,4 @@
-// import '../css/app.css';
 import '../sass/app.scss';
-import './bootstrap';
 // import 'antd/dist/reset.css';
 import '@ant-design/v5-patch-for-react-19';
 import { createInertiaApp } from '@inertiajs/react';
@@ -19,8 +17,8 @@ createInertiaApp({
   title: title => `${title} - ${appName}`,
   resolve: name =>
     resolvePageComponent(
-      `./Pages/${name}.jsx`,
-      import.meta.glob('./Pages/**/*.jsx')
+      `./Pages/${name}.tsx`,
+      import.meta.glob('./Pages/**/*.tsx')
     ),
   setup({ el, App, props }) {
     if (import.meta.env.SSR) {

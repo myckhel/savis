@@ -8,13 +8,13 @@ import path from 'path';
 export default defineConfig({
   plugins: [
     laravel({
-      input: 'resources/js/app.jsx',
+      input: 'resources/js/app.tsx',
       ssr: 'resources/js/ssr.tsx',
       refresh: true
     }),
     react(),
     svgr(),
-    eslint({ include: ['resources/js/**/*.jsx', 'resources/js/**/*.tsx'] })
+    eslint({ include: ['resources/js/**/*.tsx'] })
   ],
   resolve: {
     alias: {

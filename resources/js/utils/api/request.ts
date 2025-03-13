@@ -1,10 +1,25 @@
-
 import { Notify, readErrors } from '../';
 import { storeUser, setToken } from '../../redux/actions';
 import store from '../../redux/store';
 import Http from './Http';
 
-const request = async (route, data = {}, method = 'get', config = {}) => {
+interface Config {
+  headers?: Record<string, string>;
+  [key: string]: any;
+}
+
+interface ResponseData {
+  user?: any;
+  token?: string;
+  [key: string]: any;
+}
+
+const request = async (
+  route: string,
+  data: Record<string, any> = {},
+  method: 'get' | 'post' | 'put' | 'delete' = 'get',
+  config: Config = {}
+): Promise<ResponseData> => {
   try {
     const params =
       method === 'post' || method === 'put' ? data : { params: data };
@@ -26,9 +41,9 @@ const request = async (route, data = {}, method = 'get', config = {}) => {
 
     console.log(res);
     return res.data;
-  } catch (e) {
+  } catch (e: any) {
     if (e.message) {
-      e.message === 'Networ Error' &&
+      e.message === 'Network Error' &&
         Notify({ type: 'error', message: e.message });
       if (
         e.response &&
@@ -53,9 +68,9 @@ const request = async (route, data = {}, method = 'get', config = {}) => {
   }
 };
 
-export const fake = callback =>
-  new Promise(ressolve =>
-    setTimeout(() => ressolve(callback && callback()), 2000)
+export const fake = (callback: () => any) =>
+  new Promise(resolve =>
+    setTimeout(() => resolve(callback && callback()), 2000)
   );
 
 export default request;
