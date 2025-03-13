@@ -1,8 +1,8 @@
-import Http from './Http';
 
-import { storeUser, setToken } from '../../redux/actions';
 import { Notify, readErrors } from '../';
+import { storeUser, setToken } from '../../redux/actions';
 import store from '../../redux/store';
+import Http from './Http';
 
 const request = async (route, data = {}, method = 'get', config = {}) => {
   try {

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\CustomerService;
-use Paystack;
+// use Paystack;
 
 class PaymentController extends Controller
 {

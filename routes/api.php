@@ -2,24 +2,25 @@
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\{
-    BusinessController,
-    WorkerController,
-    AuthController,
-    WorkController,
-    UserController,
-    MediaController,
-    PaymentController,
-    ServiceController,
-    CustomerController,
-    VariationController,
-    CustomerServiceController,
-    ServicePropertyController,
-    ServiceVariationController,
-    CustomerPropertyController,
-    CustomerServicePropertyController,
-    CustomerServiceVariationController,
-    SupportController,
+  BusinessController,
+  WorkerController,
+  AuthController,
+  WorkController,
+  UserController,
+  MediaController,
+  PaymentController,
+  ServiceController,
+  CustomerController,
+  VariationController,
+  CustomerServiceController,
+  ServicePropertyController,
+  ServiceVariationController,
+  CustomerPropertyController,
+  CustomerServicePropertyController,
+  CustomerServiceVariationController,
+  SupportController,
 };
+use App\Http\Middleware\Localization;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,10 +33,11 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::group([ 'middleware' => 'localization' ], function () {
-  Route::get('users/count', fn () => App\Models\User::count());
 
-  Route::group([ 'prefix' => 'auth' ], function () {
+Route::group(['middleware' => Localization::class], function () {
+  Route::get('users/count', fn() => App\Models\User::count());
+
+  Route::group(['prefix' => 'auth'], function () {
     // user auth
     Route::post('login',                    [AuthController::class, 'login']);
     Route::post('signup',                   [AuthController::class, 'signup']);
@@ -45,17 +47,17 @@ Route::group([ 'middleware' => 'localization' ], function () {
     Route::post('register',                 [AuthController::class, 'register']);
     Route::get('register/activate/{token}', [AuthController::class, 'registrActivate']);
 
-    Route::group([ 'middleware' => 'auth:api' ], function() {
+    Route::group(['middleware' => 'auth:api'], function () {
       Route::get('logout',                  [AuthController::class, 'logout']);
       Route::get('user',                    [AuthController::class, 'user']);
     });
-    Route::group([ 'middleware' => 'auth:customer' ], function() {
+    Route::group(['middleware' => 'auth:customer'], function () {
       Route::get('signout',                 [AuthController::class, 'signout']);
     });
   });
 
   Route::middleware('auth:api')->get('/user', function (Request $request) {
-      return $request->user();
+    return $request->user();
   });
 
   /*Route::group([ 'middleware' => 'auth:customer' ], function() {
@@ -76,7 +78,7 @@ Route::group([ 'middleware' => 'localization' ], function () {
     // Route::post('users/customers/{customer}', 'UserController@addCustomer');
 });*/
 
-  Route::group([ 'middleware' => 'auth:api' ], function() {
+  Route::group(['middleware' => 'auth:api'], function () {
     Route::get('whoami',                       [UserController::class, 'whoami']);
     Route::get('users/current',                [UserController::class, 'current']);
     Route::delete('customers/delete/multiple', [CustomerController::class, 'delete']);
@@ -96,7 +98,7 @@ Route::group([ 'middleware' => 'localization' ], function () {
     Route::post('payments/verify',                [PaymentController::class, 'verify']);
 
     Route::delete('supports/{support}/close',      [SupportController::class, 'close']);
-  Route::post('supports/{support}/join',           [SupportController::class, 'join']);
+    Route::post('supports/{support}/join',           [SupportController::class, 'join']);
 
     Route::resource('customers',    CustomerController::class);
     Route::resource('users',        UserController::class);

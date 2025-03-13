@@ -2,8 +2,8 @@ import { get } from 'lodash';
 import { useCallback, useEffect, useLayoutEffect } from 'react';
 import { batch } from 'react-redux';
 import { useEventListener } from 'use-event-listeners';
-import { useMemoSelector, useReduxState, useSetState } from 'use-redux-states';
 import useState from 'use-react-state';
+import { useMemoSelector, useReduxState, useSetState } from 'use-redux-states';
 
 const _setData = (
   data,

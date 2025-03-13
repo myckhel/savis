@@ -1,19 +1,19 @@
+import createSagaMiddleware from '@redux-saga/core';
 import { configureStore } from '@reduxjs/toolkit';
-import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
-import {
-  setConfig,
-  SET_REDUX_STATE,
-  SUBSCRIBE_REDUX_STATE
-} from 'use-redux-states';
-import storage from 'redux-persist/lib/storage';
-import rootReducer from './reducers';
 import {
   persistStore,
   persistReducer,
   REHYDRATE,
   PERSIST
 } from 'redux-persist';
-import createSagaMiddleware from '@redux-saga/core';
+import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
+import storage from 'redux-persist/lib/storage';
+import {
+  setConfig,
+  SET_REDUX_STATE,
+  SUBSCRIBE_REDUX_STATE
+} from 'use-redux-states';
+import rootReducer from './reducers';
 import sagas from './sagas';
 
 const persistConfig = {

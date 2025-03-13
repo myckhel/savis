@@ -11,9 +11,8 @@ import {
 import { Avatar, Dropdown, Layout, theme } from 'antd';
 import { memo } from 'react';
 import { logo } from '../../assets/images';
-import { Link } from '@inertiajs/inertia-react';
+import { Link, router } from '@inertiajs/react';
 import { useLogout, useUser } from '../redux/auth/hooks';
-import { Inertia } from '@inertiajs/inertia';
 import { useMemo } from 'react';
 
 const { Header: AHeader } = Layout;
@@ -27,8 +26,8 @@ const Header = ({ showLogo }) => {
 
   return (
     <AHeader
-      className="flex items-center justify-between"
-      style={{ padding: 0, background: colorBgContainer }}
+      className="flex items-center justify-between px-4"
+      style={{ background: colorBgContainer, paddingInline: 10 }}
     >
       {menu
         ? createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
@@ -36,7 +35,7 @@ const Header = ({ showLogo }) => {
             onClick: () => setCollapsed(!collapsed)
           })
         : null}
-      {showLogo && <Logo />}
+      {showLogo ? <Logo /> : <div />}
       <UserMenu />
     </AHeader>
   );
@@ -49,12 +48,14 @@ const UserMenu = memo(() => {
   const onClick = async ({ key }) => {
     try {
       if (key === 'signout') {
-        await Inertia.visit('/api/auth/logout', undefined, { replace: true });
+        await router.visit('/api/auth/logout', undefined, { replace: true });
         logout();
       } else if (key === 'signin') {
-        await Inertia.visit('auth');
+        await router.visit('/auth');
       } else if (key === 'dashboard') {
-        await Inertia.visit('dash');
+        await router.visit('/dash');
+      } else {
+        await router.visit('/' + key);
       }
     } catch (error) {
       console.log(error);

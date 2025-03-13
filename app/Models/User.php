@@ -15,9 +15,9 @@ use UserCustomer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Casts\Jsonable;
-use Myckhel\ChatSystem\Traits\Message\HasMessage;
-use Myckhel\ChatSystem\Traits\ChatEvent\CanMakeChatEvent;
-use Myckhel\ChatSystem\Contracts\IChatEventMaker;
+use Binkode\ChatSystem\Traits\Message\HasMessage;
+use Binkode\ChatSystem\Traits\ChatEvent\CanMakeChatEvent;
+use Binkode\ChatSystem\Contracts\IChatEventMaker;
 
 class User extends Authenticatable implements HasMedia, IChatEventMaker
 {
@@ -35,20 +35,20 @@ class User extends Authenticatable implements HasMedia, IChatEventMaker
 
     return $this->findOrFailBusiness(
       $business_id,
-      fn ($q)     => $q->whereHas(
+      fn($q)     => $q->whereHas(
         'business',
-        fn ($q)   => $q->when($variation_id, fn ($q) => $q->whereHas(
+        fn($q)   => $q->when($variation_id, fn($q) => $q->whereHas(
           'variations',
-          fn ($q) => $q->whereId($variation_id)
+          fn($q) => $q->whereId($variation_id)
         ))
           ->when(
             $service_id || $service_variation_id,
-            fn ($q)     => $q->whereHas(
+            fn($q)     => $q->whereHas(
               'services',
-              fn ($q)   => $q->when(
+              fn($q)   => $q->when(
                 $service_id,
-                fn ($q) => $q->whereId($service_id),
-                fn ($q) => $q->whereHas('variations', fn ($q) => $q->whereId($service_variation_id)),
+                fn($q) => $q->whereId($service_id),
+                fn($q) => $q->whereHas('variations', fn($q) => $q->whereId($service_variation_id)),
               )
             )
           )
@@ -67,8 +67,8 @@ class User extends Authenticatable implements HasMedia, IChatEventMaker
     return $this->businessUsing()
       ->whereHas(
         'business',
-        fn ($q) =>
-        $q->whereHas('variations', fn ($q) => $q->whereId($variation_id))
+        fn($q) =>
+        $q->whereHas('variations', fn($q) => $q->whereId($variation_id))
       )->first();
   }
 
@@ -77,8 +77,8 @@ class User extends Authenticatable implements HasMedia, IChatEventMaker
     if (!$customer && !$email) return null;
 
     return $this->customers()
-      ->when($customer, fn ($q) => $q->where('customer_id', $customer->id ?? $customer))
-      ->when($email, fn ($q) => $q->orWhere('email', $email))
+      ->when($customer, fn($q) => $q->where('customer_id', $customer->id ?? $customer))
+      ->when($email, fn($q) => $q->orWhere('email', $email))
       ->first();
   }
 
@@ -102,7 +102,13 @@ class User extends Authenticatable implements HasMedia, IChatEventMaker
    * @var array
    */
   protected $fillable = [
-    'name', 'email', 'password', 'activation_token', 'lat', 'lng', 'metas'
+    'name',
+    'email',
+    'password',
+    'activation_token',
+    'lat',
+    'lng',
+    'metas'
   ];
   protected $dates = ['deleted_at'];
 
@@ -112,7 +118,10 @@ class User extends Authenticatable implements HasMedia, IChatEventMaker
    * @var array
    */
   protected $hidden = [
-    'password', 'remember_token', 'activation_token', 'media'
+    'password',
+    'remember_token',
+    'activation_token',
+    'media'
   ];
 
   /**
@@ -121,7 +130,8 @@ class User extends Authenticatable implements HasMedia, IChatEventMaker
    * @var array
    */
   protected $casts = [
-    'email_verified_at' => 'datetime', 'metas' => Jsonable::class
+    'email_verified_at' => 'datetime',
+    'metas' => Jsonable::class
   ];
 
   public function properties($business_id = null)
@@ -129,10 +139,10 @@ class User extends Authenticatable implements HasMedia, IChatEventMaker
     return $this->hasManyThrough(CustomerProperty::class, Customer::class)
       ->when(
         $business_id,
-        fn ($q) => $q->whereHas('customer', fn ($q) =>
+        fn($q) => $q->whereHas('customer', fn($q) =>
         $q->whereHas(
           'business',
-          fn ($q) =>
+          fn($q) =>
           $q->whereId($business_id)
         ))
       );
@@ -161,20 +171,20 @@ class User extends Authenticatable implements HasMedia, IChatEventMaker
   public function businessUsing($business_id = null)
   {
     return $this->hasMany(Worker::class, 'user_id')
-      ->when($business_id, fn ($q) => $q->whereBusinessId($business_id));
+      ->when($business_id, fn($q) => $q->whereBusinessId($business_id));
   }
   public function workers($business_id = null, $vars = [])
   {
     $user_id = $vars['user_id'] ?? null;
     return $this->hasMany(Worker::class, 'user_id')
-      ->when($business_id, fn ($q) => $q->whereBusinessId($business_id))
+      ->when($business_id, fn($q) => $q->whereBusinessId($business_id))
       ->when(
         $user_id,
-        fn ($q) => $q->whereHas(
+        fn($q) => $q->whereHas(
           'business',
-          fn ($q) => $q->whereHas(
+          fn($q) => $q->whereHas(
             'workers',
-            fn ($q) => $q->whereUserId($user_id)
+            fn($q) => $q->whereUserId($user_id)
           )
         )
       );

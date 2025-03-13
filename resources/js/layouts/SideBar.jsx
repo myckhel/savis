@@ -1,6 +1,5 @@
 import { BankOutlined, DashboardOutlined } from '@ant-design/icons';
-import { Inertia } from '@inertiajs/inertia';
-import { usePage } from '@inertiajs/inertia-react';
+import { usePage, router } from '@inertiajs/react';
 import { Layout, Menu } from 'antd';
 import { memo } from 'react';
 import { Logo } from './Header';
@@ -18,7 +17,7 @@ const items = [
   key,
   icon: <Icon />,
   label,
-  onClick: () => Inertia.visit(key)
+  onClick: () => router.visit(key)
 }));
 
 const SideBar = memo(() => {

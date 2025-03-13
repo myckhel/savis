@@ -15,7 +15,7 @@ import { loginUser, registerUser } from '../../utils/api/user';
 import { Notify } from '../../utils';
 import { batch, useDispatch } from 'react-redux';
 import { setToken, storeUser } from '../../redux/auth';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 
 const Auth = memo(() => {
   const dispatch = useDispatch();
@@ -44,7 +44,7 @@ const Auth = memo(() => {
           dispatch(setToken({ token, token_type, expires_at }));
         });
 
-        Inertia.get('/dash', {}, { replace: true });
+        router.get('/dash', {}, { replace: true });
 
         Notify({
           type: 'success',

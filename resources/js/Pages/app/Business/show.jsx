@@ -1,4 +1,4 @@
-import { Head, usePage } from '@inertiajs/inertia-react';
+import { Head, usePage } from '@inertiajs/react';
 import { memo } from 'react';
 import Layout from '../../../layouts/Layout';
 import { showBusiness } from '../../../utils/api/business';

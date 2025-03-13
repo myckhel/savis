@@ -1,5 +1,5 @@
 // import Router from "next/router";
-import { Head } from '@inertiajs/inertia-react';
+import { Head } from '@inertiajs/react';
 import { Layout as ALayout, notification, theme } from 'antd';
 import { memo } from 'react';
 import Footer from './Footer';

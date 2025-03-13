@@ -1,7 +1,7 @@
-import { Link } from '@inertiajs/inertia-react';
+import { Link } from '@inertiajs/react';
 import { Badge, Card, List, Tag } from 'antd';
 import { memo } from 'react';
-import route from 'ziggy-js';
+import { route } from 'ziggy-js';
 import { placeholder } from '../../../assets/images';
 import { useUser } from '../../redux/auth/hooks';
 import { getBusinesses } from '../../utils/api/business';
@@ -35,7 +35,7 @@ export const BusinessCards = memo(({ name = 'business.all' }) => {
     <div className="flex">
       <List
         grid={{ gutter: 2, column: 4 }}
-        dataSource={data}
+        dataSource={data?.length ? data : []}
         renderItem={p => <BusinessCard isOwner={userId === p.user_id} {...p} />}
       />
     </div>

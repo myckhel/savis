@@ -16,7 +16,7 @@ export const NotifyError = ({
 
 export const readErrors = e => {
   const messages = [];
-  forOwn(e.response.data.errors, (msgs, field) => {
+  forOwn(e.response.data.errors, msgs => {
     msgs.map(msg => messages.push(msg));
   });
   return messages;

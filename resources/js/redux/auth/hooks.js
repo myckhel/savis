@@ -1,8 +1,8 @@
 import { useDispatch } from "react-redux";
 import { useMemoSelector, useRootMemoSelector } from "use-redux-states";
 
-import { logoutUser } from "./";
 import { selectIsAuth } from "./selectors";
+import { logoutUser } from "./";
 
 export const useLogout = () => {
   const dispatch = useDispatch();
