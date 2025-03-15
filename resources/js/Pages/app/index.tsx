@@ -1,12 +1,9 @@
-import { DatePicker } from 'antd';
 import { memo, ReactNode } from 'react';
 import Layout from '../../layouts/Layout';
 
 const Home = memo(() => (
   <div>
-    <h1>Hello</h1>
-    <DatePicker />
-    <button className="bg-blue-200 p-4">btn</button>
+    <h1>Welcome</h1>
   </div>
 ));
 

@@ -24,17 +24,17 @@ const Layout: FC<LayoutProps> = memo(({ children, title, description }) => {
       <Head title={`Savis | ${title}`} />
       <SideBar />
       <ALayout
-        className="site-layout"
+        className="site-layout h-screen"
         style={{
           marginLeft: 200
         }}
       >
         <Header />
         <Content
+          className="h-full"
           style={{
             margin: '24px 16px',
             padding: 24,
-            minHeight: 280,
             background: colorBgContainer
           }}
         >
@@ -61,13 +61,13 @@ export const BasicLayout: FC<BasicLayoutProps> = memo(({ children, title }) => {
   return (
     <ALayout>
       <Head title={`Savis | ${title}`} />
-      <ALayout className="site-layout">
+      <ALayout className="site-layout h-screen">
         <Header showLogo />
         <Content
+          className="h-full"
           style={{
             margin: '24px 16px',
             padding: 24,
-            minHeight: 280,
             background: colorBgContainer
           }}
         >
