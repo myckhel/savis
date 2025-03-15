@@ -1,12 +1,13 @@
 import js from '@eslint/js';
+import prettier from 'eslint-config-prettier';
+import importPlugin from 'eslint-plugin-import';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
-import jsxA11y from 'eslint-plugin-jsx-a11y';
-import importPlugin from 'eslint-plugin-import';
-import prettier from 'eslint-config-prettier';
 import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
-export default [
+export default tseslint.config(
   js.configs.recommended, // Base JS rules
   prettier, // Ensure compatibility with Prettier
   {
@@ -25,10 +26,7 @@ export default [
       import: importPlugin
     },
     rules: {
-      'react/jsx-uses-react': 'off', // Not needed for React 17+
-      'react/react-in-jsx-scope': 'off', // Next.js and Inertia auto-import React
       'react-hooks/rules-of-hooks': 'error', // Enforce React Hooks rules
-      'react-hooks/exhaustive-deps': 'warn', // Warn on missing dependencies in Hooks
       'jsx-a11y/anchor-is-valid': 'off', // Inertia uses `<Link>` instead of `<a>`
       camelcase: 0,
       'array-callback-return': 0,
@@ -60,4 +58,4 @@ export default [
       }
     }
   }
-];
+);

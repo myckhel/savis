@@ -185,7 +185,7 @@ const useRequest = (
     reducer,
     ...props
   }: UseRequestProps,
-  dep: any[]
+  dep?: any[]
 ) => {
   const { setState, getState, selector, useStateSelector } = useReduxState({
     name,

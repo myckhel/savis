@@ -19,13 +19,26 @@ import { router } from '@inertiajs/react';
 
 const Auth = memo(() => {
   const dispatch = useDispatch();
-  const [{ loginType, password }, setState] = useState({
+  const [{ loginType, password }, setState] = useState<{
+    loginType: 'login' | 'signup';
+    password?: string;
+  }>({
     loginType: 'login',
     password: undefined
   });
 
   const onFinish = useCallback(
-    async ({ name, email, password, password_confirmation }) => {
+    async ({
+      name,
+      email,
+      password,
+      password_confirmation
+    }: {
+      name?: string;
+      email: string;
+      password: string;
+      password_confirmation?: string;
+    }) => {
       try {
         const {
           access_token: token,
@@ -163,7 +176,7 @@ const Auth = memo(() => {
         <Tabs
           centered
           activeKey={loginType}
-          onChange={loginType => setState({ loginType })}
+          onChange={loginType => setState({ loginType: loginType as any })}
           items={[
             {
               label: `Login`,
@@ -182,6 +195,7 @@ const Auth = memo(() => {
   );
 });
 
+// @ts-expect-error
 Auth.layout = page => <BasicLayout title="Authenticate" children={page} />;
 
 export default Auth;

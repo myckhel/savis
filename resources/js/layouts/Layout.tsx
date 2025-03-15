@@ -1,15 +1,19 @@
-// import Router from "next/router";
 import { Head } from '@inertiajs/react';
 import { Layout as ALayout, notification, theme } from 'antd';
-import { memo } from 'react';
+import { memo, FC, ReactNode } from 'react';
 import Footer from './Footer';
 import Header from './Header';
 import SideBar from './SideBar';
-// import { getUser } from "../redux/action/auth";
 
 const { Content } = ALayout;
 
-const Layout = memo(({ children, title, description }) => {
+interface LayoutProps {
+  children: ReactNode;
+  title: string;
+  description?: string;
+}
+
+const Layout: FC<LayoutProps> = memo(({ children, title, description }) => {
   const {
     token: { colorBgContainer }
   } = theme.useToken();
@@ -43,7 +47,12 @@ const Layout = memo(({ children, title, description }) => {
   );
 });
 
-export const BasicLayout = memo(({ children, title }) => {
+interface BasicLayoutProps {
+  children: ReactNode;
+  title: string;
+}
+
+export const BasicLayout: FC<BasicLayoutProps> = memo(({ children, title }) => {
   const {
     token: { colorBgContainer }
   } = theme.useToken();

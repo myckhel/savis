@@ -38,7 +38,7 @@ const SideBar = memo(() => {
       <Menu
         theme="dark"
         mode="inline"
-        defaultSelectedKeys={url}
+        defaultSelectedKeys={[url]}
         items={items}
       />
     </Sider>

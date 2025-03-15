@@ -28,9 +28,8 @@ const sagaMiddleware = createSagaMiddleware();
 
 const store = configureStore({
   reducer,
-  middleware: getDefaultMiddleware => [
-    sagaMiddleware,
-    ...getDefaultMiddleware({
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [
           PERSIST,
@@ -39,8 +38,7 @@ const store = configureStore({
           SUBSCRIBE_REDUX_STATE
         ]
       }
-    })
-  ]
+    }).concat([sagaMiddleware])
 });
 
 setConfig({ cleanup: false });

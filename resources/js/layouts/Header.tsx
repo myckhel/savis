@@ -8,7 +8,7 @@ import {
   UserOutlined,
   UserSwitchOutlined
 } from '@ant-design/icons';
-import { Avatar, Dropdown, Layout, theme } from 'antd';
+import { Avatar, Dropdown, Layout, theme, MenuProps } from 'antd';
 import { memo } from 'react';
 import { logo } from '../../assets/images';
 import { Link, router } from '@inertiajs/react';
@@ -17,7 +17,11 @@ import { useMemo } from 'react';
 
 const { Header: AHeader } = Layout;
 
-const Header = ({ showLogo }) => {
+interface HeaderProps {
+  showLogo?: boolean;
+}
+
+const Header = ({ showLogo }: HeaderProps) => {
   const [collapsed, setCollapsed] = useState(false);
   const menu = false;
   const {
@@ -45,10 +49,10 @@ const UserMenu = memo(() => {
   const user = useUser();
   const logout = useLogout();
 
-  const onClick = async ({ key }) => {
+  const onClick: MenuProps['onClick'] = async ({ key }) => {
     try {
       if (key === 'signout') {
-        await router.visit('/api/auth/logout', undefined, { replace: true });
+        await router.visit('/api/auth/logout', { replace: true });
         logout();
       } else if (key === 'signin') {
         await router.visit('/auth');
@@ -63,7 +67,7 @@ const UserMenu = memo(() => {
   };
 
   const items = useMemo(() => {
-    const items = [];
+    const items: MenuProps['items'] = [];
 
     user?.id
       ? items.push(

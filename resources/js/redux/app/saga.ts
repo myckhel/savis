@@ -3,7 +3,16 @@ import { all, fork, put, takeLatest } from 'redux-saga/effects';
 import { SET_TOKEN } from '../../constants/ActionTypes';
 import Http from '../../utils/api/Http';
 
-function* rehydrated({ payload }) {
+interface RehydrateAction {
+  type: typeof REHYDRATE;
+  payload: {
+    auth?: {
+      token?: string;
+    };
+  };
+}
+
+function* rehydrated({ payload }: RehydrateAction) {
   const token = payload?.auth?.token;
   if (token) {
     Http.defaults.headers.common['Authorization'] = `Bearer ${token}`;

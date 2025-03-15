@@ -11,6 +11,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import Loader from './components/core/Loader';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 
+// @ts-expect-error
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
@@ -18,9 +19,11 @@ createInertiaApp({
   resolve: name =>
     resolvePageComponent(
       `./Pages/${name}.tsx`,
+      // @ts-expect-error
       import.meta.glob('./Pages/**/*.tsx')
     ),
   setup({ el, App, props }) {
+    // @ts-expect-error
     if (import.meta.env.SSR) {
       hydrateRoot(el, <App {...props} />);
       return;

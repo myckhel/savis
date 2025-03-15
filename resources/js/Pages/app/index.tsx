@@ -1,5 +1,5 @@
 import { DatePicker } from 'antd';
-import { memo } from 'react';
+import { memo, ReactNode } from 'react';
 import Layout from '../../layouts/Layout';
 
 const Home = memo(() => (
@@ -10,6 +10,7 @@ const Home = memo(() => (
   </div>
 ));
 
-Home.layout = page => <Layout title="Home" children={page} />;
+// @ts-expect-error
+Home.layout = (page: ReactNode) => <Layout title="Home" children={page} />;
 
 export default Home;

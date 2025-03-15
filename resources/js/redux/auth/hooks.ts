@@ -11,6 +11,6 @@ export const useLogout = () => {
   };
 };
 
-export const useUser = (...p) => useRootMemoSelector('auth.user', ...p);
+export const useUser = (...p: any) => useRootMemoSelector('auth.user', ...p);
 
 export const useIsLoggedIn = () => useMemoSelector(selectIsAuth);

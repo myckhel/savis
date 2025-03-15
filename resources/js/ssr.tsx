@@ -5,6 +5,7 @@ import ReactDOMServer from 'react-dom/server';
 import { RouteName, route } from 'ziggy-js';
 // import { route } from "../../vendor/tightenco/ziggy";
 
+// @ts-expect-error
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createServer(page =>
@@ -15,6 +16,7 @@ createServer(page =>
     resolve: name =>
       resolvePageComponent(
         `./Pages/${name}.tsx`,
+        // @ts-expect-error
         import.meta.glob('./Pages/**/*.tsx')
       ),
     setup: ({ App, props }) => {
@@ -22,7 +24,9 @@ createServer(page =>
       // @ts-expect-error
       global.route<RouteName> = (name, params, absolute) =>
         route(name, params as any, absolute, {
+          // @ts-expect-error
           ...page.props.ziggy,
+          // @ts-expect-error
           location: new URL(page.props.ziggy.location)
         });
       /* eslint-enable */

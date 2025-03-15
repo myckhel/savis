@@ -8,7 +8,7 @@ const Home = memo(() => (
     <BusinessCards />
   </div>
 ));
-
+// @ts-expect-error
 Home.layout = page => <Layout title="Businesses" children={page} />;
 
 export default Home;

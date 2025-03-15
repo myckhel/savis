@@ -7,6 +7,7 @@ const Home = memo(() => (
   </div>
 ));
 
+// @ts-expect-error
 Home.layout = page => <BasicLayout title="Home" children={page} />;
 
 export default Home;

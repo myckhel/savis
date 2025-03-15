@@ -1,5 +1,5 @@
 import { Head, usePage } from '@inertiajs/react';
-import { memo } from 'react';
+import { memo, ReactNode } from 'react';
 import Layout from '../../../layouts/Layout';
 import { showBusiness } from '../../../utils/api/business';
 import { useDataRequest } from '../../../utils/hooks/useRequest';
@@ -7,9 +7,10 @@ import { useDataRequest } from '../../../utils/hooks/useRequest';
 const Home = memo(() => {
   const {
     props: { id }
-  } = usePage();
+  } = usePage<{ id: string }>();
+
   const { data } = useDataRequest({
-    path: `business.byId.${id}`,
+    name: `business.byId.${id}`,
     asyncRequest: showBusiness,
     params: [id],
     loadOnMount: !!id
@@ -23,6 +24,9 @@ const Home = memo(() => {
   );
 });
 
-Home.layout = page => <Layout title="Businesses" children={page} />;
+// @ts-expect-error
+Home.layout = (page: ReactNode) => (
+  <Layout title="Businesses" children={page} />
+);
 
 export default Home;
