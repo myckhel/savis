@@ -45,7 +45,7 @@ export const BusinessCards = memo(({}: BusinessCardsProps) => {
         name={item.name}
         description={item.description}
         avatar={item.avatar}
-        isOwner={item.owner_id === userId}
+        isOwner={item.user_id === userId}
         id={item.id}
       />
     ),
