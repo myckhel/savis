@@ -10,9 +10,17 @@ import en_US from 'antd/locale/en_US';
 import { PersistGate } from 'redux-persist/integration/react';
 import Loader from './components/core/Loader';
 import { createRoot, hydrateRoot } from 'react-dom/client';
+import { Refine } from '@refinedev/core';
+import { useNotificationProvider } from '@refinedev/antd';
+import '@refinedev/antd/dist/reset.css';
+import routerProvider from './utils/refine/routerProvider';
+import { Api } from './utils/api/Http';
+import { dataProvider } from './utils/rest-data-provider';
 
 // @ts-expect-error
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+// @ts-expect-error
+const { VITE_APP_URL } = import.meta.env;
 
 createInertiaApp({
   title: title => `${title} - ${appName}`,
@@ -41,7 +49,16 @@ createInertiaApp({
             }}
             locale={en_US}
           >
-            <App {...props} />
+            <Refine
+              // authProvider={authProvider}
+              dataProvider={dataProvider(VITE_APP_URL + '/api', Api)}
+              options={{ disableTelemetry: true }}
+              routerProvider={routerProvider}
+              notificationProvider={useNotificationProvider}
+              resources={[{ name: 'users' }, { name: 'business' }]}
+            >
+              <App {...props} />
+            </Refine>
           </ConfigProvider>
         </PersistGate>
       </Provider>

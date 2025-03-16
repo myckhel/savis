@@ -1,11 +1,10 @@
 import { Link } from '@inertiajs/react';
 import { Badge, Card, List, Tag } from 'antd';
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 import { route } from 'ziggy-js';
 import { placeholder } from '../../../assets/images';
 import { useUser } from '../../redux/auth/hooks';
-import { getBusinesses } from '../../utils/api/business';
-import useRequest from '../../utils/hooks/useRequest';
+import { useList } from '@refinedev/core';
 const { Meta } = Card;
 
 interface BusinessCardProps {
@@ -31,36 +30,37 @@ const BusinessCard = memo(
   )
 );
 
-interface BusinessCardsProps {
-  name?: string;
-}
+interface BusinessCardsProps {}
 
-export const BusinessCards = memo(
-  ({ name = 'business.all' }: BusinessCardsProps) => {
-    // @ts-expect-error
-    const userId = useUser(({ id } = {}) => id);
+export const BusinessCards = memo(({}: BusinessCardsProps) => {
+  // @ts-expect-error
+  const userId = useUser(({ id } = {}) => id);
 
-    const {
-      state: { data }
-    } = useRequest({
-      asyncRequest: getBusinesses,
-      name,
-      dataPath: 'business.byId'
-    });
+  const { data } = useList({ resource: 'business' });
 
-    return (
-      <div className="flex">
-        <List
-          grid={{ gutter: 2, column: 4 }}
-          dataSource={data?.length ? data : []}
-          renderItem={p => (
-            // @ts-expect-error
-            <BusinessCard isOwner={userId === p.user_id} {...p} />
-          )}
-        />
-      </div>
-    );
-  }
-);
+  const renderItem = useCallback(
+    (item: any) => (
+      <BusinessCard
+        key={item.id}
+        name={item.name}
+        description={item.description}
+        avatar={item.avatar}
+        isOwner={item.owner_id === userId}
+        id={item.id}
+      />
+    ),
+    [userId]
+  );
+
+  return (
+    <div className="flex">
+      <List
+        grid={{ gutter: 2, column: 4 }}
+        dataSource={data?.data?.length ? data?.data : []}
+        renderItem={renderItem}
+      />
+    </div>
+  );
+});
 
 export default BusinessCard;

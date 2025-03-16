@@ -1,25 +1,20 @@
 import { Head, usePage } from '@inertiajs/react';
 import { memo, ReactNode } from 'react';
 import Layout from '../../../layouts/Layout';
-import { showBusiness } from '../../../utils/api/business';
-import { useDataRequest } from '../../../utils/hooks/useRequest';
+import { useOne } from '@refinedev/core';
 
 const Home = memo(() => {
   const {
     props: { id }
   } = usePage<{ id: string }>();
 
-  const { data } = useDataRequest({
-    name: `business.byId.${id}`,
-    asyncRequest: showBusiness,
-    params: [id],
-    loadOnMount: !!id
-  });
+  const { data } = useOne({ resource: 'business', id });
+  const business = data?.data;
 
   return (
     <div>
-      {data?.name && <Head title={data?.name} />}
-      <h1>{data?.name}</h1>
+      {business?.name && <Head title={business?.name} />}
+      <h1>{business?.name}</h1>
     </div>
   );
 });

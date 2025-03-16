@@ -34,4 +34,14 @@ const Http = axios.create({
   }
 });
 
+const Api = axios.create({
+  baseURL: VITE_APP_URL + '/api',
+  headers: {
+    Accept: 'application/json',
+    'X-Requested-With': 'XMLHttpRequest'
+  }
+});
+
+export { Api };
+
 export default Http;
