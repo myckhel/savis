@@ -57,8 +57,7 @@ createInertiaApp({
               notificationProvider={useNotificationProvider}
               resources={[
                 { name: 'users' },
-                { name: 'business', list: 'businesses' },
-                { name: 'user' }
+                { name: 'business', list: 'businesses' }
               ]}
             >
               <App {...props} />

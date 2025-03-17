@@ -75,6 +75,8 @@ Route::get('/db/migrate/fresh', function () {
 // Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::group(['middleware' => ['auth:web'], 'prefix' => 'app', 'as' => 'app.'], function () {
   Route::get('/', fn() => inertia('app/index', []))->name('dashboad');
+  Route::get('/profile', fn() => inertia('app/profile', []))->name('profile');
+
   Route::get('/businesses', fn() => inertia('app/Business/index', []))->name('businesses');
   Route::get('/businesses/create', fn() => inertia('app/Business/create', []))->name('businesses.create');
   Route::get('/businesses/{id}', fn($id) => inertia('app/Business/show', ['id' => $id]))->name('businesses.show');

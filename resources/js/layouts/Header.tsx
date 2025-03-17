@@ -60,7 +60,7 @@ const UserMenu = memo(() => {
       } else if (key === 'dashboard') {
         await router.visit(route('app.dashboad'));
       } else {
-        await router.visit('/' + key);
+        await router.visit('/app/' + key);
       }
     } catch (error) {
       console.log(error);

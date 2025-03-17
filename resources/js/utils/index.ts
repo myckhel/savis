@@ -1,3 +1,4 @@
+import { usePage } from '@inertiajs/react';
 import { notification } from 'antd';
 import { ArgsProps } from 'antd/es/notification';
 import { IconType } from 'antd/es/notification/interface';
@@ -104,3 +105,7 @@ export const propStyles = (
 
   return retStyle;
 };
+
+export const useRoute = () => usePage().props.ziggy;
+// @ts-expect-error
+export const useUser = () => usePage().props.auth?.user;
