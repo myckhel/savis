@@ -17,7 +17,7 @@ interface BusinessCardProps {
 
 const BusinessCard = memo(
   ({ name, description, avatar, isOwner, id }: BusinessCardProps) => (
-    <Link href={route('businesses.show', [id])}>
+    <Link href={route('app.businesses.show', [id])}>
       <Badge.Ribbon text="category">
         <Card cover={<img alt={name} src={avatar?.thumb || placeholder} />}>
           <Meta title={name} description={description} />

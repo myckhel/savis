@@ -7,10 +7,10 @@ import { Logo } from './Header';
 const { Sider } = Layout;
 
 const items = [
-  { Icon: DashboardOutlined, key: '/dash', label: 'Dashboard' },
+  { Icon: DashboardOutlined, key: '/app', label: 'Dashboard' },
   {
     Icon: BankOutlined,
-    key: '/dash/businesses',
+    key: '/app/businesses',
     label: 'Businesses'
   }
 ].map(({ Icon, label, key }) => ({

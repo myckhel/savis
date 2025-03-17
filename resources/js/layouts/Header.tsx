@@ -14,6 +14,7 @@ import { logo } from '../../assets/images';
 import { Link, router } from '@inertiajs/react';
 import { useLogout, useUser } from '../redux/auth/hooks';
 import { useMemo } from 'react';
+import { route } from '../../../vendor/tightenco/ziggy/src/js';
 
 const { Header: AHeader } = Layout;
 
@@ -55,9 +56,9 @@ const UserMenu = memo(() => {
         await router.visit('/api/auth/logout', { replace: true });
         logout();
       } else if (key === 'signin') {
-        await router.visit('/auth');
+        await router.visit(route('login'));
       } else if (key === 'dashboard') {
-        await router.visit('/dash');
+        await router.visit(route('app.dashboad'));
       } else {
         await router.visit('/' + key);
       }

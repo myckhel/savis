@@ -13,7 +13,7 @@ import { logo } from '../../../assets/images';
 import { useCallback } from 'react';
 import { loginUser, registerUser } from '../../utils/api/user';
 import { Notify } from '../../utils';
-import { batch, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setToken, storeUser } from '../../redux/auth';
 import { router } from '@inertiajs/react';
 
@@ -52,12 +52,10 @@ const Auth = memo(() => {
           password_confirmation
         });
 
-        batch(() => {
-          dispatch(storeUser(user));
-          dispatch(setToken({ token, token_type, expires_at }));
-        });
+        dispatch(storeUser(user));
+        dispatch(setToken({ token, token_type, expires_at }));
 
-        router.get('/dash', {}, { replace: true });
+        router.get('/app', {}, { replace: true });
 
         Notify({
           type: 'success',

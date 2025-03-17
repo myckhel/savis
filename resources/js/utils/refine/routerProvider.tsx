@@ -45,8 +45,6 @@ const routerProvider: RouterProvider = {
           return fullPath;
         }
 
-        console.log({ router });
-
         /** Navigate using Inertia */
         router.visit(fullPath, {
           replace: type === 'replace'
