@@ -55,7 +55,11 @@ createInertiaApp({
               options={{ disableTelemetry: true }}
               routerProvider={routerProvider}
               notificationProvider={useNotificationProvider}
-              resources={[{ name: 'users' }, { name: 'business' }]}
+              resources={[
+                { name: 'users' },
+                { name: 'business', list: 'businesses' },
+                { name: 'user' }
+              ]}
             >
               <App {...props} />
             </Refine>
